@@ -1,0 +1,52 @@
+\documentclass{article}
+\usepackage{../jeffe}
+
+\usepackage{amsmath, enumitem, listings, graphicx}
+\oddsidemargin 0in
+\evensidemargin 0in
+\textwidth 6.5in
+\topmargin -0.5in
+\textheight 9.0in
+
+\begin{document}
+
+\title{Linear-Time Algorithm for Multiple Source Shortest Path with unit weights Planar Graph}
+
+% Title
+\begin{center}
+\textbf{\Large Linear-Time Algorithm for Multiple Source Shortest Path with unit weights Planar Graph}
+\end{center}
+
+\begin{algorithm}
+\textbf{\underline{MaxFlow($G,c, s, t, f^{\infty} $)}} \\
+for each vertex $f \neq f^{infty} of G^*$ \\ \quad
+   pred[$f$] $\leftarrow$ the dart in $T^*$ whose head is $f$ \\
+for each dart d: \\ \quad
+   $\Phi[d] \leftarrow \text{dist}_c($ head of d in $G*) - \text{dist}_c($ tail of d in $G*$) \\
+Let $T$ be the tree formed by the edges not represented in $T^*$ \\
+while t is reachable from s in T: \\ \quad
+   while $\exists$ a nonresidual dart on the s to t path in T: \\ \qquad
+      let $\tilde d$ be the first non-residual dart \\ \qquad
+      let q be the head of $\tilde d$ in $G*$ \\ \qquad
+      eject $\tilde d$ from T and insert rev(pred[q]) into T \\ \qquad
+      pred[q] $\leftarrow \tilde d$ \\ \quad
+   for each dart d on the s-to-t path in T: \\ \qquad
+      $\Phi[d] \leftarrow \Phi[d] + 1$
+\end{algorithm}
+
+Given $f^{\infty}$ be a boundary of G. And $d_1, d_2, \ldots, d_k$ be edges of boundary $f^{\infty}$.
+\begin{algorithm}
+\textbf{\underline{MSSP($G,c$)}} \\
+$T \leftarrow $ tail($d_1$) rooted shortest path tree \\
+for i $\leftarrow 1, 2, \ldots, k$: \\ \quad
+   $\lambda \leftarrow -1$ times the distance from tail($d_i$) to head($d_i$) \\ \quad
+   remove the dart of T entering head($d_i$) and insert rev($d_i$) \\ \quad
+   while $\lambda < c[\text{rev}(d_i)]$: \\ \qquad
+      while there is an active dart $d$ with $\text{slack}_i(d, c_{\lambda}) = 0$ \\ \qquad \quad
+      $d^{+} \leftarrow$ the leafmost such dart in the dual tree $T^*$ \\ \qquad \quad
+      remove from T the dart $d^{-}$ whose head is head($d^{+}$) \\ \qquad \quad
+      insert $d^{+}$ into T \\ \qquad
+   $\lambda \leftarrow \lambda + 1$
+\end{algorithm}
+
+\end{document}

@@ -1,0 +1,107 @@
+\documentclass{cgyrf12}
+
+% The packages graphicx, amssymb, and amsmath are already loaded via
+% cgyrf12.cls
+
+%----------------------- Macros and Definitions --------------------------
+
+% The environments theorem (Theorem), invar (Invariant), lemma (Lemma),
+% cor (Corollary), obs (Observation), conj (Conjecture), prop
+% (Proposition), defini (Definition), and proof (Proof) are already defined
+% in the cgyrf12.cls file.
+
+%----------------------- Title -------------------------------------------
+
+\title{An example Contribution for CG:YRF 2012}
+
+\author{Anton Example\thanks{Department of Computer Science,
+        Important University, {\tt aexample@cs.important.edu}}
+        \and
+        Sylvia Veryknown\thanks{Department of Mathematics and Computer
+        Science, University of Somewhere, {\tt sveryknown@math.somewhere.de}}}
+
+% Add the appropriate index information!
+
+\index{Example, Anton}
+\index{Veryknown, Sylvia}
+
+%------------------------------ Text -------------------------------------
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Here you should add a concise and exiting abstract for your paper.
+\end{abstract}
+
+\section{Introduction}
+
+Writing a submission for CG:YRF is one of the basic problems every motivated
+junior researcher in Computational Geometry faces...
+
+\section{Related Work}
+Several established people have already worked on the topic of our paper,
+including \cite{abghz-dfstkcd-2000}.
+
+\section{Our Results}
+There is a lot of stuff that we figured out...
+
+First we would like to remind you how cute the logo of CCCG 2003 was:
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.8\columnwidth]{cccgLogo}
+  \caption{This was the logo of CCCG 2003.}
+  \label{fig:logo}
+\end{figure}
+
+\begin{conj}
+Could it really be like this?
+\end{conj}
+\begin{obs}
+Probably not ...
+\end{obs}
+
+\begin{definition}
+Some things are just not definable ..
+\end{definition}
+
+\begin{theorem}
+This is the most important theorem.
+\end{theorem}
+\begin{proof}
+It even comes with a proof ...
+\end{proof}
+
+\begin{lemma}
+And then we also found this lemma ...
+\end{lemma}
+
+There should be some more text explaining research results in some additional sections, but since this is only an example file ...
+
+\section{Conclusion}
+
+What we did is amazing and improves everything that was there before.
+
+%---------------------------- Bibliography -------------------------------
+% You are encouraged to use BibTeX for handling your references. In this example, the .bbl
+% has only been pasted in to achieve self-containedness.
+
+\small
+\bibliographystyle{abbrv}
+
+\begin{thebibliography}{99}
+
+%start insert .bbl file
+
+\bibitem{abghz-dfstkcd-2000}
+P.~K. Agarwal, J.~Basch, L.~J. Guibas, J.~Hershberger, and L.~Zhang.
+\newblock Deformable free space tilings for kinetic collision detection.
+\newblock In {\em Proc. 5th Workshop Algorithmic Found.
+  Robotics)}, pages 83--96. A. K. Peters, 2001.
+
+%end insert .bbl file
+
+\end{thebibliography}
+
+\end{document}
