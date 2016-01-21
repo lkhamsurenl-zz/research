@@ -1,6 +1,6 @@
 \documentclass{article}
 
-\usepackage{amsmath, enumitem, listings, graphicx, ../jeffe}
+\usepackage{amsmath, ../packages/enumitem, listings, graphicx, ../packages/jeffe}
 \oddsidemargin 0in
 \evensidemargin 0in
 \textwidth 6.5in
@@ -18,11 +18,16 @@
 
 \section{Introduction}
 
-\textbf{\underline{Given:}} Let $G$ be a directed graph $(V, \vec{E})$, embedded on a surface with genus $g$. All edge weights are unit. \\
-\textbf{\underline{Find:}} Consider boundary $f$ of $G$. $\forall v \in f$, find a shortest path to $\forall u \in V$. \\
+\textbf{\underline{Given:}} Let $G$ be a directed graph $(V, \vec{E})$, embedded
+on a surface with genus $g$. All edge weights are unit. \\
+\textbf{\underline{Find:}} Consider boundary $f$ of $G$. $\forall v \in f$, find
+a shortest path to $\forall u \in V$. \\
 
-Let $T$ be the BFS (Breadth first search) tree of $G$, and $C$ be the BFS co-tree in $G$. Then there is exactly $2g$ leftover edges $L = {e_1, e_2, \ldots, e_{2g}}$. \\
-There exists a unique cycle $\lambda_i$ in $C \cup {e_i}$, and $(\lambda_1, \lambda_2, \ldots, \lambda_{2g}) = \Lambda$ defines homology basis. \\
+Let $T$ be the BFS (Breadth first search) tree of $G$, and $C$ be the BFS co-tree
+in $G$. Then there is exactly $2g$ leftover edges $L = {e_1, e_2, \ldots, e_{2g}}$. \\
+
+There exists a unique cycle $\lambda_i$ in $C \cup {e_i}$, and $(\lambda_1, 
+\lambda_2, \ldots, \lambda_{2g}) = \Lambda$ defines homology basis. \\
 We define homological signature of an edge as follows:
 \[ [e]_{i} = \begin{cases} 1 & ,\mbox{if } e \in \lambda_i \\
                           -1 & ,\mbox{if } rev(r) \in \lambda_i \\
@@ -31,19 +36,27 @@ We define homological signature of an edge as follows:
 Furthermore, we define $\alpha$ recursively as follows: \\
 \[ \alpha(\vec{e}^*) = \begin{cases} 1 & ,\mbox{if } e^* \mbox{ is a leaf edge of } C \\
                            \sum \limits_{ \text{tail}(\vec{e}^{'*})
-                           = \text{head}(\vec{e}^*) } \alpha(\vec{e}^{'}) & ,\mbox{otherwise} \end{cases}\]
-We can extend above definition with $\alpha(\vec{e}) = \alpha( \vec{e}^* )$ and $\alpha(e)^* = - \alpha(\text{rev}(\vec{e}^*))$. \\
-Let $\tilde w(\vec{e}) = \langle 1, [\vec{e}], \alpha(\vec{e}) \rangle$ be new weight vector for each edge in $G$.
+                           = \text{head}(\vec{e}^*) } \alpha(\vec{e}^{'}) & ,
+                           \mbox{otherwise} \end{cases}\]
+We can extend above definition with $\alpha(\vec{e}) = \alpha( \vec{e}^* )$ and 
+  $\alpha(e)^* = - \alpha(\text{rev}(\vec{e}^*))$. \\
+
+Let $\tilde w(\vec{e}) = \langle 1, [\vec{e}], \alpha(\vec{e}) \rangle$ be new
+weight vector for each edge in $G$.
 \begin{center}
 \includegraphics[scale = 0.3]{alphaDef.jpg}
 \end{center}
 
-\textbf{\underline{Def:}} An edge $\vec{e}$ is "holier" than $\vec{e}^{'}$, if $\tilde w(\vec{e}) < \tilde w(\vec{e}^{'})$ in lexicographic comparison. Therefore, we can define "holiness" of any $S \subset G $ as follows:
+\textbf{\underline{Def:}} An edge $\vec{e}$ is "holier" than $\vec{e}^{'}$, 
+if $\tilde w(\vec{e}) < \tilde w(\vec{e}^{'})$ in lexicographic comparison. 
+Therefore, we can define "holiness" of any $S \subset G $ as follows:
 \[\text{Ho}(S) = \sum \limits_{\vec{e} \in S} \tilde w(\vec{e})\]
 
 \newpage
 
-Holiest tree is a spanning tree with minimal "holiness". We build Holiest tree rooted at $r$, using slight tweak in the Bellman-Ford algorithm for finding shortest path tree rooted at r.
+Holiest tree is a spanning tree with minimal "holiness". We build Holiest tree 
+rooted at $r$, using slight tweak in the Bellman-Ford algorithm for finding 
+shortest path tree rooted at r.
 
 \textbf{\underline{Observation-1:}} Since first components are unit for all edges,
 
@@ -86,10 +99,19 @@ pred[u] $\leftarrow s$ \\
 
 \textbf{\underline{Corollary:}} Each edge will be relaxed at most once. \\
 
-\textbf{\underline{Lemma-1:}} If there is no tense edge in $G$, then for each $v: r \rightarrow \ldots \rightarrow \text{pred}(\text{pred}(v)) \rightarrow \text{pred}(v) \rightarrow v$ is the holiest path from $r$ to $v$.
+\textbf{\underline{Lemma-1:}} If there is no tense edge in $G$, then for each 
+$v: r \rightarrow \ldots \rightarrow \text{pred}(\text{pred}(v)) \rightarrow 
+\text{pred}(v) \rightarrow v$ is the holiest path from $r$ to $v$.
+
 \begin{proof} Let's prove it by induction on $d[v]$ distance from the root $r$. \\
 \underline{Base:} $d[v] = 0$, then v = r, so the claim is definitely true. \\
-\underline{Induction Step:} Suppose the claim is true for all vertex $v \in V$ such that $d[v] < d$ for some d. Consider vertex v such that $d[v] = d$. By induction hypothesis, all vertices with $d[u] = d-1$ have "holiest" path correctly updated. By definition, $d[v] = \text{min}_{s \rightarrow v}{d[s] + \tilde w(s \rightarrow v)}$, here $d[s] = d-1$. By Induction hypothesis, $d[s]$ is "holiest" path, so if there is no tense edge in G then $d[v] = \text{min}_{s \rightarrow v}{d[s] + \tilde w(s \rightarrow v)}$ holds.
+\underline{Induction Step:} Suppose the claim is true for all vertex $v \in V$ 
+such that $d[v] < d$ for some d. Consider vertex v such that $d[v] = d$. 
+By induction hypothesis, all vertices with $d[u] = d-1$ have "holiest" path 
+correctly updated. By definition, $d[v] = \text{min}_{s \rightarrow v}{d[s] + 
+\tilde w(s \rightarrow v)}$, here $d[s] = d-1$. By Induction hypothesis, $d[s]$ 
+is "holiest" path, so if there is no tense edge in G then 
+$d[v] = \text{min}_{s \rightarrow v}{d[s] + \tilde w(s \rightarrow v)}$ holds.
 \end{proof}
 
 \textbf{\underline{Corollary:}} The algorithm will produce "holiest" tree rooted at r in linear time.
@@ -97,40 +119,61 @@ pred[u] $\leftarrow s$ \\
 We now have produced our initial "Holiest" tree.
 
 \section{Minimum Cost Flow Problem and methods to solve them}
-There are several ways to define minimum cost flow and with different types of flows(non-negative and skew-symmetric), capacity or upper bound, edge demand or lower bound, edge cost, and with flow balance. The standard way to define:
+There are several ways to define minimum cost flow and with different types of 
+flows(non-negative and skew-symmetric), capacity or upper bound, edge demand or 
+lower bound, edge cost, and with flow balance. The standard way to define:
 \begin{center}
 \begin{algorithm}
 \textbf{\underline{min $< \text{cent}, \text{flow}>$}} \\
-  s.t  $\sum \limits_{u \rightarrow v} \text{flow} (u \rightarrow v) - \sum \limits_{v \rightarrow w} \text{flow} (v \rightarrow w)= 0 $  \\ \qquad
+  s.t  $\sum \limits_{u \rightarrow v} \text{flow} 
+  (u \rightarrow v) - \sum \limits_{v \rightarrow w} \text{flow} (v \rightarrow w)= 0 $  \\ 
+  \qquad
        $\text{flow}(u \rightarrow v) = u(u \rightarrow v)$ \\ \qquad
        $flow \geq 0$
 \end{algorithm}
 \end{center}
 
 The easiest solution we can find is using augmenting cycle: \\
-We can run any maximum flow algorithm to find feasible solution to the problem(neglecting the cost). Let the augmenting cycle be a cycle with negative cost. Then sending a flow through this cycle would reduce the total cost, while maintaining the feasible property.  \\
+We can run any maximum flow algorithm to find feasible solution to the 
+problem(neglecting the cost). Let the augmenting cycle be a cycle with negative cost. 
+Then sending a flow through this cycle would reduce the total cost, while 
+maintaining the feasible property.  \\
 We can also define reduced cost as follows: \\
-Let $\phi(v)$ be a any potential function on a vertex. Then $\bar{\text{cost}}(u \rightarrow v) = \phi(u) - \phi(v) + \bar{\text{cost}} (u \rightarrow v)$ satisfies the condition that cost(C) =  $\bar{\text{cost}}(C)$ for any cycle C.\\
+Let $\phi(v)$ be a any potential function on a vertex. Then 
+$\bar{\text{cost}}(u \rightarrow v) = \phi(u) - \phi(v) + \bar{\text{cost}} (u \rightarrow v)$ 
+satisfies the condition that cost(C) =  $\bar{\text{cost}}(C)$ for any cycle C.\\
 
-\textbf{\underline{Lemma: }} A feasible flow f is optimal $\leftrightarrow$ there is no augmenting cycle in the residual graph. \\
+\textbf{\underline{Lemma: }} A feasible flow f is optimal $\leftrightarrow$ there 
+is no augmenting cycle in the residual graph. \\
+
 \begin{proof}
-$\rightarrow$ Suppose the flow is optimal. If there is an augmenting cycle C, then we can send flow through C and reduce the cost of current flow, contradicting the f is optimal. \\
-$\leftarrow$ Suppose there is no augmenting cycle. Let $\phi(v) = $ [Shortest path from s to v with respect to the cost function]. Then $\bar{\text{cost}}(u \rightarrow v) = \phi(u) - \phi(v) + \text{cost}(u \rightarrow v) \ geq 0$. For the new cost function, sending more flow in a new residual graph would increase the cost of any flow, therefore f is optimal.
+$\rightarrow$ Suppose the flow is optimal. If there is an augmenting cycle C, 
+then we can send flow through C and reduce the cost of current flow, contradicting the f is optimal. \\
+$\leftarrow$ Suppose there is no augmenting cycle. Let $\phi(v) = $ 
+[Shortest path from s to v with respect to the cost function]. Then 
+$\bar{\text{cost}}(u \rightarrow v) = \phi(u) - \phi(v) + \text{cost}(u \rightarrow v) \ geq 0$. 
+For the new cost function, sending more flow in a new residual graph would 
+increase the cost of any flow, therefore f is optimal.
 \end{proof}
 
 We can find the augmenting cycle in a graph systematically as follows: \\
 Let T be any fixed spanning tree of G. Define new potential function for each vertex
 \[ \text{slack}_{T}(u \rightarrow v) = \begin{cases} 0 & ,\mbox{if } u \rightarrow v \in T \\
-                          \sum \limits_{e \in \text{cycle in } T \cup \{u \rightarrow v\} } \text{cost}(u \rightarrow v) & ,\mbox{Otherwise } \end{cases}\]
+  \sum \limits_{e \in \text{cycle in } T \cup \{u \rightarrow v\} } 
+    \text{cost}(u \rightarrow v) & ,\mbox{Otherwise } \end{cases}\]
 
-Above definition preserves the property that $\text{slack}_T(C) = \text{cycle}(C)$ for any cycle C in G. Therefore, we can essentially find negative reduced cost edge in residual graph and push flow through it and do pivoting. Spanning tree T will be updated as follows: \\
+Above definition preserves the property that $\text{slack}_T(C) = \text{cycle}(C)$ 
+for any cycle C in G. Therefore, we can essentially find negative reduced cost 
+edge in residual graph and push flow through it and do pivoting. 
+Spanning tree T will be updated as follows: \\
+
 \begin{center}
 \begin{algorithm}
 \textbf{\underline{Update T:}} \\ \quad
-       Find bottleneck capacity in a cycle \\ \quad
-       Push the flow amount equal to bottleneck capacity through the cycle \\ \quad
-       Pivot out the bottleneck capacity edge, and pivot in the dart with negative reduced cost \\ \quad
-       Recompute vertex potentials
+  Find bottleneck capacity in a cycle \\ \quad
+  Push the flow amount equal to bottleneck capacity through the cycle \\ \quad
+  Pivot out the bottleneck capacity edge, and pivot in the dart with negative reduced cost \\ \quad
+  Recompute vertex potentials
 \end{algorithm}
 \end{center}
 
@@ -160,12 +203,15 @@ There are two ways to represent the flow in the graph:
 
 Under generic assumption on $f, \$$:
 \begin{itemize}
-\item Basis spanning tree T, there is a unique flow$_T$ that satisfies the condition $\partial \text{flow}_T = b, flow_T (e)$ is nonzero only for edges in T.
-\item There exist a unique spanning tree $T_{\text{OPT}}$ with $flow_{T_\text{OPT}}$ is optimal.
+\item Basis spanning tree T, there is a unique flow$_T$ that satisfies the 
+condition $\partial \text{flow}_T = b, flow_T (e)$ is nonzero only for edges in T.
+\item There exist a unique spanning tree $T_{\text{OPT}}$ with $flow_{T_\text{OPT}}$ 
+is optimal.
 \end{itemize}
 
 Subsequently, we can define slack as follows: \\
-For fixed spanning tree T, there is unique cycle $C = T \cup \{e\}$ for edge e not in T. $slack(e) = \sum_{l \in C} \$(l)$, and 0 otherwise.
+For fixed spanning tree T, there is unique cycle $C = T \cup \{e\}$ for edge e 
+not in T. $slack(e) = \sum_{l \in C} \$(l)$, and 0 otherwise.
 \textbf{Observe that slack is not negative, since otherwise there is no optimal solution to our LP} \\
 The main LP is:\\
 
@@ -211,11 +257,15 @@ And in the case of non-planar embedded graph with genus g:
 \end{minipage}
 
 Consider the primal LP, We can rewrite the constraints as follows:
-\[ \partial f = \partial \text{flow}_T \Longleftrightarrow \sum \limits_u f(u \rightarrow v - f(v \rightarrow u)) \]
-\[ \Longleftrightarrow \gamma (u)\sum_u f(u \rightarrow v) - f(v \rightarrow u)) = \sum \limits_{u \rightarrow v} f(u \rightarrow v) (\gamma (u) - \gamma (v)) = \sum \limits_{u \rightarrow v} f(u \rightarrow v) \gamma (u \rightarrow v)\]
+\[ \partial f = \partial \text{flow}_T \Longleftrightarrow \sum 
+  \limits_u f(u \rightarrow v - f(v \rightarrow u)) \]
+\[ \Longleftrightarrow \gamma (u)\sum_u f(u \rightarrow v) - f(v \rightarrow u)) = 
+  \sum \limits_{u \rightarrow v} f(u \rightarrow v) (\gamma (u) - \gamma (v)) = 
+  \sum \limits_{u \rightarrow v} f(u \rightarrow v) \gamma (u \rightarrow v)\]
 
 Observe here that $\gamma (u \rightarrow v) = - \gamma (v \rightarrow u)$
-We can define s in terms of $\gamma $ by setting the negative values to be 0, and we will get the exact dual program defined above.
+We can define s in terms of $\gamma $ by setting the negative values to be 0, 
+and we will get the exact dual program defined above.
 
 \section{Analysis}
 \begin{itemize}
@@ -227,8 +277,15 @@ We can define s in terms of $\gamma $ by setting the negative values to be 0, an
 
 Couple questions regarding the slack and flow:
 \begin{itemize}
-\item If the fixed tree T is arbitrary tree (not necessarily the Holiest Tree, then the flow in the answer does not have to be optimal) but solution to the linear program $min <f, \text{slack}_T>$ is equal to the answer from fixed tree T, not necessarily the optimal solution. That is because for each vertex, the demand satisfies the constraint and if we consider the tree T, then the value of $min <f, \text{slack}_T>$ would be 0, implying it is the optimal solution. (Sum cannot be negative since otherwise there is no optimal solution)
-\item The reason we picked the slack as the way we defined is due to the fact that slack is not negative, ensuring that the nothing bad happens.
+\item If the fixed tree T is arbitrary tree (not necessarily the Holiest Tree, 
+then the flow in the answer does not have to be optimal) but solution to the 
+linear program $min <f, \text{slack}_T>$ is equal to the answer from fixed tree T, 
+not necessarily the optimal solution. That is because for each vertex, the 
+demand satisfies the constraint and if we consider the tree T, then the value of 
+$min <f, \text{slack}_T>$ would be 0, implying it is the optimal solution. 
+(Sum cannot be negative since otherwise there is no optimal solution)
+\item The reason we picked the slack as the way we defined is due to the fact 
+that slack is not negative, ensuring that the nothing bad happens.
 \item What makes the non-planar case special with 2g extra constraints?
 \item How does the slack in dual representation help us to find the pivots quickly?
 \end{itemize}
@@ -241,7 +298,8 @@ Consider the following picture:
 \end{center}
 By the definition of $alpha$:
 \[\alpha(p_1) - \alpha(p_2) = \sum_f \alpha(\partial f) > 0\]
-This will ensure that any two paths $p_1, p_2$, whose $w(p_1) = w(p_2)$ and $[p_1]_{\Lambda} = [p_2]_{\Lambda}$, has $\alpha(p_1) \neq \alpha(p_2)$
+This will ensure that any two paths $p_1, p_2$, whose $w(p_1) = w(p_2)$ and 
+  $[p_1]_{\Lambda} = [p_2]_{\Lambda}$, has $\alpha(p_1) \neq \alpha(p_2)$
 
 \begin{center}
 \includegraphics{torus.jpg}
@@ -294,8 +352,13 @@ On genus $g = 5$ surface with initial pivot:
 
 \section{References:}
 \begin{itemize}
-\item Cabello, Sergio, Erin W. Chambers, and Jeff Erickson. "Multiple-source shortest paths in embedded graphs." SIAM Journal on Computing 42.4 (2013): 1542-1571.
-\item Eisenstat, David, and Philip N. Klein. "Linear-time algorithms for max flow and multiple-source shortest paths in unit-weight planar graphs." Proceedings of the forty-fifth annual ACM symposium on Theory of computing. ACM, 2013.
-\item Erickson, Jeff. "Maximum flows and parametric shortest paths in planar graphs." Proceedings of the twenty-first annual ACM-SIAM symposium on Discrete Algorithms. Society for Industrial and Applied Mathematics, 2010.
+\item Cabello, Sergio, Erin W. Chambers, and Jeff Erickson. "Multiple-source 
+  shortest paths in embedded graphs." SIAM Journal on Computing 42.4 (2013): 1542-1571.
+\item Eisenstat, David, and Philip N. Klein. "Linear-time algorithms for max 
+  flow and multiple-source shortest paths in unit-weight planar graphs." 
+  Proceedings of the forty-fifth annual ACM symposium on Theory of computing. ACM, 2013.
+\item Erickson, Jeff. "Maximum flows and parametric shortest paths in planar graphs." 
+  Proceedings of the twenty-first annual ACM-SIAM symposium on Discrete Algorithms. 
+  Society for Industrial and Applied Mathematics, 2010.
 \end{itemize}
 \end{document}
