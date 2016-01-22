@@ -58,9 +58,7 @@ Therefore, we can define "holiness" of any $S \subset G $ as follows:
 
 Holiest tree is a spanning tree with minimal "holiness". We build Holiest tree 
 rooted at $r$, using slight tweak in the Bellman-Ford algorithm for finding 
-shortest path tree rooted at r.
-
-\textbf{\underline{Observation-1:}} Since first components are unit for all edges,
+shortest path tree rooted at r. \\
 
 \begin{minipage}[t]{0.48\linewidth}
 \begin{algorithm}
@@ -81,13 +79,16 @@ while queue is not Empty: \\ \quad \quad
 \end{algorithm}
 \end{minipage}
 \hfill%
+\hspace{-4cm}
 \begin{minipage}[t]{0.48\linewidth}
 \begin{algorithm}
 \textbf{\underline{isTense}}($s \rightarrow u$): \\ \quad
 return $d[s] + \tilde w(s \rightarrow u) < d[u]$ \\
 
 \end{algorithm}
-\vspace{1 in}
+
+\vspace{0.5cm}
+
 \begin{algorithm}
 \textbf{\underline{relax}}($s \rightarrow u$): \\ \quad
 $d[u] \leftarrow d[s] + \tilde w(s \rightarrow u)$ \\ \quad
@@ -95,9 +96,9 @@ pred[u] $\leftarrow s$ \\
 \end{algorithm}
 \end{minipage}
 
+\vspace{0.5cm}
 
-
-\textbf{\underline{Observation-2:}} Each edge will be added once to the queue. \\
+\textbf{\underline{Observation:}} Each edge will be added once to the queue. \\
 
 \textbf{\underline{Corollary:}} Each edge will be relaxed at most once. \\
 
