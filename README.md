@@ -1,3 +1,3 @@
 # research
 
-Open research initiative
+Open research.
