@@ -131,8 +131,7 @@ lower bound, edge cost, and with flow balance. The standard way to define:
   s.t  $\sum \limits_{u \rightarrow v} \text{flow} 
   (u \rightarrow v) - \sum \limits_{v \rightarrow w} \text{flow} (v \rightarrow w)= 0 $  \\ 
   \qquad
-  % TODO(lkhamsurenl): Change the name of the second to balance or sth.
-       $\text{flow}(u \rightarrow v) = u(u \rightarrow v)$ \\ \qquad
+       $\text{flow}(u \rightarrow v) = b(u \rightarrow v)$ \\ \qquad
        $flow \geq 0$
 \end{algorithm}
 \end{center}
@@ -238,8 +237,9 @@ The main LP is:\\
 \end{algorithm}
 \end{minipage}
 
-
+\vspace{0.3 cm}
 And in the case of non-planar embedded graph with genus g:
+\vspace{0.1 cm}
 
 \begin{minipage}[t]{0.48\linewidth}
 \begin{center}
@@ -259,12 +259,12 @@ And in the case of non-planar embedded graph with genus g:
        $s \geq 0$
 \end{algorithm}
 \end{minipage}
+\vspace{0.3 cm}
 
 Consider the primal LP, We can rewrite the constraints as follows:
-% TODO(lkhamsurenl): Fix the brackets problem.
 \[ \partial f = \partial \text{flow}_T \Longleftrightarrow \sum 
-  \limits_u f(u \rightarrow v - f(v \rightarrow u)) \]
-\[ \Longleftrightarrow \gamma (u)\sum_u f(u \rightarrow v) - f(v \rightarrow u)) = 
+  \limits_u f(u \rightarrow v) - f(v \rightarrow u) \Longleftrightarrow \]
+\[ \gamma (u)\sum_u (f(u \rightarrow v) - f(v \rightarrow u)) = 
   \sum \limits_{u \rightarrow v} f(u \rightarrow v) (\gamma (u) - \gamma (v)) = 
   \sum \limits_{u \rightarrow v} f(u \rightarrow v) \gamma (u \rightarrow v)\]
 
