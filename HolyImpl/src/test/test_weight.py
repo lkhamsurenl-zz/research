@@ -19,4 +19,10 @@ class TestWeight(TestCase):
         w6 = Weight(1, [1,1,1], 1)
         self.assertTrue(w5 > w6)
 
+    def test_weight_add(self):
+        w1 = Weight(1, [2,1,1], 1)
+        w2 = Weight(2, [1,1,1], 1)
+
+        self.assertEqual(w1 + w2, Weight(3, [3,2,2], 2))
+
 

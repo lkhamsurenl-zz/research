@@ -4,9 +4,11 @@ __author__ = 'Luvsandondov Lkhamsuren'
 
 class Graph:
 
-    def __init__(self, vertices=[]):
+    def __init__(self, vertices=[], faces=[]):
         self.vertices = vertices
+        self.faces = faces
 
+    # TODO(lkhamsurenl): Remove vertex should get rid of all the edges too.
     def remove_vertex(self, vertex_name):
         vertex = None
         for v in self.vertices:

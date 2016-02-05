@@ -10,6 +10,9 @@ class Vertex:
         # Adjacency list contains the neighbor vertices.
         self.neighbors = {}
 
+    def __str__(self):
+        return self.name
+
     def get_neighbors(self):
         '''
         Get adjacency list for the vertex
@@ -17,14 +20,14 @@ class Vertex:
         '''
         return self.neighbors.keys()
 
-    def add_dart(self, dest, weight):
+    def add_dart(self, head, dart):
         '''
         add neighbor with given distance
-        :param destination_code: code name
-        :param weight:  distance between
+        :param head: head of the dart
+        :param dart: self is a tail of the dart.
         :return:
         '''
-        self.neighbors[dest] = weight
+        self.neighbors[head] = dart
 
     # TODO(lkhamsurenl): Change this method to adding double arcs eventually.
     def add_edge(self, dest, weight):
@@ -34,7 +37,7 @@ class Vertex:
         :param weight:  distance between
         :return:
         '''
-        self.neighbors[dest] = weight
+        return NotImplemented
 
     def is_neighbor(self, vertex):
         '''
