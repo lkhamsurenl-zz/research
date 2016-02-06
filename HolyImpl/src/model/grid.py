@@ -2,15 +2,11 @@ import matplotlib.pyplot as plt
 import networkx as nx
 L=4
 
-G = nx.grid_2d_graph(L,L)
+G = nx.grid_2d_graph(L -1 ,L - 1)
 #nx.draw(G,node_size=200)
 
 
 G2 = nx.DiGraph(G)
-# for edge in G2.edges():
-#     if edge != tuple(sorted(edge)):
-#         G2.remove_edge(*edge)
-
 
 
 for n,nbrsdict in G2.adjacency_iter():
