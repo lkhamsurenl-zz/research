@@ -18,7 +18,7 @@ class G1(Graph):
         vs = []
         for i in range(m):
             for j in range(n):
-                vs.append(Vertex("({},{})".format(i, j)))
+                vs.append(Vertex((i, j)))
 
         for i in range(m):
             for j in range(n):
@@ -35,32 +35,40 @@ class G1(Graph):
                             else:
                                 d = Dart(v, neighbor, Weight(1, [0, 0], 0))
                             d.create_reverse_dart()
+        d = Dart(vs[m-1][0], vs[0][0], Weight(1, [0,-1], 0))
+        d.create_reverse_dart()
+
+        d = Dart(v, neighbor, Weight(1, [1,0], 0))
+        d.create_reverse_dart()
+
+         # Create faces
+        fs = []
 
         return Graph(vertices=vs)
 
     # genus 1 grid of 3 x 3
     def __init__(self):
-        a = Vertex("a")
-        b = Vertex("b")
-        c = Vertex("c")
-        d = Vertex("d")
-        e = Vertex("e")
-        f = Vertex("f")
-        g = Vertex("g")
-        h = Vertex("h")
-        k = Vertex("k")
+        a = Vertex((0,0))
+        b = Vertex((1,0))
+        c = Vertex((2,0))
+        d = Vertex((0,1))
+        e = Vertex((0,2))
+        f = Vertex((1,2))
+        g = Vertex((2,2))
+        h = Vertex((1,1))
+        k = Vertex((2,1))
         vertices = [a, b, c, d, e, f, g, h, k]
 
         # Build the dual graph.
-        m = Vertex("M")
-        n = Vertex("N")
-        l = Vertex("L")
-        t = Vertex("T")
-        u = Vertex("U")
-        w = Vertex("W")
-        x = Vertex("X")
-        y = Vertex("Y")
-        z = Vertex("Z")
+        m = Vertex((0,2))
+        n = Vertex((1,2))
+        l = Vertex((2,2))
+        t = Vertex((0,1))
+        u = Vertex((1,1))
+        w = Vertex((2,1))
+        x = Vertex((0,0))
+        y = Vertex((1,0))
+        z = Vertex((2,0))
         faces = [m, n, l, t, u, w, x, y, z]
 
         # Build darts and duals

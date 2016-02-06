@@ -15,5 +15,8 @@ class Weight:
         return Weight(self.length + other.length, [i + j for (i, j) in zip(self.homology, other.homology)], \
                                      self.leafmost + other.leafmost)
 
+    def __sub__(self, other):
+        return Weight(self.length - other.length, [i - j for (i, j) in zip(self.homology, other.homology)], \
+                                     self.leafmost - other.leafmost)
     def __str__(self):
         return "<{0}, {1}, {2}>".format(self.length, self.homology, self.leafmost)

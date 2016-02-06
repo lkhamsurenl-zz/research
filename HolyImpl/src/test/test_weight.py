@@ -25,4 +25,8 @@ class TestWeight(TestCase):
 
         self.assertEqual(w1 + w2, Weight(3, [3,2,2], 2))
 
+    def test_weight_sub(self):
+        w1 = Weight(1, [2,1,1], 1)
+        w2 = Weight(2, [1,1,1], 1)
 
+        self.assertEqual(w2 - w1, Weight(1, [-1,0,0], 0))
