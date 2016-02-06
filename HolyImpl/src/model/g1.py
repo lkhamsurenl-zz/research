@@ -1,13 +1,43 @@
 from src.model.dart import Dart
-from src.model.edge import Edge
 from src.model.vertex import Vertex
 from src.model.weight import Weight
 from src.model.graph import Graph
 
-from collections import deque
 __author__ = 'Luvsandondov Lkhamsuren'
 
-class G1:
+class G1(Graph):
+    def grid(self, m, n):
+        """
+        Create m x n grid graph with genus 1.
+        1st row and last column are the homology cycles.
+        Bottom left face is the MSSP face with top right vertex of this face being the first source.
+        :param m:
+        :param n:
+        :return:
+        """
+        vs = []
+        for i in range(m):
+            for j in range(n):
+                vs.append(Vertex("({},{})".format(i, j)))
+
+        for i in range(m):
+            for j in range(n):
+                v = vs[i][j]
+                # Add offset to find 4 neighbors.
+                for x in range(-1,2):
+                    for y in range(-1, 2):
+                        if (x + y) != 0:
+                            neighbor = vs[(i + x) % n][(j + y) % n]
+                            if i == m - 1 and x == 1:
+                                d = Dart(v, neighbor, Weight(1, [0,-1], 0))
+                            elif j == n - 1 and y == 1:
+                                d = Dart(v, neighbor, Weight(1, [1,0], 0))
+                            else:
+                                d = Dart(v, neighbor, Weight(1, [0, 0], 0))
+                            d.create_reverse_dart()
+
+        return Graph(vertices=vs)
+
     # genus 1 grid of 3 x 3
     def __init__(self):
         a = Vertex("a")
@@ -119,46 +149,5 @@ class G1:
         zw = wz.create_reverse_dart()
         lz = zl.create_reverse_dart()
 
-        self.graph = Graph(vertices=vertices, faces=faces)
-
-    def initial_tree(self, source):
-        """
-        :return: Predecessor pointer for initial holy tree.
-        """
-        pred = {source: None}
-        dist = {} # distance for each Vertex
-        visited = {} # keep track of which vertices we visited.
-        # Initialize the distance values.
-        dist[source] = Weight(homology=[0,0])
-        for v in self.graph.vertices:
-            if v != source:
-                dist[v] = Weight(length=float('inf'))
-
-        queue = deque()
-        queue.appendleft(source)
-        while len(queue) != 0:
-            u = queue.pop()
-            visited[u] = 1
-            for v in u.neighbors.keys():
-                if v not in visited:
-                    queue.appendleft(v)
-                if dist[u] + u.neighbors[v].weight < dist[v]:
-                    #du = dist[u]
-                    #dv = dist[v]
-                    #dist[v] = Weight(du.length + dv.length, [i + j for (i, j) in zip(du.homology, dv.homology)], \
-                    #                 du.leafmost + dv.leafmost)
-                    print("dist[{0}] = {1}; weight = {2}; dist[{3}] = {4}".format(u, dist[u], u.neighbors[v].weight, v, dist[v]))
-                    dist[v] = dist[u] + u.neighbors[v].weight
-
-                    pred[v] = u
-
-        return (pred, dist)
-
-g1 = G1()
-s = g1.graph.get_vertex("h")
-(pred, dist) = g1.initial_tree(s)
-for u in pred.keys():
-    pu = pred[u] if pred[u] != None else "None"
-    dpu = dist[pred[u]] if pred[u] != None and dist[pred[u]] != None else "None"
-    du = dist[u] if dist[u] != None else "None"
-    print("{0} -> {1}, dist[{0}] = {2}, dist[{1}] = {3}".format(pu, u, dpu, du))
+        self.vertices = vertices
+        self.faces = faces
