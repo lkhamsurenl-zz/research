@@ -15,7 +15,9 @@ G2 = nx.DiGraph(G)
 
 for n,nbrsdict in G2.adjacency_iter():
     for nbr,eattr in nbrsdict.items():
-        print "({},{})".format(n % (L -1), nbr % (L - 1), 1)
+        (x1, y1) = n
+        (x2, y2) = nbr
+        print "({}, {}) -> ({}, {})".format(x1 % L, y1 % L,  x2 % L, y2 % L)
 
 nx.draw_spectral(G2,node_size=600,node_color='w', with_labels=True)
 plt.show()

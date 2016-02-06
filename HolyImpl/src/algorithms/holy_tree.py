@@ -21,13 +21,13 @@ def initial_tree(graph, source):
         u = queue.pop()
         visited[u] = 1
         for v in u.neighbors.keys():
+            # Add to the queue if has not been visited.
             if v not in visited:
                 queue.appendleft(v)
+            # If tense, relax the dart.
             if dist[u] + u.neighbors[v].weight < dist[v]:
                 dist[v] = dist[u] + u.neighbors[v].weight
-
                 pred[v] = u
-
     return (pred, dist)
 
 g1 = G1()
