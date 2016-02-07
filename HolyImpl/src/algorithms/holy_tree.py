@@ -1,5 +1,3 @@
-from src.model.dart import Dart
-from src.model.vertex import Vertex
 from src.model.weight import Weight
 from collections import deque
 from src.model.g1 import G1
