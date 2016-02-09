@@ -24,4 +24,3 @@ class TestGraph(TestCase):
         g = Graph([a, b])
         g.remove_vertex("a")
         self.assertTrue(len(g.vertices) == 1)
-
