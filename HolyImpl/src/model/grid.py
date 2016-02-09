@@ -105,7 +105,7 @@ def grid(m, n):
         remove_edge(c_u, c_v)
 
     spanning_tree = bfs(c_st.get_vertex((1,1)))
-    report_pred(spanning_tree)
+    #report_pred(spanning_tree)
 
     # Dual spanning tree. Note that we remove all edges in spanning tree and 2g auxiliary edges (which in our case:
     # (0,n-1) -> (0,0) and (m-1, 0) -> (0,0)).
@@ -118,25 +118,19 @@ def grid(m, n):
     remove_edge(c_g.get_vertex((m-1,0)), c_g.get_vertex((0,0)))
 
     dual_spanning_tree = bfs(c_g.get_face((0,0)))
-    report_pred(dual_spanning_tree)
+    #report_pred(dual_spanning_tree)
 
     leafmost = compute_leafmost(dual_spanning_tree)
     for (u_name, v_name) in leafmost:
         if u_name != None:
             u = graph.get_face(u_name)
             v = graph.get_face(v_name)
+
             dart = u.neighbors[v]
             dart.weight = Weight(dart.weight.length, dart.weight.homology, leafmost[(u_name, v_name)])
+            # Create reverse, dual, dual reverse respectively with corresponding leafmost terms.
             dart.create_reverse_dart()
             dual_dart = dart.create_dual_dart()
             dual_dart.create_reverse_dart()
 
-    # print("---------------")
-    # for u in graph.vertices:
-    #     for v in u.neighbors:
-    #         print(u.neighbors[v])
-    # print("--------------")
-    # for f in graph.faces:
-    #     for g in f.neighbors:
-    #         print(f.neighbors[g])
     return graph

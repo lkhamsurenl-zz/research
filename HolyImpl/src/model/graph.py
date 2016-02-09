@@ -34,3 +34,13 @@ class Graph:
             if f.name == face_name:
                 return f
         return None
+
+    def pretty_print(self):
+        print("--- Vertices ---")
+        for u in self.vertices:
+            for v in u.neighbors:
+                print(u.neighbors[v])
+        print("--- Faces ---")
+        for f in self.faces:
+            for g in f.neighbors:
+                print(f.neighbors[g])

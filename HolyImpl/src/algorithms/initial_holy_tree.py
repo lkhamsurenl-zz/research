@@ -38,7 +38,6 @@ def slow_initial_tree(graph, source):
     """
     pred = {source: None}
     dist = {}  # distance for each Vertex
-    #visited = {}  # keep track of which vertices we visited.
     # Initialize the distance values.
     dist[source] = Weight(homology=[0, 0])
     for v in graph.vertices:
@@ -49,12 +48,10 @@ def slow_initial_tree(graph, source):
     queue.appendleft(source)
     while len(queue) != 0:
         u = queue.pop()
-        #visited[u] = 1
         for v in u.neighbors.keys():
             # If tense, relax the dart.
             if dist[u] + u.neighbors[v].weight < dist[v]:
                 dist[v] = dist[u] + u.neighbors[v].weight
                 pred[v] = u
-                # Add to the queue if has not been visited.
                 queue.appendleft(v)
     return (pred, dist)
