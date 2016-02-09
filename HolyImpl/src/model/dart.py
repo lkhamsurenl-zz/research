@@ -6,7 +6,7 @@ from src.model.weight import Weight
 __author__ = 'Luvsandondov Lkhamsuren'
 
 class Dart:
-    def __init__(self, tail, head, weight, left=None, right=None):
+    def __init__(self, tail, head, weight, left, right):
         """
         Create dart
         :param tail: Tail vertex
@@ -18,8 +18,8 @@ class Dart:
         """
         assert(isinstance(head, Vertex))
         assert(isinstance(tail, Vertex))
-        #assert(isinstance(left, Vertex))
-        #assert(isinstance(right, Vertex))
+        assert(isinstance(left, Vertex))
+        assert(isinstance(right, Vertex))
         assert(isinstance(weight, Weight))
 
         self.head = head
