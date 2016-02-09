@@ -127,7 +127,7 @@ def main():
     Main function to get all the MSSP distances as move around the face.
     :return:
     """
-    g1 = G1()
+    g1 = grid.g1()
     vertices = []
     vertices.append(g1.get_vertex((1, 1)))
     vertices.append(g1.get_vertex((0, 1)))

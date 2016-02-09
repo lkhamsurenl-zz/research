@@ -6,6 +6,7 @@ from src.model.vertex import Vertex
 from src.model.weight import Weight
 from src.algorithms.traversal import bfs
 
+__author__ = 'Luvsandondov Lkhamsuren'
 
 def remove_edge(u, v):
     du = u.neighbors[v].dual.head
@@ -16,6 +17,11 @@ def remove_edge(u, v):
     du.remove_dart(dv)
     dv.remove_dart(du)
 
+def print_spanning_tree(pred):
+    print("-------------------")
+    for v in pred:
+        print("{} -> {}".format(pred[v], v))
+    print("-------------------")
 
 def compute_leafmost(spanning_tree):
     """
@@ -45,14 +51,6 @@ def compute_leafmost(spanning_tree):
                 del spanning_tree[v_name]
 
     return leafmost
-
-
-def print_spanning_tree(pred):
-    print("-------------------")
-    for v in pred:
-        print("{} -> {}".format(pred[v], v))
-    print("-------------------")
-
 
 def generate_2d_grid(m, n):
     """
@@ -143,6 +141,10 @@ def generate_2d_grid(m, n):
 
 
 def g1():
+    """
+    Manually create 3 by 3 grid graph with genus 1.
+    :return:
+    """
     # Build vertices and faces.
     vertices, faces = [[None for j in range(3)] for i in range(3)], [[None for j in range(3)] for i in range(3)]
     for i in range(3):
