@@ -28,3 +28,9 @@ class Graph:
             if v.name == vertex_name:
                 return v
         return None
+
+    def get_face(self, face_name):
+        for f in self.faces:
+            if f.name == face_name:
+                return f
+        return None

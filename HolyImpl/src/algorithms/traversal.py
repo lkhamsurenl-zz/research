@@ -1,9 +1,12 @@
 from collections import deque
 
-def bfs(graph, source):
-    pred = {}
-    for v in graph.vertices:
-        pred[v] = None
+def bfs(source):
+    """
+    Return pred dictionary with vertices name map.
+    :param source:
+    :return: pred{source name -> dest name}
+    """
+    pred = {source.name: None}
     visited = {} # Keeps track of which vertices are visited.
     queue = deque()
     queue.appendleft(source)
@@ -11,15 +14,13 @@ def bfs(graph, source):
         u = queue.pop()
         for v in u.neighbors.keys():
             if v not in visited:
-                pred[v] = u
+                pred[v.name] = u.name
                 queue.appendleft(v)
         visited[u] = 1 # mark as visited.
     return pred
 
-def dfs(graph, source):
-    pred = {}
-    for v in graph.vertices:
-        pred[v] = None
+def dfs(source):
+    pred = {source: None}
     visited = {}
     s = [] # stack used for recursion
     s.append(source)

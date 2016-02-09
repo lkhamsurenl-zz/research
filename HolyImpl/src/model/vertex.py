@@ -55,4 +55,3 @@ class Vertex:
         :return:
         '''
         self.neighbors.pop(neighbor, None)
-
