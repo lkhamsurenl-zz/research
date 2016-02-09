@@ -22,7 +22,7 @@ class TestInitialTree(TestCase):
     def test_initial_tree_with_grid(self):
         # NOTE(lkhamsurenl): Following line is needed if copying graph is too deep, when using copy.deepcopy
         # sys.setrecursionlimit(10000)
-        
+
         graph_1 = grid(10, 10)
         # Source vertex.
         vertex = graph_1.get_vertex((1, 1))

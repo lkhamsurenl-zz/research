@@ -1,6 +1,7 @@
 from src.model.weight import Weight
 from collections import deque
 from src.model.g1 import G1
+from src.model.grid import grid
 from src.algorithms.initial_holy_tree import fast_initial_tree
 
 def update_weights(graph, source, pred, new_dist):
@@ -39,7 +40,7 @@ def move_across_dart(graph, s1, s2, pred, dist):
     :return:
     """
     lambd = 0.0
-    while lambd < 1.0:
+    while abs(lambd - 1.0) > 1e-10:
         # new_dist keeps track of distances, as source move from s1 -> s2.
         new_dist = {}
 
@@ -54,7 +55,7 @@ def move_across_dart(graph, s1, s2, pred, dist):
         # for u in new_dist:
         #     print("new_dist({}) = {}; dist = {}".format(u, new_dist[u], dist[u]))
 
-        # For each edges, relax if necessary
+        # Find all the active edges.
         active = {}  # keep track of the active edges.
         for u in graph.vertices:
             for v in u.neighbors.keys():
@@ -138,6 +139,15 @@ def debug():
     vertices = []
     vertices.append(g1.get_vertex((1, 1)))
     vertices.append(g1.get_vertex((0, 1)))
+    move_around_face(g1, vertices)
+
+def debug_grid():
+    g1 = grid(3, 3)
+    vertices = []
+    vertices.append(g1.get_vertex((1, 1)))
+    vertices.append(g1.get_vertex((0, 1)))
+    vertices.append(g1.get_vertex((0, 0)))
+    vertices.append(g1.get_vertex((1,0)))
     move_around_face(g1, vertices)
 
 

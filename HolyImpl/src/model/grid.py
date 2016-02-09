@@ -43,7 +43,7 @@ def compute_leafmost(spanning_tree):
 
     return leafmost
 
-def report_pred(pred):
+def print_spanning_tree(pred):
     print("-------------------")
     for v in pred:
         print("{} -> {}".format(pred[v], v))
@@ -65,11 +65,11 @@ def grid(m, n):
             vs[i][j] = Vertex((i, j))
             fs[i][j] = Vertex((i, j))
 
-    # Generate all edges and its
+    # Generate all edges and its duals.
     for i in range(m):
         for j in range(n):
             v = vs[i][j]
-            # Right
+            # Dart (i, j) -> (i + 1, j), its reverse, dual, dual reverse.
             neighbor = vs[(i + 1) % m][j]  # Compute left and right face coordinates.
             left = fs[i][j]
             right = fs[i][(j - 1) % n]
@@ -79,7 +79,7 @@ def grid(m, n):
             else:
                 Edge(v, neighbor, Weight(1, [0, 0], 0), left, right)
 
-            # Up
+            # Dart (i, j) -> (i, j + 1), its reverse, dual, dual reverse.
             neighbor = vs[i][(j + 1) % n]  # Compute left and right face coordinates.
             left = fs[(i - 1) % m][j]
             right = fs[i][j]
@@ -94,6 +94,7 @@ def grid(m, n):
     # Num Edge(spanning tree) + Num edges(dual spanning tree) + 2 * g
     # Spanning tree in original graph. Note that we first remove non-trivial homology edges from graph prior to
     # computing spanning tree.
+    # TODO(lkhamsurenl): Figure out a way to find Spanning tree without explicit copy of the entire graph.
     c_st = copy.deepcopy(graph)
     for i in range(m):
         c_u = c_st.get_vertex((i, n-1))
@@ -105,7 +106,7 @@ def grid(m, n):
         remove_edge(c_u, c_v)
 
     spanning_tree = bfs(c_st.get_vertex((1,1)))
-    #report_pred(spanning_tree)
+    # print_spanning_tree(spanning_tree)
 
     # Dual spanning tree. Note that we remove all edges in spanning tree and 2g auxiliary edges (which in our case:
     # (0,n-1) -> (0,0) and (m-1, 0) -> (0,0)).
@@ -118,7 +119,7 @@ def grid(m, n):
     remove_edge(c_g.get_vertex((m-1,0)), c_g.get_vertex((0,0)))
 
     dual_spanning_tree = bfs(c_g.get_face((0,0)))
-    #report_pred(dual_spanning_tree)
+    # print_spanning_tree(dual_spanning_tree)
 
     leafmost = compute_leafmost(dual_spanning_tree)
     for (u_name, v_name) in leafmost:
