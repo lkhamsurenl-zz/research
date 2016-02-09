@@ -1,7 +1,6 @@
 from src.model.weight import Weight
 from collections import deque
-from src.model.g1 import G1
-from src.model.grid import grid
+from src.model import grid
 from src.algorithms.initial_holy_tree import fast_initial_tree
 
 def update_weights(graph, source, pred, new_dist):
@@ -82,8 +81,11 @@ def move_across_dart(graph, s1, s2, pred, dist):
         if min_dart != None:
             new_dist[min_dart.head] = new_dist[min_dart.tail] + min_dart.weight
             pred[min_dart.head] = min_dart.tail
+            # TODO(lkhamsurenl): Following line assumes that s2 -> s1 should be a dart at the end of moving across
+            # the dart, which is not always true. Fix it to do proper pivoting.
             if min_dart.tail == s2:
                 pred[min_dart.tail] = None
+                pred[s1] = s2
             print("{} -> {} pivots in. {}".format(min_dart.tail, min_dart.head, min_dart.weight))
             report(pred, dist)
             print("new distances:")
@@ -135,19 +137,19 @@ def main():
 
 
 def debug():
-    g1 = G1()
+    g1 = grid.g1()
     vertices = []
     vertices.append(g1.get_vertex((1, 1)))
     vertices.append(g1.get_vertex((0, 1)))
     move_around_face(g1, vertices)
 
 def debug_grid():
-    g1 = grid(3, 3)
+    g1 = grid.generate_2d_grid(3, 3)
     vertices = []
     vertices.append(g1.get_vertex((1, 1)))
     vertices.append(g1.get_vertex((0, 1)))
-    vertices.append(g1.get_vertex((0, 0)))
-    vertices.append(g1.get_vertex((1,0)))
+    # vertices.append(g1.get_vertex((0, 0)))
+    # vertices.append(g1.get_vertex((1,0)))
     move_around_face(g1, vertices)
 
 

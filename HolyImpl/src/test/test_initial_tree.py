@@ -5,12 +5,11 @@ import time
 import sys
 
 from src.algorithms import initial_holy_tree
-from src.model.g1 import G1
-from src.model.grid import grid
+from src.model import grid
 
 class TestInitialTree(TestCase):
     def test_holy_tree(self):
-        g1 = G1()
+        g1 = grid.g1()
         # Source vertex.
         vertex = g1.get_vertex((1, 1))
         (fast_pred, fast_dist) = initial_holy_tree.fast_initial_tree(g1, vertex)
@@ -23,7 +22,7 @@ class TestInitialTree(TestCase):
         # NOTE(lkhamsurenl): Following line is needed if copying graph is too deep, when using copy.deepcopy
         # sys.setrecursionlimit(10000)
 
-        graph_1 = grid(10, 10)
+        graph_1 = grid.generate_2d_grid(3, 3)
         # Source vertex.
         vertex = graph_1.get_vertex((1, 1))
         fast_start = time.time()

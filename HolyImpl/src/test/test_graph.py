@@ -3,8 +3,7 @@ from unittest import TestCase
 from src.algorithms.traversal import bfs
 from src.model.graph import Graph
 from src.model.vertex import Vertex
-from src.model.grid import grid
-from src.model.g1 import G1
+from src.model import grid
 
 class TestGraph(TestCase):
     def test_add_vertex(self):

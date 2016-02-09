@@ -16,6 +16,7 @@ def remove_edge(u, v):
     du.remove_dart(dv)
     dv.remove_dart(du)
 
+
 def compute_leafmost(spanning_tree):
     """
     Return learfmost term for each edge in following format:
@@ -45,13 +46,15 @@ def compute_leafmost(spanning_tree):
 
     return leafmost
 
+
 def print_spanning_tree(pred):
     print("-------------------")
     for v in pred:
         print("{} -> {}".format(pred[v], v))
     print("-------------------")
 
-def grid(m, n):
+
+def generate_2d_grid(m, n):
     """
     Create m x n grid graph with genus 1.
     1st row and last column are the homology cycles.
@@ -99,15 +102,15 @@ def grid(m, n):
     # TODO(lkhamsurenl): Figure out a way to find Spanning tree without explicit copy of the entire graph.
     c_st = copy.deepcopy(graph)
     for i in range(m):
-        c_u = c_st.get_vertex((i, n-1))
-        c_v = c_st.get_vertex((i,0))
+        c_u = c_st.get_vertex((i, n - 1))
+        c_v = c_st.get_vertex((i, 0))
         remove_edge(c_u, c_v)
     for j in range(n):
-        c_u = c_st.get_vertex((m-1, j))
-        c_v = c_st.get_vertex((0,j))
+        c_u = c_st.get_vertex((m - 1, j))
+        c_v = c_st.get_vertex((0, j))
         remove_edge(c_u, c_v)
 
-    spanning_tree = bfs(c_st.get_vertex((1,1)))
+    spanning_tree = bfs(c_st.get_vertex((1, 1)))
     # print_spanning_tree(spanning_tree)
 
     # Dual spanning tree. Note that we remove all edges in spanning tree and 2g auxiliary edges (which in our case:
@@ -117,10 +120,10 @@ def grid(m, n):
         u_name = spanning_tree[v_name]
         if u_name != None:
             remove_edge(c_g.get_vertex(u_name), c_g.get_vertex(v_name))
-    remove_edge(c_g.get_vertex((0,n-1)), c_g.get_vertex((0,0)))
-    remove_edge(c_g.get_vertex((m-1,0)), c_g.get_vertex((0,0)))
+    remove_edge(c_g.get_vertex((0, n - 1)), c_g.get_vertex((0, 0)))
+    remove_edge(c_g.get_vertex((m - 1, 0)), c_g.get_vertex((0, 0)))
 
-    dual_spanning_tree = bfs(c_g.get_face((0,0)))
+    dual_spanning_tree = bfs(c_g.get_face((0, 0)))
     # print_spanning_tree(dual_spanning_tree)
 
     leafmost = compute_leafmost(dual_spanning_tree)
@@ -137,3 +140,39 @@ def grid(m, n):
             dual_dart.create_reverse_dart()
 
     return graph
+
+
+def g1():
+    # Build vertices and faces.
+    vertices, faces = [[None for j in range(3)] for i in range(3)], [[None for j in range(3)] for i in range(3)]
+    for i in range(3):
+        for j in range(3):
+            vertices[i][j] = Vertex((i, j))
+            faces[i][j] = Vertex((i, j))
+
+    # Build darts, its reverse, dual and dual reverse respectively.
+    Edge(vertices[0][0], vertices[0][2], Weight(1, [-1, 0], 0), faces[0][2], faces[2][2])
+    Edge(vertices[1][0], vertices[1][2], Weight(1, [-1, 0], 6), faces[1][2], faces[0][2])
+    Edge(vertices[2][0], vertices[2][2], Weight(1, [-1, 0], 4), faces[2][2], faces[1][2])
+
+    Edge(vertices[2][0], vertices[0][0], Weight(1, [0, -1], 0), faces[2][0], faces[2][2])
+    Edge(vertices[2][2], vertices[0][2], Weight(1, [0, -1], -3), faces[2][2], faces[2][1])
+    Edge(vertices[2][1], vertices[0][1], Weight(1, [0, -1], -1), faces[2][1], faces[2][0])
+
+    Edge(vertices[0][0], vertices[1][0], Weight(1, [0, 0], -8), faces[0][0], faces[0][2])
+    Edge(vertices[1][0], vertices[2][0], Weight(1, [0, 0], 1), faces[1][0], faces[1][2])
+    Edge(vertices[0][2], vertices[1][2], Weight(1, [0, 0], -1), faces[0][2], faces[0][1])
+
+    Edge(vertices[1][2], vertices[2][2], Weight(1, [0, 0], 0), faces[1][2], faces[1][1])
+    Edge(vertices[0][1], vertices[1][1], Weight(1, [0, 0], 0), faces[0][1], faces[0][0])
+    Edge(vertices[1][1], vertices[2][1], Weight(1, [0, 0], 0), faces[1][1], faces[1][0])
+
+    Edge(vertices[0][2], vertices[0][1], Weight(1, [0, 0], 0), faces[0][1], faces[2][1])
+    Edge(vertices[1][2], vertices[1][1], Weight(1, [0, 0], 0), faces[1][1], faces[0][1])
+    Edge(vertices[2][2], vertices[2][1], Weight(1, [0, 0], -1), faces[2][1], faces[1][1])
+
+    Edge(vertices[0][1], vertices[0][0], Weight(1, [0, 0], 0), faces[0][0], faces[2][0])
+    Edge(vertices[1][1], vertices[1][0], Weight(1, [0, 0], 0), faces[1][0], faces[0][0])
+    Edge(vertices[2][1], vertices[2][0], Weight(1, [0, 0], 0), faces[2][0], faces[1][0])
+
+    return Graph(vertices=sum(vertices, []), faces=sum(faces, []))
