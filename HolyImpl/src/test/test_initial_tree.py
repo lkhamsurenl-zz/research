@@ -22,13 +22,13 @@ class TestInitialTree(TestCase):
         # NOTE(lkhamsurenl): Following line is needed if copying graph is too deep, when using copy.deepcopy
         # sys.setrecursionlimit(10000)
 
-        graph_1 = grid.generate_2d_grid(3, 3)
+        graph_1 = grid.generate_2d_grid(5,5)
         # Source vertex.
         vertex = graph_1.get_vertex((1, 1))
         fast_start = time.time()
         (fast_pred, fast_dist) = initial_holy_tree.fast_initial_tree(graph_1, vertex)
         fast_end = time.time()
-        (slow_pred, slow_dist) = initial_holy_tree.slow_initial_tree(graph_1, vertex)
+        (slow_pred, slow_dist) = initial_holy_tree.bellman_ford_initial_tree(graph_1, vertex)
         slow_end = time.time()
         print("fast: {}, slow: {}".format(fast_end - fast_start, slow_end - fast_end))
 
