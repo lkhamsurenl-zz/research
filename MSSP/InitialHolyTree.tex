@@ -1,0 +1,150 @@
+\documentclass{article}
+
+\usepackage{amsmath, ../packages/enumitem, listings, graphicx, ../packages/jeffe}
+\oddsidemargin 0in
+\evensidemargin 0in
+\textwidth 6.5in
+\topmargin -0.5in
+\textheight 9.0in
+
+\begin{document}
+
+\title{Multiple Source Shortest Path with unit weights}
+
+% Title
+\begin{center}
+\textbf{\large Multiple Source Shortest Path with unit weights}
+\end{center}
+
+\section{Introduction}
+
+\textbf{\underline{Given:}} Let $G$ be a directed graph $(V, \vec{E})$, embedded
+on a surface with genus $g$. All edge weights are unit. \\
+\textbf{\underline{Find:}} Consider boundary $f$ of $G$. $\forall v \in f$, find
+a shortest path to $\forall u \in V$. \\
+
+Let $T$ be the BFS (Breadth first search) tree of $G$, and $C$ be the BFS co-tree
+in $G$. Then there is exactly $2g$ leftover edges $L = {e_1, e_2, \ldots, e_{2g}}$. \\
+
+There exists a unique cycle $\lambda_i$ in $C \cup {e_i}$, and $(\lambda_1, 
+\lambda_2, \ldots, \lambda_{2g}) = \Lambda$ defines homology basis. \\
+We define homological signature of an edge as follows:
+\[ [e]_{i} = \begin{cases} 1 & ,\mbox{if } e \in \lambda_i \\
+                          -1 & ,\mbox{if } rev(r) \in \lambda_i \\
+                           0 & ,\mbox{otherwise} \end{cases}\]
+
+Furthermore, we define $\alpha$ recursively as follows: \\
+\[ \alpha(\vec{e}^*) = \begin{cases} 1 & ,\mbox{if } e^* \mbox{ is a leaf edge of } C \\
+                           \sum \limits_{ \text{tail}(\vec{e}^{'*})
+                           = \text{head}(\vec{e}^*) } \alpha(\vec{e}^{'}) & ,
+                           \mbox{otherwise} \end{cases}\]
+We can extend above definition with $\alpha(\vec{e}) = \alpha( \vec{e}^* )$ and 
+  $\alpha(e)^* = - \alpha(\text{rev}(\vec{e}^*))$. \\
+
+Let $\tilde w(\vec{e}) = \langle 1, [\vec{e}], \alpha(\vec{e}) \rangle$ be new
+weight vector for each edge in $G$.
+\begin{center}
+\includegraphics[scale = 0.3]{alphaDef.jpg}
+\end{center}
+
+\textbf{\underline{Def:}} An edge $\vec{e}$ is "holier" than $\vec{e}^{'}$, 
+if $\tilde w(\vec{e}) < \tilde w(\vec{e}^{'})$ in lexicographic comparison. 
+Therefore, we can define "holiness" of any $S \subset G $ as follows:
+\[\text{Ho}(S) = \sum \limits_{\vec{e} \in S} \tilde w(\vec{e})\]
+
+
+
+\newpage
+
+Holiest tree is a spanning tree with minimal "holiness". We build Holiest tree 
+rooted at $r$, using slight tweak in the Bellman-Ford algorithm for finding 
+shortest path tree rooted at r. \\
+
+\begin{minipage}[t]{0.48\linewidth}
+\begin{algorithm}
+\textbf{\underline{BuildHoliestTree}}($G, \tilde w , r$): \\ \quad
+Set $d[r] \leftarrow \langle 0, [0], 0 \rangle$ \\ \quad \quad
+    pred($r$) $\leftarrow$ NULL \\ \quad
+for all $v : v \neq r$ \\ \quad \quad
+    $d[r] \leftarrow \langle \infty, [\infty], \infty \rangle$ \\ \quad \quad
+    pred($r$) $\leftarrow$ NULL \\ \quad
+put $r$ into queue \\ \quad
+while queue is not Empty: \\ \quad \quad
+    Let $s \leftarrow$ dequeue item \\ \quad \quad
+    for all $u: s \rightarrow u$ \\ \qquad \quad
+        if $u$ is not marked \\ \quad \qquad \quad
+           mark $u$ and put in the queue \\ \qquad \quad
+        if isTense($s \rightarrow u$) \\ \quad \qquad \quad
+           relax($s \rightarrow u$)
+\end{algorithm}
+\end{minipage}
+\hfill%
+\hspace{-4cm}
+\begin{minipage}[t]{0.48\linewidth}
+\begin{algorithm}
+\textbf{\underline{isTense}}($s \rightarrow u$): \\ \quad
+return $d[s] + \tilde w(s \rightarrow u) < d[u]$ \\
+
+\end{algorithm}
+
+\vspace{0.5cm}
+
+\begin{algorithm}
+\textbf{\underline{relax}}($s \rightarrow u$): \\ \quad
+$d[u] \leftarrow d[s] + \tilde w(s \rightarrow u)$ \\ \quad
+pred[u] $\leftarrow s$ \\
+\end{algorithm}
+\end{minipage}
+
+\vspace{0.5cm}
+
+\textbf{\underline{Observation:}} Each edge will be added once to the queue. \\
+
+\textbf{\underline{Corollary:}} Each edge will be relaxed at most once. \\
+
+\textbf{\underline{Lemma-1:}} If there is no tense edge in $G$, then for each 
+$v: r \rightarrow \ldots \rightarrow \text{pred}(\text{pred}(v)) \rightarrow 
+\text{pred}(v) \rightarrow v$ is the holiest path from $r$ to $v$.
+
+\begin{proof} Let's prove it by induction on $d[v]$ distance from the root $r$. \\
+\underline{Base:} $d[v] = 0$, then v = r, so the claim is definitely true. \\
+\underline{Induction Step:} Suppose the claim is true for all vertex $v \in V$ 
+such that $d[v] < d$ for some d. Consider vertex v such that $d[v] = d$. 
+By induction hypothesis, all vertices with $d[u] = d-1$ have "holiest" path 
+correctly updated. By definition, $d[v] = \text{min}_{s \rightarrow v}{d[s] + 
+\tilde w(s \rightarrow v)}$, here $d[s] = d-1$. By Induction hypothesis, $d[s]$ 
+is "holiest" path, so if there is no tense edge in G then 
+$d[v] = \text{min}_{s \rightarrow v}{d[s] + \tilde w(s \rightarrow v)}$ holds.
+\end{proof}
+
+\textbf{\underline{Corollary:}} The algorithm will produce "holiest" tree rooted at r in linear time.
+
+We now have produced our initial "Holiest" tree.
+
+\newpage
+\section{Working on examples:}
+\textbf{Holiest Tree:} \\
+On genus $g = 1$ surface:
+\begin{center}
+\includegraphics[scale = 0.6]{g1.jpg}
+\end{center}
+
+\newpage
+On genus $g = 3$ surface:
+\begin{center}
+\includegraphics[scale = 0.6]{g3.jpg}
+\end{center}
+
+\newpage
+\section{References:}
+\begin{itemize}
+\item Cabello, Sergio, Erin W. Chambers, and Jeff Erickson. "Multiple-source 
+  shortest paths in embedded graphs." SIAM Journal on Computing 42.4 (2013): 1542-1571.
+\item Eisenstat, David, and Philip N. Klein. "Linear-time algorithms for max 
+  flow and multiple-source shortest paths in unit-weight planar graphs." 
+  Proceedings of the forty-fifth annual ACM symposium on Theory of computing. ACM, 2013.
+\item Erickson, Jeff. "Maximum flows and parametric shortest paths in planar graphs." 
+  Proceedings of the twenty-first annual ACM-SIAM symposium on Discrete Algorithms. 
+  Society for Industrial and Applied Mathematics, 2010.
+\end{itemize}
+\end{document}
