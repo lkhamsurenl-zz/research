@@ -153,4 +153,4 @@ def debug_grid():
     move_around_face(g1, vertices)
 
 
-debug_grid()
+debug()
