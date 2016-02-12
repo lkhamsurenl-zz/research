@@ -94,7 +94,7 @@ def move_around_face(graph, vertices):
     """
     s1 = vertices[0]  # first source vertex
     (pred, dist) = fast_initial_tree(graph, s1)
-    
+
     print("---Initial tree---")
     report(pred, dist)
     print("----------------------")
