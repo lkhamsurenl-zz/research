@@ -119,9 +119,17 @@ def move_around_face(graph, vertices):
         # Source will move from s1 -> s2, updating pred and dist dictionaries.
         move_across_dart(graph, s1, s2, pred, dist)
 
-    # For sanity check, at the end of the cycle, dist and pred should be exactly same as the initial computation.
+    # For sanity check, at the end of the cycle, dist and pred should be exactly same as the initial holy tree
+    # computation.
     assert(init_dist == dist)
     assert(init_pred == pred)
+
+def get_face_vertices(graph, names):
+    vertices = []
+    # Populate all the vertices given their names.
+    for name in names:
+        vertices.append(graph.get_vertex(name))
+    return vertices
 
 def main():
     """
@@ -129,30 +137,18 @@ def main():
     :return:
     """
     g1 = grid.g1()
-    vertices = []
-    vertices.append(g1.get_vertex((1, 1)))
-    vertices.append(g1.get_vertex((0, 1)))
-    vertices.append(g1.get_vertex((0, 0)))
-    vertices.append(g1.get_vertex((1, 0)))
+    vertices = get_face_vertices(g1, [(1,1), (0,1), (0, 0), (1,0)])
     move_around_face(g1, vertices)
 
 
 def debug():
     g1 = grid.g1()
-    vertices = []
-    vertices.append(g1.get_vertex((1, 1)))
-    vertices.append(g1.get_vertex((0, 1)))
-    vertices.append(g1.get_vertex((0, 0)))
-    vertices.append(g1.get_vertex((1, 0)))
+    vertices = get_face_vertices(g1, [(1,1), (0,1), (0, 0), (1,0)])
     move_around_face(g1, vertices)
 
 def debug_grid():
     g1 = grid.generate_2d_grid(3, 3)
-    vertices = []
-    vertices.append(g1.get_vertex((1, 1)))
-    vertices.append(g1.get_vertex((0, 1)))
-    vertices.append(g1.get_vertex((0, 0)))
-    vertices.append(g1.get_vertex((1, 0)))
+    vertices = get_face_vertices(g1, [(1,1), (0,1), (0, 0), (1,0)])
     move_around_face(g1, vertices)
 
 
