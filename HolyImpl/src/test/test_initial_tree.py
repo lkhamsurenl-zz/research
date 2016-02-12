@@ -1,7 +1,6 @@
 from unittest import TestCase
 
 import time
-
 import sys
 
 from src.algorithms import initial_holy_tree

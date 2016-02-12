@@ -21,14 +21,12 @@ def update_weights(graph, source, pred, new_dist):
                 new_dist[v] = new_dist[u] + u.neighbors[v].weight
                 q.appendleft(v)
 
-
 def report(pred, dist):
     for u in pred.keys():
         pu = pred[u] if pred[u] != None else "None"
         dpu = dist[pred[u]] if pred[u] != None and dist[pred[u]] != None else "None"
         du = dist[u] if dist[u] != None else "None"
         print("{0} -> {1}, dist[{0}] = {2}, dist[{1}] = {3}".format(pu, u, dpu, du))
-
 
 def move_across_dart(graph, s1, s2, pred, dist):
     """
@@ -42,7 +40,6 @@ def move_across_dart(graph, s1, s2, pred, dist):
     while abs(lambd - 1.0) > 1e-10:
         # new_dist keeps track of distances, as source move from s1 -> s2.
         new_dist = {}
-
         lambd += 0.1
         # Find vertices with slack decreasing
         new_dist[s1] = Weight(lambd, dist[s1].homology, dist[s1].leafmost)
@@ -50,10 +47,6 @@ def move_across_dart(graph, s1, s2, pred, dist):
 
         new_dist[s2] = Weight(1.0 - lambd, dist[s2].homology, dist[s2].leafmost)
         update_weights(graph, s2, pred, new_dist)
-
-        # for u in new_dist:
-        #     print("new_dist({}) = {}; dist = {}".format(u, new_dist[u], dist[u]))
-
         # Find all the active edges.
         active = {}  # keep track of the active edges.
         for u in graph.vertices:
@@ -61,15 +54,7 @@ def move_across_dart(graph, s1, s2, pred, dist):
                 # If tense, relax the dart.
                 if new_dist[u] + u.neighbors[v].weight < new_dist[v]:
                     active[u.neighbors[v]] = new_dist[u] + u.neighbors[v].weight - new_dist[v]
-                    # new_dist[v] = new_dist[u] + u.neighbors[v].weight
-                    # pred[v] = u
-                    # print("{} -> {} pivots in. {}".format(u, v, u.neighbors[v].weight))
-                    # report(pred, dist)
-                    # print("new distances:")
-                    # report(pred, new_dist)
-                    # print("-------------------------------")
 
-        ##############################
         # Do pivot on dart with minimum slack.
         minimum_slack = Weight(length=float('inf'))
         min_dart = None
@@ -91,7 +76,6 @@ def move_across_dart(graph, s1, s2, pred, dist):
             print("new distances:")
             report(pred, new_dist)
             print("-------------------------------")
-        ###############################
 
         dist = new_dist
 
