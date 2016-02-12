@@ -2,6 +2,7 @@ from src.model.weight import Weight
 from collections import deque
 from src.model import grid
 from src.algorithms.initial_holy_tree import fast_initial_tree
+from sets import Set
 
 def update_weights(graph, source, pred, new_dist):
     """
@@ -21,11 +22,35 @@ def update_weights(graph, source, pred, new_dist):
                 q.appendleft(v)
 
 def report(pred, dist):
+    print("-------  Holy tree -------")
     for u in pred.keys():
         pu = pred[u] if pred[u] != None else "None"
         dpu = dist[pred[u]] if pred[u] != None and dist[pred[u]] != None else "None"
         du = dist[u] if dist[u] != None else "None"
         print("{0} -> {1}, dist[{0}] = {2}, dist[{1}] = {3}".format(pu, u, dpu, du))
+    print("------- --- -------")
+
+def active_darts(s1, s2, pred):
+    """
+    Find all the active darts by labeling all the vertices:
+    blue - decreasing in distance.
+    red - increasing in distance.
+    :param s1: current source
+    :param s2: next source
+    :param pred: current pred
+    :param dist: current distance.
+    :return: (blue, red) labeled sets
+    """
+    blue = Set([s2.name])
+    # Construct all the blue vertices:
+    for round in range(len(pred)):
+        for v in pred:
+            if pred[v] == None:
+                continue
+            if pred[v].name in blue:
+                blue.add(v.name)
+    red = set([v.name for v in pred.keys()]) - set(blue)
+    return (set(blue), red)
 
 def move_across_dart(graph, s1, s2, pred, dist):
     """
@@ -35,25 +60,15 @@ def move_across_dart(graph, s1, s2, pred, dist):
     :param s2: Destination vertex.
     :return:
     """
-    lambd = 0.0
-    while abs(lambd - 1.0) > 1e-10:
-        lambd += 0.1
-        # new_dist keeps track of distances, as source move from s1 -> s2.
-        new_dist = {}
-
-        # Find vertices with slack decreasing
-        new_dist[s1] = Weight(lambd, dist[s1].homology, dist[s1].leafmost)
-        update_weights(graph, s1, pred, new_dist)
-
-        new_dist[s2] = Weight(1.0 - lambd, dist[s2].homology, dist[s2].leafmost)
-        update_weights(graph, s2, pred, new_dist)
-        # Find all the active edges.
-        active = {}  # keep track of the active edges.
+    while pred[s1] != s2:
+        # Get all the active darts.
+        active = {}
+        (blue, red) = active_darts(s1, s2, pred)
+        #print("blue: {}; red: {}".format(blue, red))
         for u in graph.vertices:
-            for v in u.neighbors.keys():
-                # If tense, relax the dart.
-                if new_dist[u] + u.neighbors[v].weight < new_dist[v]:
-                    active[u.neighbors[v]] = new_dist[u] + u.neighbors[v].weight - new_dist[v]
+            for v in u.neighbors:
+                if u.name in blue and v.name in red:
+                    active[u.neighbors[v]] = dist[u] + u.neighbors[v].weight - dist[v]
 
         # Do pivot on dart with minimum slack.
         minimum_slack = Weight(length=float('inf'))
@@ -64,25 +79,22 @@ def move_across_dart(graph, s1, s2, pred, dist):
                 minimum_slack = active[d]
 
         if min_dart != None:
-            new_dist[min_dart.head] = new_dist[min_dart.tail] + min_dart.weight
+            # Update dist and pred pointers respectively for the vertices.
+            dist[min_dart.head] = dist[min_dart.tail] + min_dart.weight
             pred[min_dart.head] = min_dart.tail
-            # TODO(lkhamsurenl): Following line assumes that s2 -> s1 should be a dart at the end of moving across
-            # the dart, which is not always true. Fix it to do proper pivoting.
-            if min_dart.tail == s2:
-                pred[min_dart.tail] = None
-                pred[s1] = s2
+
             # DEBUG
             print("{} -> {} pivots in. {}".format(min_dart.tail, min_dart.head, min_dart.weight))
-            report(pred, dist)
-            print("new distances:")
-            report(pred, new_dist)
+            #report(pred, dist)
             print("-------------------------------")
-
-        dist = new_dist
 
     # Done with the process, let's print out the new distances
     print("done with {0} -> {1}. New root is {1}".format(s1, s2))
-    report(pred, dist)
+    # s2's the new root.
+    pred[s2] = None
+    dist[s2] = Weight(homology=[0, 0])
+    update_weights(graph, s2, pred, dist)
+    #report(pred, dist)
 
 
 def move_around_face(graph, vertices):
@@ -92,21 +104,24 @@ def move_around_face(graph, vertices):
     :param vertices: face vertices given in order
     :return: All the shortest path distances for each vertex in the vertices list.
     """
+    # Ensure there is at least one vertex when computing SSSP for each vertex in vertices.
+    assert(len(vertices) > 1)
     s1 = vertices[0]  # first source vertex
     (pred, dist) = fast_initial_tree(graph, s1)
-
+    (init_pred, init_dist) = (pred, dist)
     print("---Initial tree---")
-    report(pred, dist)
+    #report(pred, dist)
     print("----------------------")
 
-    i = 1  # Root will be moving from vertices[i-1] to vertices[i]
-    while i < len(vertices):
-        s2 = vertices[i]
+    for i in range(len(vertices)):
+        s1 = vertices[i]
+        s2 = vertices[(i + 1) % len(vertices)]
         # Source will move from s1 -> s2, updating pred and dist dictionaries.
         move_across_dart(graph, s1, s2, pred, dist)
-        # Advance the pointer
-        i += 1
-        s1 = s2
+
+    # For sanity check, at the end of the cycle, dist and pred should be exactly same as the initial computation.
+    assert(init_dist == dist)
+    assert(init_pred == pred)
 
 def main():
     """
@@ -127,6 +142,8 @@ def debug():
     vertices = []
     vertices.append(g1.get_vertex((1, 1)))
     vertices.append(g1.get_vertex((0, 1)))
+    vertices.append(g1.get_vertex((0, 0)))
+    vertices.append(g1.get_vertex((1, 0)))
     move_around_face(g1, vertices)
 
 def debug_grid():
