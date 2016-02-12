@@ -9,6 +9,12 @@ from src.algorithms.traversal import bfs
 __author__ = 'Luvsandondov Lkhamsuren'
 
 def remove_edge(u, v):
+    """
+    Remove all the edges in u <-> v.
+    :param u:
+    :param v:
+    :return: nothing
+    """
     du = u.neighbors[v].dual.head
     dv = u.neighbors[v].dual.tail
 

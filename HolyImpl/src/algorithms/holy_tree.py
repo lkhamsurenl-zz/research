@@ -16,7 +16,6 @@ def update_weights(graph, source, pred, new_dist):
     while len(q) != 0:
         u = q.pop()
         for v in u.neighbors.keys():
-            # print("{0} -> {1}; pred[{1}] = {2}".format(u, v, pred[v]))
             if pred[v] != None and pred[v] == u:
                 new_dist[v] = new_dist[u] + u.neighbors[v].weight
                 q.appendleft(v)
@@ -38,9 +37,10 @@ def move_across_dart(graph, s1, s2, pred, dist):
     """
     lambd = 0.0
     while abs(lambd - 1.0) > 1e-10:
+        lambd += 0.1
         # new_dist keeps track of distances, as source move from s1 -> s2.
         new_dist = {}
-        lambd += 0.1
+
         # Find vertices with slack decreasing
         new_dist[s1] = Weight(lambd, dist[s1].homology, dist[s1].leafmost)
         update_weights(graph, s1, pred, new_dist)
@@ -71,6 +71,7 @@ def move_across_dart(graph, s1, s2, pred, dist):
             if min_dart.tail == s2:
                 pred[min_dart.tail] = None
                 pred[s1] = s2
+            # DEBUG
             print("{} -> {} pivots in. {}".format(min_dart.tail, min_dart.head, min_dart.weight))
             report(pred, dist)
             print("new distances:")
@@ -93,6 +94,7 @@ def move_around_face(graph, vertices):
     """
     s1 = vertices[0]  # first source vertex
     (pred, dist) = fast_initial_tree(graph, s1)
+    
     print("---Initial tree---")
     report(pred, dist)
     print("----------------------")
