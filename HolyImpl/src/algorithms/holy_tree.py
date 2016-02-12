@@ -101,7 +101,7 @@ def move_around_face(graph, vertices):
 
     i = 1  # Root will be moving from vertices[i-1] to vertices[i]
     while i < len(vertices):
-        s2 = vertices[1]
+        s2 = vertices[i]
         # Source will move from s1 -> s2, updating pred and dist dictionaries.
         move_across_dart(graph, s1, s2, pred, dist)
         # Advance the pointer
@@ -134,9 +134,9 @@ def debug_grid():
     vertices = []
     vertices.append(g1.get_vertex((1, 1)))
     vertices.append(g1.get_vertex((0, 1)))
-    # vertices.append(g1.get_vertex((0, 0)))
-    # vertices.append(g1.get_vertex((1,0)))
+    vertices.append(g1.get_vertex((0, 0)))
+    vertices.append(g1.get_vertex((1, 0)))
     move_around_face(g1, vertices)
 
 
-debug()
+debug_grid()
