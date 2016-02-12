@@ -13,16 +13,16 @@ class TestInitialTree(TestCase):
         # Source vertex.
         vertex = g1.get_vertex((1, 1))
         (fast_pred, fast_dist) = initial_holy_tree.fast_initial_tree(g1, vertex)
-        (slow_pred, slow_dist) = initial_holy_tree.fast_initial_tree(g1, vertex)
+        (slow_pred, slow_dist) = initial_holy_tree.bellman_ford_initial_tree(g1, vertex)
 
         self.assertEqual(fast_pred, slow_pred)
         self.assertEqual(fast_dist, slow_dist)
 
     def test_initial_tree_with_grid(self):
         # NOTE(lkhamsurenl): Following line is needed if copying graph is too deep, when using copy.deepcopy
-        # sys.setrecursionlimit(10000)
+        #sys.setrecursionlimit(10000)
 
-        graph_1 = grid.generate_2d_grid(5,5)
+        graph_1 = grid.generate_2d_grid(5, 5)
         # Source vertex.
         vertex = graph_1.get_vertex((1, 1))
         fast_start = time.time()
