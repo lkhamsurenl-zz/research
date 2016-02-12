@@ -1,6 +1,7 @@
 from src.model.weight import Weight
 from collections import deque
 from src.model import grid
+from src.view import draw_grid
 from src.algorithms.initial_holy_tree import fast_initial_tree
 from sets import Set
 
@@ -52,7 +53,7 @@ def active_darts(s1, s2, pred):
     red = set([v.name for v in pred.keys()]) - set(blue)
     return (set(blue), red)
 
-def move_across_dart(graph, s1, s2, pred, dist):
+def move_across_dart(graph, m, n, s1, s2, pred, dist):
     """
     Perform moving from s1 -> s2. Assume s1 and s2 are valid vertices in graph and connected by an edge.
     :param graph:
@@ -70,6 +71,7 @@ def move_across_dart(graph, s1, s2, pred, dist):
                 if u.name in blue and v.name in red:
                     active[u.neighbors[v]] = dist[u] + u.neighbors[v].weight - dist[v]
 
+        #draw_grid.display(graph, m, n, s1.name, blue, red, pred)
         # Do pivot on dart with minimum slack.
         minimum_slack = Weight(length=float('inf'))
         min_dart = None
@@ -79,6 +81,7 @@ def move_across_dart(graph, s1, s2, pred, dist):
                 minimum_slack = active[d]
 
         if min_dart != None:
+            draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart)
             # Update dist and pred pointers respectively for the vertices.
             dist[min_dart.head] = dist[min_dart.tail] + min_dart.weight
             pred[min_dart.head] = min_dart.tail
@@ -97,7 +100,7 @@ def move_across_dart(graph, s1, s2, pred, dist):
     #report(pred, dist)
 
 
-def move_around_face(graph, vertices):
+def move_around_face(graph, m, n, vertices):
     """
     Move around the vertices in face in order, return all the SSSP for each vertex in vertices.
     :param graph: Graph to find MSSP
@@ -117,7 +120,7 @@ def move_around_face(graph, vertices):
         s1 = vertices[i]
         s2 = vertices[(i + 1) % len(vertices)]
         # Source will move from s1 -> s2, updating pred and dist dictionaries.
-        move_across_dart(graph, s1, s2, pred, dist)
+        move_across_dart(graph, m, n, s1, s2, pred, dist)
 
     # For sanity check, at the end of the cycle, dist and pred should be exactly same as the initial holy tree
     # computation.
@@ -136,20 +139,22 @@ def main():
     Main function to get all the MSSP distances as move around the face.
     :return:
     """
+    m, n = 3, 3
     g1 = grid.g1()
     vertices = get_face_vertices(g1, [(1,1), (0,1), (0, 0), (1,0)])
-    move_around_face(g1, vertices)
-
+    move_around_face(g1, m, n, vertices)
 
 def debug():
+    m, n = 3, 3
     g1 = grid.g1()
     vertices = get_face_vertices(g1, [(1,1), (0,1), (0, 0), (1,0)])
-    move_around_face(g1, vertices)
+    move_around_face(g1, m, n, vertices)
 
 def debug_grid():
-    g1 = grid.generate_2d_grid(3, 3)
+    m, n = 3, 3
+    g1 = grid.generate_2d_grid(m, n)
     vertices = get_face_vertices(g1, [(1,1), (0,1), (0, 0), (1,0)])
-    move_around_face(g1, vertices)
+    move_around_face(g1, m, n, vertices)
 
 
 debug_grid()
