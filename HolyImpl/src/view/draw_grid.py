@@ -31,7 +31,7 @@ def resolve_boundary_darts(u_name, v_name, m, n):
 def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
     G = nx.grid_2d_graph(m + 1, n + 1)
     G = nx.DiGraph(G)
-    pos=nx.spring_layout(G,iterations=100)
+    pos = nx.spectral_layout(G)
 
     # blue: distance decreasing
     # red: distance increasing
@@ -65,21 +65,30 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
                 green_darts += resolve_boundary_darts(u.name, v.name, m, n)
 
     # Color vertices with labels.
-    nx.draw_spectral(G,node_size=600, nodelist=blue_vertices,node_color='b', with_labels=True)
-    nx.draw_spectral(G,node_size=600, nodelist=red_vertices,node_color='r', with_labels=True)
+    nx.draw_spectral(G,node_size=600, nodelist=blue_vertices,node_color='b')
+    nx.draw_spectral(G,node_size=600, nodelist=red_vertices,node_color='r')
+
+    # Override label vertices with (m, j) -> (0, j) and (i, n) -> (i, 0)
+    labels = {}
+    for i in range(m + 1):
+        for j in range(n + 1):
+            labels[(i, j)] = (i % m, j % n)
+    nx.draw_networkx_labels(G, pos, labels=labels)
 
     # Label root with special text: "Root"
     nx.draw_spectral(G,node_size=600,nodelist=[root_name],labels={root_name:'\n\n\n Root'})
-    # Annotate pivot dart.
-    nx.draw_spectral(G,node_size=600,nodelist=[root_name],\
-                     labels={(m,n):'\n\n\n Pivot: {} -> {}'.format(pivot_dart.tail.name, pivot_dart.head.name)})
+
+    # Annotate pivot dart. Make duplicates for the pivot if it's boundary.
+    pivot_dups = resolve_boundary_darts(pivot_dart.tail.name, pivot_dart.head.name, m, n)
+    edge_labels = {}
+    for pivot in pivot_dups:
+        edge_labels[pivot] = "Pivot"
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, label_pos=0.5)
 
     # Draw darts with colored labels.
-    nx.draw_spectral(G,edgelist=red_darts,width=3,alpha=1,edge_color='r')
-    nx.draw_spectral(G,edgelist=blue_darts,width=3,alpha=1,edge_color='b')
-    nx.draw_spectral(G,edgelist=green_darts,width=3,alpha=1,edge_color='g')
+    nx.draw_spectral(G,edgelist=red_darts,width=2,alpha=0.7,edge_color='r')
+    nx.draw_spectral(G,edgelist=blue_darts,width=2,alpha=0.7,edge_color='b')
+    nx.draw_spectral(G,edgelist=green_darts,width=3,alpha=0.7,edge_color='g')
 
-
-
-    # Draw the graph.
+    # Draw the graph on screen.
     plt.show()
