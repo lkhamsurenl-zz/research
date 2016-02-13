@@ -64,9 +64,14 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
             if u.name in blue_vertices and v.name in red_vertices:
                 green_darts += resolve_boundary_darts(u.name, v.name, m, n)
 
+    # Draw darts with colored labels.
+    nx.draw_spectral(G,edgelist=red_darts,width=3,alpha=0.7,edge_color='r')
+    nx.draw_spectral(G,edgelist=blue_darts,width=3,alpha=0.7,edge_color='b')
+    nx.draw_spectral(G,edgelist=green_darts,width=4,alpha=0.7,edge_color='g')
+
     # Color vertices with labels.
-    nx.draw_spectral(G,node_size=600, nodelist=blue_vertices,node_color='b')
-    nx.draw_spectral(G,node_size=600, nodelist=red_vertices,node_color='r')
+    nx.draw_spectral(G,node_size=600,nodelist=blue_vertices,node_color='b')
+    nx.draw_spectral(G,node_size=600,nodelist=red_vertices,node_color='r')
 
     # Override label vertices with (m, j) -> (0, j) and (i, n) -> (i, 0)
     labels = {}
@@ -75,7 +80,7 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
             labels[(i, j)] = (i % m, j % n)
     nx.draw_networkx_labels(G, pos, labels=labels)
 
-    # Label root with special text: "Root"
+        # Label root with special text: "Root"
     nx.draw_spectral(G,node_size=600,nodelist=[root_name],labels={root_name:'\n\n\n Root'})
 
     # Annotate pivot dart. Make duplicates for the pivot if it's boundary.
@@ -84,11 +89,6 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
     for pivot in pivot_dups:
         edge_labels[pivot] = "Pivot"
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, label_pos=0.5)
-
-    # Draw darts with colored labels.
-    nx.draw_spectral(G,edgelist=red_darts,width=2,alpha=0.7,edge_color='r')
-    nx.draw_spectral(G,edgelist=blue_darts,width=2,alpha=0.7,edge_color='b')
-    nx.draw_spectral(G,edgelist=green_darts,width=3,alpha=0.7,edge_color='g')
 
     # Draw the graph on screen.
     plt.show()
