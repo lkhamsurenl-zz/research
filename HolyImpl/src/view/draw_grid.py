@@ -81,7 +81,7 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
             labels[(i, j)] = (i % m, j % n)
     nx.draw_networkx_labels(G, pos, labels=labels)
 
-        # Label root with special text: "Root"
+    # Label root with special text: "Root"
     nx.draw_spectral(G,node_size=600,nodelist=[root_name],labels={root_name:'\n\n\n Root'})
 
     # Annotate pivot dart. Make duplicates for the pivot if it's boundary.
