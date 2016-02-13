@@ -10,7 +10,7 @@ def resolve_boundary_darts(u_name, v_name, m, n):
     :param v_name: Head vertex name
     :param m: Width of the grid graph.
     :param n: Height of the grid graph.
-    :return:
+    :return: All possible duplicates of (u_name -> v_name).
     """
     duplicates = []
     us, vs = Set([u_name]), Set([v_name])
@@ -29,6 +29,7 @@ def resolve_boundary_darts(u_name, v_name, m, n):
     return duplicates
 
 def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
+    # Construct the m + 1 by n + 1 grid with directed edges.
     G = nx.grid_2d_graph(m + 1, n + 1)
     G = nx.DiGraph(G)
     pos = nx.spectral_layout(G)
