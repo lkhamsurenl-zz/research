@@ -2,13 +2,12 @@ from src.model.weight import Weight
 from collections import deque
 from sets import Set
 
-# TODO(lkhamsurenl): Measure performance of the fast_initial_tree.
 def fast_initial_tree(graph, source):
     """
     :return: Predecessor pointer for initial holy tree.
     """
     pred = {source: None}
-    dist = {}  # distance for each Vertex
+    dist = {}  # distance for each vertex
     visited = Set([source])  # keep track of which vertices we visited.
     # Initialize the distance values.
     dist[source] = Weight(homology=[0, 0])
@@ -32,11 +31,11 @@ def fast_initial_tree(graph, source):
                 pred[v] = u
     return (pred, dist)
 
-
 def bellman_ford_initial_tree(graph, source):
     """
     :return: Predecessor pointer for initial holy tree.
     """
+    # Keep track of the predecessor pointers for the SSSP rooted at the source. pred[source] = None.
     pred = {source: None}
     dist = {}  # distance for each Vertex
     # Initialize the distance values.

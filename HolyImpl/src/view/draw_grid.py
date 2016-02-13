@@ -12,7 +12,7 @@ def resolve_boundary_darts(u_name, v_name, m, n):
     :param n: Height of the grid graph.
     :return:
     """
-    dups = []
+    duplicates = []
     us, vs = Set([u_name]), Set([v_name])
     for i in [u_name[0], u_name[0] + m]:
         for j in [u_name[1], u_name[1] + n]:
@@ -25,8 +25,8 @@ def resolve_boundary_darts(u_name, v_name, m, n):
     for i in us:
         for j in vs:
             if abs(i[0] - j[0]) + abs(i[1] - j[1]) == 1:
-                dups.append((i, j))
-    return dups
+                duplicates.append((i, j))
+    return duplicates
 
 def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
     G = nx.grid_2d_graph(m + 1, n + 1)
@@ -65,9 +65,9 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
                 green_darts += resolve_boundary_darts(u.name, v.name, m, n)
 
     # Draw darts with colored labels.
-    nx.draw_spectral(G,edgelist=red_darts,width=3,alpha=0.7,edge_color='r')
-    nx.draw_spectral(G,edgelist=blue_darts,width=3,alpha=0.7,edge_color='b')
-    nx.draw_spectral(G,edgelist=green_darts,width=4,alpha=0.7,edge_color='g')
+    nx.draw_spectral(G,edgelist=red_darts,width=3,alpha=1,edge_color='r')
+    nx.draw_spectral(G,edgelist=blue_darts,width=3,alpha=1,edge_color='b')
+    nx.draw_spectral(G,edgelist=green_darts,width=4,alpha=1,edge_color='g')
 
     # Color vertices with labels.
     nx.draw_spectral(G,node_size=600,nodelist=blue_vertices,node_color='b')
@@ -84,6 +84,7 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
     nx.draw_spectral(G,node_size=600,nodelist=[root_name],labels={root_name:'\n\n\n Root'})
 
     # Annotate pivot dart. Make duplicates for the pivot if it's boundary.
+    # TODO(lkhamsurenl): Modify the color of pivoted vertex at the first time pivot.
     pivot_dups = resolve_boundary_darts(pivot_dart.tail.name, pivot_dart.head.name, m, n)
     edge_labels = {}
     for pivot in pivot_dups:

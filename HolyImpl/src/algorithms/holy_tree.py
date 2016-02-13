@@ -1,3 +1,5 @@
+import sys
+
 from src.model.weight import Weight
 from collections import deque
 from src.model import grid
@@ -11,7 +13,7 @@ def update_weights(graph, source, pred, new_dist):
     :param graph:
     :param source:
     :param new_dist:
-    :return:
+    :return: Nothing.
     """
     q = deque()
     q.appendleft(source)
@@ -23,6 +25,7 @@ def update_weights(graph, source, pred, new_dist):
                 q.appendleft(v)
 
 def report(pred, dist):
+    # Report pred and dist for the holy tree.
     print("-------  Holy tree -------")
     for u in pred.keys():
         pu = pred[u] if pred[u] != None else "None"
@@ -38,7 +41,7 @@ def active_darts(s1, s2, pred):
     red - increasing in distance.
     :param s1: current source
     :param s2: next source
-    :param pred: current pred
+    :param pred: predecessor pointers construct the SSSP rooted at s1.
     :param dist: current distance.
     :return: (blue, red) labeled sets
     """
@@ -50,6 +53,7 @@ def active_darts(s1, s2, pred):
                 continue
             if pred[v].name in blue:
                 blue.add(v.name)
+    # All edges not in blue are red.
     red = set([v.name for v in pred.keys()]) - set(blue)
     return (set(blue), red)
 
@@ -98,7 +102,6 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist):
     dist[s2] = Weight(homology=[0, 0])
     update_weights(graph, s2, pred, dist)
     #report(pred, dist)
-
 
 def move_around_face(graph, m, n, vertices):
     """
@@ -151,10 +154,9 @@ def debug():
     move_around_face(g1, m, n, vertices)
 
 def debug_grid():
-    m, n = 4,4
+    m, n = 5,5
     g1 = grid.generate_2d_grid(m, n)
     vertices = get_face_vertices(g1, [(1,1), (0,1), (0, 0), (1,0)])
     move_around_face(g1, m, n, vertices)
-
 
 debug_grid()
