@@ -151,7 +151,7 @@ def debug():
     move_around_face(g1, m, n, vertices)
 
 def debug_grid():
-    m, n = 3, 3
+    m, n = 4,4
     g1 = grid.generate_2d_grid(m, n)
     vertices = get_face_vertices(g1, [(1,1), (0,1), (0, 0), (1,0)])
     move_around_face(g1, m, n, vertices)
