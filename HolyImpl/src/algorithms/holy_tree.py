@@ -57,6 +57,15 @@ def active_darts(s1, s2, pred):
     red = set([v.name for v in pred.keys()]) - set(blue)
     return (set(blue), red)
 
+def is_holy_tree(graph, pred, dist):
+    for u in graph.vertices:
+        for v in u.neighbors:
+            slack = dist[u] + u.neighbors[v].weight - dist[v]
+            if slack < Weight(homology=[0,0]) or (slack == Weight(homology=[0,0]) and pred[v] != u):
+                print("at least one dart is tense: {} -> {} with slack {}".format(u, v, slack))
+                return False
+    return True
+
 def move_across_dart(graph, m, n, s1, s2, pred, dist):
     """
     Perform moving from s1 -> s2. Assume s1 and s2 are valid vertices in graph and connected by an edge.
@@ -95,13 +104,13 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist):
             #report(pred, dist)
             print("-------------------------------")
 
-    # Done with the process, let's print out the new distances
-    print("done with {0} -> {1}. New root is {1}".format(s1, s2))
-    # s2's the new root.
+    # s2's the new root. Update the values to replicate the result.
     pred[s2] = None
     dist[s2] = Weight(homology=[0, 0])
     update_weights(graph, s2, pred, dist)
-    #report(pred, dist)
+    
+    # Done with the process, let's print out the new distances
+    print("done with {0} -> {1}. New root is {1}. Holy Tree: {2}".format(s1, s2, is_holy_tree(graph, pred, dist)))
 
 def move_around_face(graph, m, n, vertices):
     """
