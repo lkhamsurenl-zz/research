@@ -12,7 +12,7 @@ from src.algorithms.initial_holy_tree import fast_initial_tree
 from sets import Set
 
 
-def add_subtree(source, pred, new_dist):
+def add_subtree(source, delta, pred, new_dist):
     """
     Given a source and new_dist with updated distance for source, propagate the distance through the graph.
     :param graph:
@@ -20,6 +20,7 @@ def add_subtree(source, pred, new_dist):
     :param new_dist:
     :return: Nothing.
     """
+    new_dist[source] += delta
     q = deque()
     q.appendleft(source)
     while len(q) != 0:
@@ -73,13 +74,14 @@ def is_holy_tree(graph, pred, dist):
     :param dist:
     :return:
     """
+    is_holy = True
     for u in graph.vertices:
         for v in u.neighbors:
             slack = dist[u] + u.neighbors[v].weight - dist[v]
             if slack < Weight(homology=[0, 0]) or (slack == Weight(homology=[0, 0]) and pred[v] != u):
-                print("There is at least one tense dart: {} -> {} is tense: {}".format(u, v, slack))
-                return False
-    return True
+                print("is_holy_tree() = {} -> {} is tense: {}".format(u, v, slack))
+                is_holy = False
+    return is_holy
 
 def remove_edge(u, v):
     """
@@ -111,13 +113,15 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
     dist[s] = Weight(homology=[0,0])
 
     Edge(s1, s, Weight(homology=[0,0]), s1.neighbors[s2].left, s1.neighbors[s2].right)
+    s1.neighbors[s].weight = Weight(float('inf'))
     Edge(s, s2, copy.deepcopy(s1.neighbors[s2].weight), s1.neighbors[s2].left, s1.neighbors[s2].right)
+    s2.neighbors[s].weight = Weight(float('inf'))
 
     remove_edge(s1, s2) # Remove edge btw s1, s2.
     pred[s] = None
     pred[s1] = s
     pred[s2] = s
-
+    # report(pred, dist)
     while True:
         # Get all the active darts.
         active = {}
@@ -137,7 +141,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
                 minimum_slack = active[d]
 
         # Check the value of the min_slack / 2 would not result in s "go over" s2.
-        if min_dart != None and Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology], \
+        if min_dart != None and Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],\
                        float(minimum_slack.leafmost) / 2) + lambd < dart.weight:
             draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart)
 
@@ -149,45 +153,52 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
             # report(pred, dist)
             print("-------------------------------")
 
-
-            w = Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology], \
+            # w represents the value to move s from s1 to s2.
+            w = Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],\
                        float(minimum_slack.leafmost) / 2)
-            lambd += w
+            lambd += w # Keep track of the current progress.
 
             if pred[s1] == s:
-                dist[s1] += w
-                add_subtree(s1, pred, dist)
+                add_subtree(s1, w, pred, dist)
             if pred[s2] == s:
-                dist[s2] -= w
-                add_subtree(s2, pred, dist)
+                add_subtree(s2, -w, pred, dist)
+
+            # Move s by w along s1 -> s2.
+            s.neighbors[s1].weight += w
+            #s.neighbors[s1].weight += Weight(w.length, [-i for i in w.homology], -w.leafmost)
+
+            s.neighbors[s2].weight -= w
+            #s.neighbors[s2].weight -= Weight(w.length, [-i for i in w.homology], -w.leafmost)
 
             # Update dist and pred pointers respectively for the vertices.
-            dist[min_dart.head] = dist[min_dart.tail] + min_dart.weight
+            #dist[min_dart.head] = dist[min_dart.tail] + min_dart.weight
             pred[min_dart.head] = min_dart.tail
+            # here, if we check the values, it should still be the holy tree
+            print("Check after pivot {} -> {}: {}".format(min_dart.tail, min_dart.head, is_holy_tree(graph, pred, dist)))
 
         else: # no more pivot, move the values dart.weight - lambd, then make the s2 new pivot
             delta = dart.weight - lambd
-            pred[s2] = None
-            dist[s2] = dist[s2] - delta
-            add_subtree(s2, pred, dist)
+            add_subtree(s2, -delta, pred, dist)
+            print("When moved all the way to s2, distance to s2: {}".format(dist[s2]))
 
-            dist[s1] = dist[s1] + delta
-            add_subtree(s1, pred, dist)
-            pred[s1] = s2
+            add_subtree(s1, delta, pred, dist)
+            print("When moved all the way to s1, distance to s1: {}, dart: {}".format(dist[s1], dart.weight))
             break
 
     # Done with the process, let's print out the new distances
     print("done with {0} -> {1}. New root is {1}".format(s1, s2))
 
     graph.remove_vertex(s.name)
+    Edge(s1, s2, copy.deepcopy(dart.weight), dart.left, dart.right)
     pred[s2] = None
     pred[s1] = s2
-    Edge(s1, s2, dart.weight, dart.left, dart.right)
     # s2's the new root.
     #pred[s2] = None
     #dist[s2] = Weight(homology=[0, 0])
     #update_weights(s2, pred, dist)
     # Ensure that there is no tense dart at the end of the root move.
+    print("distance to s2: {}".format(dist[s2]))
+    print("distance to s1: {}, dart: {}".format(dist[s1], s2.neighbors[s1]))
     print("no tense dart at root {}: {}".format(s2, is_holy_tree(graph, pred, dist)))
     #report(pred, dist)
 
