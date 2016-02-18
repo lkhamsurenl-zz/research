@@ -1,5 +1,7 @@
+import copy
 import sys
 
+from src.model.dart import Dart
 from src.model.edge import Edge
 from src.model.vertex import Vertex
 from src.model.weight import Weight
@@ -63,7 +65,7 @@ def active_darts(s1, s2, pred):
     return (set(blue), red)
 
 
-def check_no_tense_dart(graph, pred, dist):
+def is_holy_tree(graph, pred, dist):
     """
     Check if there is no tense dart in graph.
     :param graph:
@@ -75,7 +77,7 @@ def check_no_tense_dart(graph, pred, dist):
         for v in u.neighbors:
             slack = dist[u] + u.neighbors[v].weight - dist[v]
             if slack < Weight(homology=[0, 0]) or (slack == Weight(homology=[0, 0]) and pred[v] != u):
-                print("{} -> {} is tense: {}".format(u, v, slack))
+                print("There is at least one tense dart: {} -> {} is tense: {}".format(u, v, slack))
                 return False
     return True
 
@@ -86,13 +88,13 @@ def remove_edge(u, v):
     :param v:
     :return: nothing
     """
-    du = u.neighbors[v].dual.head
-    dv = u.neighbors[v].dual.tail
+    # du = u.neighbors[v].dual.head
+    # dv = u.neighbors[v].dual.tail
 
     u.remove_dart(v)
     v.remove_dart(u)
-    du.remove_dart(dv)
-    dv.remove_dart(du)
+    # du.remove_dart(dv)
+    # dv.remove_dart(du)
 
 def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
     """
@@ -102,15 +104,20 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
     :param s2: Destination vertex.
     :return:
     """
-    lambd = Weight(homology=[0,0])
-    s = Vertex((-1,-1)) # special vertex to walk along the s1 -> s2.
     dart = s1.neighbors[s2]
-    Edge(s1, s, Weight(homology=[0,0]), s1.neighbors[s2].dual.left, s1.neighbors[s2].dual.right)
-    Edge(s, s2, s1.neighbors[s2].weight, s1.neighbors[s2].dual.left, s1.neighbors[s2].dual.right)
-    remove_edge(s1, s2)
+
+    lambd = Weight(homology=[0,0])
+    s = graph.add_vertex((-1,-1)) # special vertex to walk along the s1 -> s2.
+    dist[s] = Weight(homology=[0,0])
+
+    Edge(s1, s, Weight(homology=[0,0]), s1.neighbors[s2].left, s1.neighbors[s2].right)
+    Edge(s, s2, copy.deepcopy(s1.neighbors[s2].weight), s1.neighbors[s2].left, s1.neighbors[s2].right)
+
+    remove_edge(s1, s2) # Remove edge btw s1, s2.
     pred[s] = None
     pred[s1] = s
     pred[s2] = s
+
     while True:
         # Get all the active darts.
         active = {}
@@ -129,6 +136,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
                 min_dart = d
                 minimum_slack = active[d]
 
+        # Check the value of the min_slack / 2 would not result in s "go over" s2.
         if min_dart != None and Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology], \
                        float(minimum_slack.leafmost) / 2) + lambd < dart.weight:
             draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart)
@@ -157,18 +165,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
             dist[min_dart.head] = dist[min_dart.tail] + min_dart.weight
             pred[min_dart.head] = min_dart.tail
 
-            # if min_dart.head == s1 and min_dart.tail == s2:
-            #     pred[s2] = None
-            #     dist[s2] = dist[s2] + w
-            #     update_weights(s2, pred, dist)
-            #     dist[s1] = dist[s1] - w
-            #     update_weights(s1, pred, dist)
-            # else:
-            #     dist[s1] = dist[s1] + w
-            #     update_weights(s1, pred, dist)
-            #     dist[s2] = dist[s2] - w
-            #     update_weights(s2, pred, dist)
-        else: # no more pivot, move the values 1 - lambd, then make the s2 new pivot
+        else: # no more pivot, move the values dart.weight - lambd, then make the s2 new pivot
             delta = dart.weight - lambd
             pred[s2] = None
             dist[s2] = dist[s2] - delta
@@ -180,19 +177,18 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
             break
 
     # Done with the process, let's print out the new distances
-    print("done with {0} -> {1}. New root is {1}. lambda: {2}".format(s1, s2, lambd))
-    pred[s2] = None
-    remove_edge(s, s2)
-    pred[s1] = s2
-    remove_edge(s, s1)
+    print("done with {0} -> {1}. New root is {1}".format(s1, s2))
 
+    graph.remove_vertex(s.name)
+    pred[s2] = None
+    pred[s1] = s2
     Edge(s1, s2, dart.weight, dart.left, dart.right)
     # s2's the new root.
     #pred[s2] = None
     #dist[s2] = Weight(homology=[0, 0])
     #update_weights(s2, pred, dist)
     # Ensure that there is no tense dart at the end of the root move.
-    print("no tense dart at root {}: {}".format(s2, check_no_tense_dart(graph, pred, dist)))
+    print("no tense dart at root {}: {}".format(s2, is_holy_tree(graph, pred, dist)))
     #report(pred, dist)
 
 

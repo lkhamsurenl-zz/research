@@ -37,6 +37,11 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
     # blue: distance decreasing
     # red: distance increasing
     blue_vertices, red_vertices = Set(blue), Set(red)
+    if (-1,-1) in blue_vertices:
+        blue_vertices.remove((-1, -1))
+    if (-1,-1) in red_vertices:
+        red_vertices.remove((-1, -1))
+
     for i in range(m + 1):
         if (i % m, 0) in blue:
             blue_vertices.add((i, n))
@@ -62,7 +67,7 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
 
     for u in graph.vertices:
         for v in u.neighbors:
-            if u.name in blue_vertices and v.name in red_vertices:
+            if u.name > (0,0) and v.name > (0,0) and u.name in blue_vertices and v.name in red_vertices:
                 green_darts += resolve_boundary_darts(u.name, v.name, m, n)
 
     # Draw darts with colored labels.
