@@ -58,13 +58,21 @@ def active_darts(s1, s2, pred):
     return (set(blue), red)
 
 def is_holy_tree(graph, pred, dist):
+    """
+    Check if the current pred and dist defines a holy tree.
+    :param graph:
+    :param pred:
+    :param dist:
+    :return:
+    """
+    is_holy = True
     for u in graph.vertices:
         for v in u.neighbors:
             slack = dist[u] + u.neighbors[v].weight - dist[v]
             if slack < Weight(homology=[0,0]) or (slack == Weight(homology=[0,0]) and pred[v] != u):
-                print("at least one dart is tense: {} -> {} with slack {}".format(u, v, slack))
-                return False
-    return True
+                print("is_holy_tree(): {} -> {} with slack {}".format(u, v, slack))
+                is_holy = False
+    return is_holy
 
 def move_across_dart(graph, m, n, s1, s2, pred, dist):
     """
