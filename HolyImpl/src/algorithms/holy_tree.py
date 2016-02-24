@@ -188,6 +188,8 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
     print("done with {0} -> {1}. New root is {1}".format(s1, s2))
 
     graph.remove_vertex(s.name)
+    del pred[s]
+    del dist[s]
     Edge(s1, s2, copy.deepcopy(dart.weight), dart.left, dart.right)
 
     # s2's the new root.
@@ -203,6 +205,12 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
     print("no tense dart at root {}: {}".format(s2, is_holy_tree(graph, pred, dist)))
     #report(pred, dist)
 
+    # Compute actual holy tree @ s2, then compare
+    correct_pred, correct_dist = fast_initial_tree(graph, s2)
+    assert correct_dist == dist
+    assert correct_pred == pred
+    #report(correct_pred, correct_dist)
+    #report(pred, dist)
 
 def move_around_face(graph, m, n, vertices):
     """
