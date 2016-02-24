@@ -115,6 +115,13 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist):
     pred[s2] = None
     dist[s2] = Weight(homology=[0, 0])
     update_weights(graph, s2, pred, dist)
+
+    # Compute actual holy tree @ s2, then compare
+    correct_pred, correct_dist = fast_initial_tree(graph, s2)
+    assert correct_dist == dist
+    assert correct_pred == pred
+    #report(correct_pred, correct_dist)
+    #report(pred, dist)
     
     # Done with the process, let's print out the new distances
     print("done with {0} -> {1}. New root is {1}. Holy Tree: {2}".format(s1, s2, is_holy_tree(graph, pred, dist)))
@@ -160,7 +167,7 @@ def debug():
     move_around_face(g1, m, n, vertices)
 
 def debug_grid():
-    m, n = 3,3
+    m, n = 4, 4
     g1 = grid.generate_2d_grid(m, n)
     vertices = get_face_vertices(g1, [(1,1), (0,1), (0, 0), (1,0)])
     move_around_face(g1, m, n, vertices)
