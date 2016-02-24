@@ -108,7 +108,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
     """
     dart = s1.neighbors[s2]
 
-    lambd = Weight(homology=[0,0])
+    lambda_weight = Weight(homology=[0,0])
     s = graph.add_vertex((-1,-1)) # special vertex to walk along the s1 -> s2.
     dist[s] = Weight(homology=[0,0])
 
@@ -142,9 +142,8 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
 
         # Check the value of the min_slack / 2 would not result in s "go over" s2.
         if min_dart != None and Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],\
-                       float(minimum_slack.leafmost) / 2) + lambd < dart.weight:
+                       float(minimum_slack.leafmost) / 2) + lambda_weight < dart.weight:
             draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart)
-
 
             # DEBUG
             print("{} -> {} pivots in. {}. {}".format(min_dart.tail, min_dart.head, min_dart.weight, minimum_slack))
@@ -156,7 +155,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
             # w represents the value to move s from s1 to s2.
             w = Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],\
                        float(minimum_slack.leafmost) / 2)
-            lambd += w # Keep track of the current progress.
+            lambda_weight += w # Keep track of the current progress.
 
             if pred[s1] == s:
                 add_subtree(s1, w, pred, dist)
@@ -177,7 +176,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
             print("Check after pivot {} -> {}: {}".format(min_dart.tail, min_dart.head, is_holy_tree(graph, pred, dist)))
 
         else: # no more pivot, move the values dart.weight - lambd, then make the s2 new pivot
-            delta = dart.weight - lambd
+            delta = dart.weight - lambda_weight
             add_subtree(s2, -delta, pred, dist)
             print("When moved all the way to s2, distance to s2: {}".format(dist[s2]))
 
@@ -190,12 +189,14 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
 
     graph.remove_vertex(s.name)
     Edge(s1, s2, copy.deepcopy(dart.weight), dart.left, dart.right)
+
+    # s2's the new root.
     pred[s2] = None
     pred[s1] = s2
-    # s2's the new root.
     #pred[s2] = None
     #dist[s2] = Weight(homology=[0, 0])
     #update_weights(s2, pred, dist)
+
     # Ensure that there is no tense dart at the end of the root move.
     print("distance to s2: {}".format(dist[s2]))
     print("distance to s1: {}, dart: {}".format(dist[s1], s2.neighbors[s1]))
@@ -221,7 +222,8 @@ def move_around_face(graph, m, n, vertices):
         if u != None:
             acc[(u.name, v.name)] = 1
     print("---Initial tree---")
-    # report(pred, dist)
+    report(pred, dist)
+    print("initial tree holy: {}".format(is_holy_tree(graph, pred, dist)))
     print("----------------------")
 
     for i in range(len(vertices)):
@@ -230,8 +232,7 @@ def move_around_face(graph, m, n, vertices):
         # Source will move from s1 -> s2, updating pred and dist dictionaries.
         move_across_dart(graph, m, n, s1, s2, pred, dist, acc)
 
-    print("Pivot summary")
-    print(acc)
+    print("Pivot summary: \n {}".format(acc))
 
     # For sanity check, at the end of the cycle, dist and pred should be exactly same as the initial holy tree
     # computation.
@@ -246,30 +247,16 @@ def get_face_vertices(graph, names):
         vertices.append(graph.get_vertex(name))
     return vertices
 
-
-def main():
-    """
-    Main function to get all the MSSP distances as move around the face.
-    :return:
-    """
-    m, n = 3, 3
-    g1 = grid.g1()
-    vertices = get_face_vertices(g1, [(1, 1), (0, 1), (0, 0), (1, 0)])
-    move_around_face(g1, m, n, vertices)
-
-
 def debug():
     m, n = 3, 3
     g1 = grid.g1()
     vertices = get_face_vertices(g1, [(1, 1), (0, 1), (0, 0), (1, 0)])
     move_around_face(g1, m, n, vertices)
 
-
 def debug_grid():
     m, n = 3, 3
     g1 = grid.generate_2d_grid(m, n)
     vertices = get_face_vertices(g1, [(1, 1), (0, 1), (0, 0), (1, 0)])
     move_around_face(g1, m, n, vertices)
-
 
 debug_grid()
