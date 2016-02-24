@@ -92,7 +92,6 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist):
                 if u.name in blue and v.name in red:
                     active[u.neighbors[v]] = dist[u] + u.neighbors[v].weight - dist[v]
 
-        #draw_grid.display(graph, m, n, s1.name, blue, red, pred)
         # Do pivot on dart with minimum slack.
         minimum_slack = Weight(length=float('inf'))
         min_dart = None
@@ -153,16 +152,6 @@ def get_face_vertices(graph, names):
     for name in names:
         vertices.append(graph.get_vertex(name))
     return vertices
-
-def main():
-    """
-    Main function to get all the MSSP distances as move around the face.
-    :return:
-    """
-    m, n = 3, 3
-    g1 = grid.g1()
-    vertices = get_face_vertices(g1, [(1,1), (0,1), (0, 0), (1,0)])
-    move_around_face(g1, m, n, vertices)
 
 def debug():
     m, n = 3, 3
