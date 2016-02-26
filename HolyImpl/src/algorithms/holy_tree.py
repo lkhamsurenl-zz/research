@@ -101,7 +101,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist):
                 minimum_slack = active[d]
 
         if min_dart != None:
-            draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart)
+            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, min_dart)
             # Update dist and pred pointers respectively for the vertices.
             dist[min_dart.head] = dist[min_dart.tail] + min_dart.weight
             pred[min_dart.head] = min_dart.tail
