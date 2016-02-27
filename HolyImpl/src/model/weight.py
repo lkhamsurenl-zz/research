@@ -11,6 +11,9 @@ class Weight:
         return cmp((self.length, self.homology, self.leafmost), \
                    (other.length, other.homology, other.leafmost))
 
+    def __neg__(self):
+        return Weight(-self.length, [-i for i in self.homology], -self.leafmost)
+
     def __add__(self, other):
         return Weight(self.length + other.length, [i + j for (i, j) in zip(self.homology, other.homology)], \
                                      self.leafmost + other.leafmost)

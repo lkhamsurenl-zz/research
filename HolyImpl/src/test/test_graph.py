@@ -18,8 +18,13 @@ class TestGraph(TestCase):
     def test_remove_vertex(self):
         a = Vertex("a")
         b = Vertex("b")
+        c = Vertex("c")
         a.add_dart(b, 1)
+        a.add_dart(c, 1)
+        b.add_dart(c, 1)
 
-        g = Graph([a, b])
+        g = Graph([a, b, c])
         g.remove_vertex("a")
-        self.assertTrue(len(g.vertices) == 1)
+        self.assertTrue(len(g.vertices) == 2)
+        self.assertTrue(len(g.get_vertex("b").neighbors) == 1)
+        self.assertTrue(len(g.get_vertex("c").neighbors) == 0)
