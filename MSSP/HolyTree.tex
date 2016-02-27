@@ -24,16 +24,16 @@ on a surface with genus $g$. All edge weights are unit. \\
 a shortest path to $\forall u \in V$. \\
 
 Let $T$ be the BFS (Breadth first search) tree of $G$, and $C$ be the BFS co-tree
-in $G$. Then there is exactly $2g$ leftover edges $L = {e_1, e_2, \ldots, e_{2g}}$. \\
+in $G$. Then there is exactly $2g$ leftover edges $L = \{e_1, e_2, \ldots, e_{2g}\}$. \\
 
 There exists a unique cycle $\lambda_i$ in $C \cup {e_i}$, and $(\lambda_1, 
-\lambda_2, \ldots, \lambda_{2g}) = \Lambda$ defines homology basis. \\
+\lambda_2, \ldots, \lambda_{2g}) = \Lambda$ defining homology basis. \\
 We define homological signature of an edge as follows:
 \[ [e]_{i} = \begin{cases} 1 & ,\mbox{if } e \in \lambda_i \\
                           -1 & ,\mbox{if } rev(r) \in \lambda_i \\
                            0 & ,\mbox{otherwise} \end{cases}\]
 
-Furthermore, we define $\alpha$ recursively as follows: \\
+Furthermore, we define leafmost term $\alpha$ recursively as follows: \\
 \[ \alpha(\vec{e}^*) = \begin{cases} 1 & ,\mbox{if } e^* \mbox{ is a leaf edge of } C \\
                            \sum \limits_{ \text{tail}(\vec{e}^{'*})
                            = \text{head}(\vec{e}^*) } \alpha(\vec{e}^{'}) & ,
@@ -69,36 +69,36 @@ for all $v : v \neq r$ \\ \quad \quad
     $d[r] \leftarrow \langle \infty, [\infty], \infty \rangle$ \\ \quad \quad
     pred($r$) $\leftarrow$ NULL \\ \quad
 put $r$ into queue \\ \quad
-while queue is not Empty: \\ \quad \quad
-    Let $s \leftarrow$ dequeue item \\ \quad \quad
-    for all $u: s \rightarrow u$ \\ \qquad \quad
-        if $u$ is not marked \\ \quad \qquad \quad
-           mark $u$ and put in the queue \\ \qquad \quad
-        if isTense($s \rightarrow u$) \\ \quad \qquad \quad
-           relax($s \rightarrow u$)
+while queue is not empty: \\ \quad \quad
+    Let $u \leftarrow$ dequeue item \\ \quad \quad
+    for all $u \rightarrow v$ \\ \qquad \quad
+        if $v$ is not marked \\ \quad \qquad \quad
+           mark $v$ and put in the queue \\ \qquad \quad
+        if isTense($u \rightarrow v$) \\ \quad \qquad \quad
+           relax($u \rightarrow v$)
 \end{algorithm}
 \end{minipage}
 \hfill%
 \hspace{-4cm}
 \begin{minipage}[t]{0.48\linewidth}
 \begin{algorithm}
-\textbf{\underline{isTense}}($s \rightarrow u$): \\ \quad
-return $d[s] + \tilde w(s \rightarrow u) < d[u]$ \\
+\textbf{\underline{isTense}}($u \rightarrow v$): \\ \quad
+return $d[u] + \tilde w(u \rightarrow v) < d[v]$ \\
 
 \end{algorithm}
 
 \vspace{0.5cm}
 
 \begin{algorithm}
-\textbf{\underline{relax}}($s \rightarrow u$): \\ \quad
-$d[u] \leftarrow d[s] + \tilde w(s \rightarrow u)$ \\ \quad
-pred[u] $\leftarrow s$ \\
+\textbf{\underline{relax}}($u \rightarrow v$): \\ \quad
+$d[v] \leftarrow d[u] + \tilde w(u \rightarrow v)$ \\ \quad
+pred[v] $\leftarrow u$ \\
 \end{algorithm}
 \end{minipage}
 
 \vspace{0.5cm}
 
-\textbf{\underline{Observation:}} Each edge will be added once to the queue. \\
+\textbf{\underline{Observation:}} Each vertex will be added once to the queue. \\
 
 \textbf{\underline{Corollary:}} Each edge will be relaxed at most once. \\
 
@@ -106,20 +106,62 @@ pred[u] $\leftarrow s$ \\
 $v: r \rightarrow \ldots \rightarrow \text{pred}(\text{pred}(v)) \rightarrow 
 \text{pred}(v) \rightarrow v$ is the holiest path from $r$ to $v$.
 
-\begin{proof} Let's prove it by induction on $d[v]$ distance from the root $r$. \\
-\underline{Base:} $d[v] = 0$, then v = r, so the claim is definitely true. \\
+\begin{proof} Let's prove it by induction on $d[v][0]$ distance from the root $r$. \\
+\underline{Base:} $d[v][0] = 0$, then v = r, so the claim holds trivially. \\
 \underline{Induction Step:} Suppose the claim is true for all vertex $v \in V$ 
-such that $d[v] < d$ for some d. Consider vertex v such that $d[v] = d$. 
-By induction hypothesis, all vertices with $d[u] = d-1$ have "holiest" path 
-correctly updated. By definition, $d[v] = \text{min}_{s \rightarrow v}{d[s] + 
-\tilde w(s \rightarrow v)}$, here $d[s] = d-1$. By Induction hypothesis, $d[s]$ 
-is "holiest" path, so if there is no tense edge in G then 
-$d[v] = \text{min}_{s \rightarrow v}{d[s] + \tilde w(s \rightarrow v)}$ holds.
+such that $d[v][0] < d$ for some d. Consider vertex v such that $d[v][0] = d$. 
+By induction hypothesis, all vertices with $d[u][0] = d-1$ have "holiest" path 
+correctly updated. By definition, $d[v] = \text{min}_{u \rightarrow v}{d[u] + 
+\tilde w(u \rightarrow v)}$, here $d[u][0] = d-1$. By Induction hypothesis, $d[u]$ 
+is not tense and can construct "holiest" path to $u$, so if there is no tense
+edge in G then $d[v] = \text{min}_{u \rightarrow v}{d[u] + \tilde w(u \rightarrow v)}$ 
+holds.
 \end{proof}
 
 \textbf{\underline{Corollary:}} The algorithm will produce "holiest" tree rooted at r in linear time.
 
 We now have produced our initial "Holiest" tree.
+
+\section{Moving Along an Edge}
+Consider a single edge uv in G. Suppose we already computed the shortest-path
+tree $T_u$ rooted at u. We transform $T_u$ into the shortest-path tree
+$T_v$ as follows. First, we insert a new vertex s in the inerior of the uv,
+bisecting it into two edges su and sv with weights:
+\[ w_{\lambda}(s \rightarrow u) = \langle 0, -2 * [w(u \rightarrow v)], 
+-2 * \alpha(w(u \rightarrow v)) \rangle  + \lambda \]
+\[ w_{\lambda}(s \rightarrow v) = \langle 1, [w(u \rightarrow v)], 
+\alpha(w(u \rightarrow v)) \rangle - \lambda = w(u \rightarrow v) - \lambda \]
+
+Every other dart $x \rightarrow y$ has constant parametric weight 
+$w_{\lambda}(x \rightarrow y) = w(x \rightarrow y)$
+We then maintain the shortest-path tree $T_{\lambda}$ rooted at s, with respect
+to the weight function $w_{\lambda}$, as $\lambda$ increases continuously from
+0 to $w(u \rightarrow v)$. When $\lambda = w(u \rightarrow v)$, 
+$T_{\lambda} = T_v$.
+
+In the following algorithm, \textbf{pred} defines SSSP rooted at $u$, and 
+\textbf{dist} is corresponding distance to each vertex in the graph.
+
+\begin{algorithm}
+\textbf{\underline{MoveAlongAnEdge}}($G, u \rightarrow v, dist, pred$): \\ \quad
+Add new vertex s \\ \quad
+$\lambda \leftarrow 0$ \\ \quad
+$w(s \rightarrow u) \leftarrow \langle 0, -2 * [w(s \rightarrow u)], 
+-2 * \alpha(w(s \rightarrow u)) \rangle$ \\ \quad
+$w(s \rightarrow v) \leftarrow w(u \rightarrow v)$ \\ \quad
+$pred[u], pred[v] \leftarrow s$ \\ \quad
+AddSubtree$(w(s \rightarrow u), u)$ \\ \quad
+
+while $\lambda < w(u \rightarrow v)$: \\ \quad \quad
+    \textbf{pivot} $\leftarrow $ FindNextPivot \\ \quad \quad
+    If \textbf{pivot} is non NULL \\ \qquad \quad
+        Pivot(\textbf{pivot}) \\ \quad \quad
+    else \\ \qquad \quad
+        $\delta = w(u \rightarrow v) - \lambda$ \\ \qquad \quad
+        AddSubtree$(\delta, u)$ \\ \qquad \quad
+        AddSubtree$(-\delta, v)$ \\ \qquad \quad
+        $\lambda \leftarrow \lambda + \delta$ \\
+\end{algorithm}
 
 \section{Minimum Cost Flow Problem and methods to solve them}
 There are several ways to define minimum cost flow and with different types of 
