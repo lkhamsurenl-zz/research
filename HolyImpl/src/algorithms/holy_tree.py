@@ -78,7 +78,7 @@ def is_holy_tree(graph, pred, dist):
         for v in u.neighbors:
             slack = dist[u] + u.neighbors[v].weight - dist[v]
             if slack < Weight(homology=[0, 0]) or (slack == Weight(homology=[0, 0]) and pred[v] != u):
-                print("is_holy_tree() = {0} -> {1} is tense.dist[{0}]={2}, dist[{1}] = {3}, weight = {4}; slack = {5}".
+                print("is_holy_tree()={0}->{1} tense; dist[{0}]={2};dist[{1}]={3};weight={4};slack={5}".
                       format(u, v, dist[u], dist[v], u.neighbors[v].weight, slack))
                 is_holy = False
     return is_holy
@@ -256,7 +256,7 @@ def debug():
 
 def debug_grid():
     sys.setrecursionlimit(10000)
-    m, n = 4, 4
+    m, n = 10, 10
     g1 = grid.generate_2d_grid(m, n)
     vertices = get_face_vertices(g1, [(1, 1), (0, 1), (0, 0), (1, 0)])
     move_around_face(g1, m, n, vertices)
