@@ -14,8 +14,12 @@ class Graph:
         for v in self.vertices:
             if v.name == vertex_name:
                 vertex = v
-                self.vertices.remove(vertex)
-                break
+        # Remove darts.
+        for v in self.vertices:
+            if vertex in v.neighbors:
+                del v.neighbors[vertex]
+        # Remove the vertex from the list of vertices in the graph.
+        self.vertices.remove(vertex)
         return vertex
 
     def add_vertex(self, vertex_name):
