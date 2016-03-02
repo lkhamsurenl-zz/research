@@ -146,7 +146,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
         # Check the value of the min_slack / 2 would not result in s "go over" s2.
         if min_dart != None and Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],\
                        float(minimum_slack.leafmost) / 2) + lambda_weight < dart.weight:
-            draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart)
+            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, min_dart)
 
             # DEBUG
             print("{} -> {} pivots in. {}. {}".format(min_dart.tail, min_dart.head, min_dart.weight, minimum_slack))
@@ -256,7 +256,7 @@ def debug():
 
 def debug_grid():
     sys.setrecursionlimit(10000)
-    m, n = 10, 10
+    m, n = 4, 4
     g1 = grid.generate_2d_grid(m, n)
     vertices = get_face_vertices(g1, [(1, 1), (0, 1), (0, 0), (1, 0)])
     move_around_face(g1, m, n, vertices)
