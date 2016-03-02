@@ -42,12 +42,16 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
     if (-1,-1) in red_vertices:
         red_vertices.remove((-1, -1))
 
+    # Replicate color across horizontal boundary.
+    # If (1, 0) is blue, then (m, 0) is also blue.
     for i in range(m + 1):
         if (i % m, 0) in blue:
             blue_vertices.add((i, n))
         elif (i % m, 0) in red:
             red_vertices.add((i, n))
 
+    # Replicate color across horizontal boundary.
+    # If (0, 1) is red, then (0, n) is also red.
     for j in range(n + 1):
         if (0, j % n) in blue:
             blue_vertices.add((m, j))
@@ -167,8 +171,8 @@ def display_dual(graph, m, n, root_name, blue, red, pred, pivot_dart):
             labels[(i, j)] = (i % m, j % n)
     nx.draw_networkx_labels(G, pos, labels=labels)
 
-    # Label root with special text: "Root"
-    nx.draw_spectral(G,node_size=600,nodelist=[root_name],labels={(0, 0):'\n\n\n Root'})
+    # Label root with special text: "Root". In dual graph, root is always (0, 0)
+    nx.draw_spectral(G,node_size=600,nodelist=[(0,0)],labels={(0, 0):'\n\n\n Root'})
 
     # Annotate pivot dart. Make duplicates for the pivot if it's boundary.
     # TODO(lkhamsurenl): Modify the color of pivoted vertex at the first time pivot.
