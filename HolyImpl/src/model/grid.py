@@ -139,9 +139,7 @@ def generate_2d_grid(m, n):
             dart = u.neighbors[v]
             dart.weight = Weight(dart.weight.length, dart.weight.homology, leafmost[(u_name, v_name)])
             # Create reverse, dual, dual reverse respectively with corresponding leafmost terms.
-            dart.create_reverse_dart()
-            dual_dart = dart.create_dual_dart()
-            dual_dart.create_reverse_dart()
+            Edge(dart.tail, dart.head, dart.weight, dart.dual.tail, dart.dual.head)
 
     return graph
 
