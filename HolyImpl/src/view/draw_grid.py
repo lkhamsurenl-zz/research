@@ -93,12 +93,13 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
     # Label root with special text: "Root"
     nx.draw_spectral(G,node_size=400,nodelist=[root_name],labels={root_name:'\n\n\n Root'})
 
-    # Annotate pivot dart. Make duplicates for the pivot if it's boundary.
-    # TODO(lkhamsurenl): Modify the color of pivoted vertex at the first time pivot.
+
     pivot_dups = resolve_boundary_darts(pivot_dart.tail.name, pivot_dart.head.name, m, n)
+    nx.draw_spectral(G,edgelist=pivot_dups,width=6,alpha=1,edge_color='black')
+    # Annotate pivot dart. Make duplicates for the pivot if it's boundary.
     edge_labels = {}
     for pivot in pivot_dups:
-        edge_labels[pivot] = "Pivot"
+        edge_labels[pivot] = "P"
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, label_pos=0.5)
 
     # Draw the graph on screen.
@@ -162,7 +163,7 @@ def display_dual(graph, m, n, root_name, blue, red, pred, pivot_dart):
     # Draw darts with colored labels.
     nx.draw_spectral(G,edgelist=red_darts,width=3,alpha=1,edge_color='red')
     nx.draw_spectral(G,edgelist=blue_darts,width=3,alpha=1,edge_color='blue')
-    nx.draw_spectral(G,edgelist=green_darts,width=4,alpha=1,edge_color='green',node_color='white')
+    nx.draw_spectral(G,edgelist=green_darts,width=4,alpha=1,edge_color='green')
 
     # Override label vertices with (m, j) -> (0, j) and (i, n) -> (i, 0)
     labels = {}
@@ -177,10 +178,13 @@ def display_dual(graph, m, n, root_name, blue, red, pred, pivot_dart):
     # Annotate pivot dart. Make duplicates for the pivot if it's boundary.
     # TODO(lkhamsurenl): Modify the color of pivoted vertex at the first time pivot.
     pivot_dups = resolve_boundary_darts(pivot_dart.dual.tail.name, pivot_dart.dual.head.name, m, n)
-    edge_labels = {}
-    for pivot in pivot_dups:
-        edge_labels[pivot] = "Pivot"
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, label_pos=0.5)
+
+    nx.draw_spectral(G,edgelist=pivot_dups,width=6,alpha=1,edge_color='black',node_color='white')
+    # NOTE(lkhamsurenl): Label pivot with text label.
+    # edge_labels = {}
+    # for pivot in pivot_dups:
+    #     edge_labels[pivot] = "P"
+    # nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, label_pos=0.5)
 
     # Draw the graph on screen.
     plt.show()
