@@ -48,4 +48,4 @@ class Dart:
         return Dart(self.left, self.right, copy.deepcopy(self.weight), self.tail, self.head)
 
     def __str__(self):
-        return "{} -> {}; weight: {}".format(self.tail, self.head, self.weight)
+        return "{}->{}; weight: {}".format(self.tail, self.head, self.weight)
