@@ -75,13 +75,13 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
                 green_darts += resolve_boundary_darts(u.name, v.name, m, n)
 
     # Draw darts with colored labels.
-    nx.draw_spectral(G,edgelist=red_darts,width=3,alpha=1,edge_color='r')
-    nx.draw_spectral(G,edgelist=blue_darts,width=3,alpha=1,edge_color='b')
-    nx.draw_spectral(G,edgelist=green_darts,width=4,alpha=1,edge_color='g')
+    nx.draw_spectral(G,edgelist=red_darts,width=3,alpha=1,edge_color='red')
+    nx.draw_spectral(G,edgelist=blue_darts,width=3,alpha=1,edge_color='blue')
+    nx.draw_spectral(G,edgelist=green_darts,width=4,alpha=1,edge_color='green')
 
     # Color vertices with labels.
-    nx.draw_spectral(G,node_size=600,nodelist=blue_vertices,node_color='b')
-    nx.draw_spectral(G,node_size=600,nodelist=red_vertices,node_color='r')
+    nx.draw_spectral(G,node_size=600,nodelist=blue_vertices,node_color='blue')
+    nx.draw_spectral(G,node_size=600,nodelist=red_vertices,node_color='red')
 
     # Override label vertices with (m, j) -> (0, j) and (i, n) -> (i, 0)
     labels = {}
@@ -160,19 +160,19 @@ def display_dual(graph, m, n, root_name, blue, red, pred, pivot_dart):
                 green_darts += resolve_boundary_darts(dd.tail.name, dd.head.name, m, n)
 
     # Draw darts with colored labels.
-    nx.draw_spectral(G,edgelist=red_darts,width=3,alpha=1,edge_color='r')
-    nx.draw_spectral(G,edgelist=blue_darts,width=3,alpha=1,edge_color='b')
-    nx.draw_spectral(G,edgelist=green_darts,width=4,alpha=1,edge_color='g')
+    nx.draw_spectral(G,edgelist=red_darts,width=3,alpha=1,edge_color='red')
+    nx.draw_spectral(G,edgelist=blue_darts,width=3,alpha=1,edge_color='blue')
+    nx.draw_spectral(G,edgelist=green_darts,width=4,alpha=1,edge_color='green',node_color='white')
 
     # Override label vertices with (m, j) -> (0, j) and (i, n) -> (i, 0)
     labels = {}
     for i in range(m + 1):
         for j in range(n + 1):
             labels[(i, j)] = (i % m, j % n)
-    nx.draw_networkx_labels(G, pos, labels=labels)
+    nx.draw_networkx_labels(G, pos, labels=labels, font_size=9)
 
     # Label root with special text: "Root". In dual graph, root is always (0, 0)
-    nx.draw_spectral(G,node_size=600,nodelist=[(0,0)],labels={(0, 0):'\n\n\n Root'})
+    # nx.draw_spectral(G,node_size=600,nodelist=[(0,0)],labels={(0, 0):'\n\n\n Root'})
 
     # Annotate pivot dart. Make duplicates for the pivot if it's boundary.
     # TODO(lkhamsurenl): Modify the color of pivoted vertex at the first time pivot.
