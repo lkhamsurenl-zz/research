@@ -181,10 +181,10 @@ def display_dual(graph, m, n, root_name, blue, red, pred, pivot_dart):
 
     nx.draw_spectral(G,edgelist=pivot_dups,width=6,alpha=1,edge_color='black',node_color='white')
     # NOTE(lkhamsurenl): Label pivot with text label.
-    # edge_labels = {}
-    # for pivot in pivot_dups:
-    #     edge_labels[pivot] = "P"
-    # nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, label_pos=0.5)
+    edge_labels = {}
+    for pivot in pivot_dups:
+        edge_labels[pivot] = "P"
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, label_pos=0.5)
 
     # Draw the graph on screen.
     plt.show()
