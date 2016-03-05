@@ -37,3 +37,6 @@
 .idea/
 ehthumbs.db
 Thumbs.db
+
+# Resource files #
+HolyImpl/resources/

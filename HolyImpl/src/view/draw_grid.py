@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from sets import Set
 
+
 def resolve_boundary_darts(u_name, v_name, m, n):
     """
     Boundary darts must be duplicated and resolved. For instance, (0, 0) -> (2, 0) must be resolved to
@@ -28,7 +29,7 @@ def resolve_boundary_darts(u_name, v_name, m, n):
                 duplicates.append((i, j))
     return duplicates
 
-def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
+def display(graph, m, n, root_name, blue, red, pred, pivot_dart, pp):
     # Construct the m + 1 by n + 1 grid with directed edges.
     G = nx.grid_2d_graph(m + 1, n + 1)
     G = nx.DiGraph(G)
@@ -103,11 +104,12 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
     # Color vertices with labels.
     nx.draw_spectral(G,node_size=400,nodelist=blue_vertices,node_color='blue')
     nx.draw_spectral(G,node_size=400,nodelist=red_vertices,node_color='red')
-    
-    # Draw the graph on screen.
-    plt.show()
 
-def display_dual(graph, m, n, root_name, blue, red, pred, pivot_dart):
+    # Save the pivoting process onto a file.
+    plt.savefig(pp, format='pdf')
+    plt.close()
+
+def display_dual(graph, m, n, root_name, blue, red, pred, pivot_dart, pp):
     # Construct the m + 1 by n + 1 grid with directed edges.
     G = nx.grid_2d_graph(m + 1, n + 1)
     # First let's not worry about the direction of the darts in the dual.
@@ -188,5 +190,6 @@ def display_dual(graph, m, n, root_name, blue, red, pred, pivot_dart):
         edge_labels[pivot] = "P"
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, label_pos=0.5)
 
-    # Draw the graph on screen.
-    plt.show()
+    # Save the pivoting process onto a file.
+    plt.savefig(pp, format='pdf')
+    plt.close()

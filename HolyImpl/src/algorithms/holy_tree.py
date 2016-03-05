@@ -1,5 +1,6 @@
 import copy
 import sys
+import datetime
 
 from src.model.dart import Dart
 from src.model.edge import Edge
@@ -10,7 +11,7 @@ from src.model import grid
 from src.view import draw_grid
 from src.algorithms.initial_holy_tree import fast_initial_tree
 from sets import Set
-
+from matplotlib.backends.backend_pdf import PdfPages
 
 def add_subtree(source, delta, pred, new_dist):
     """
@@ -98,7 +99,7 @@ def remove_edge(u, v):
     # du.remove_dart(dv)
     # dv.remove_dart(du)
 
-def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
+def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, pp):
     """
     Perform moving from s1 -> s2. Assume s1 and s2 are valid vertices in graph and connected by an edge.
     :param graph:
@@ -146,7 +147,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
         # Check the value of the min_slack / 2 would not result in s "go over" s2.
         if min_dart != None and Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],\
                        float(minimum_slack.leafmost) / 2) + lambda_weight < dart.weight:
-            draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart)
+            draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart, pp)
 
             # DEBUG
             print("{} -> {} pivots in. {}. {}".format(min_dart.tail, min_dart.head, min_dart.weight, minimum_slack))
@@ -227,12 +228,18 @@ def move_around_face(graph, m, n, vertices):
     print("initial tree holy: {}".format(is_holy_tree(graph, pred, dist)))
     print("----------------------")
 
+    # Create a new pdf file with current timestamp.
+    now = datetime.datetime.now()
+    pp = PdfPages('../../resources/{}.pdf'.format(now.strftime("%m-%d-%Y-%H:%M")))
+
     for i in range(len(vertices)):
         s1 = vertices[i]
         s2 = vertices[(i + 1) % len(vertices)]
         # Source will move from s1 -> s2, updating pred and dist dictionaries.
-        move_across_dart(graph, m, n, s1, s2, pred, dist, acc)
+        move_across_dart(graph, m, n, s1, s2, pred, dist, acc, pp)
 
+    # Close the pdf file.
+    pp.close()
     print("Pivot summary: \n {}".format(acc))
 
     # For sanity check, at the end of the cycle, dist and pred should be exactly same as the initial holy tree
