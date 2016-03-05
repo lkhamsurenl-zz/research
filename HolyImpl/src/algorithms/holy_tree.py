@@ -99,7 +99,7 @@ def remove_edge(u, v):
     # du.remove_dart(dv)
     # dv.remove_dart(du)
 
-def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, pp):
+def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pdf):
     """
     Perform moving from s1 -> s2. Assume s1 and s2 are valid vertices in graph and connected by an edge.
     :param graph:
@@ -147,7 +147,8 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, pp):
         # Check the value of the min_slack / 2 would not result in s "go over" s2.
         if min_dart != None and Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],\
                        float(minimum_slack.leafmost) / 2) + lambda_weight < dart.weight:
-            draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart, pp)
+            draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart, original_pdf)
+            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, min_dart, dual_pdf)
 
             # DEBUG
             print("{} -> {} pivots in. {}. {}".format(min_dart.tail, min_dart.head, min_dart.weight, minimum_slack))
@@ -230,16 +231,18 @@ def move_around_face(graph, m, n, vertices):
 
     # Create a new pdf file with current timestamp.
     now = datetime.datetime.now()
-    pp = PdfPages('../../resources/{}.pdf'.format(now.strftime("%m-%d-%Y-%H:%M")))
+    original_pdf = PdfPages('../../resources/{}-original.pdf'.format(now.strftime("%m-%d-%H:%M")))
+    dual_pdf = PdfPages('../../resources/{}-dual.pdf'.format(now.strftime("%m-%d-%H:%M")))
 
     for i in range(len(vertices)):
         s1 = vertices[i]
         s2 = vertices[(i + 1) % len(vertices)]
         # Source will move from s1 -> s2, updating pred and dist dictionaries.
-        move_across_dart(graph, m, n, s1, s2, pred, dist, acc, pp)
+        move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pdf)
 
     # Close the pdf file.
-    pp.close()
+    original_pdf.close()
+    dual_pdf.close()
     print("Pivot summary: \n {}".format(acc))
 
     # For sanity check, at the end of the cycle, dist and pred should be exactly same as the initial holy tree
