@@ -146,7 +146,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc):
         # Check the value of the min_slack / 2 would not result in s "go over" s2.
         if min_dart != None and Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],\
                        float(minimum_slack.leafmost) / 2) + lambda_weight < dart.weight:
-            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, min_dart)
+            draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart)
 
             # DEBUG
             print("{} -> {} pivots in. {}. {}".format(min_dart.tail, min_dart.head, min_dart.weight, minimum_slack))

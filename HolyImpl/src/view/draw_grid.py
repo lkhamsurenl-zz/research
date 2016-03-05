@@ -79,9 +79,7 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
     nx.draw_spectral(G,edgelist=blue_darts,width=3,alpha=1,edge_color='blue')
     nx.draw_spectral(G,edgelist=green_darts,width=4,alpha=1,edge_color='green')
 
-    # Color vertices with labels.
-    nx.draw_spectral(G,node_size=400,nodelist=blue_vertices,node_color='blue')
-    nx.draw_spectral(G,node_size=400,nodelist=red_vertices,node_color='red')
+
 
     # Override label vertices with (m, j) -> (0, j) and (i, n) -> (i, 0)
     labels = {}
@@ -102,6 +100,10 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart):
         edge_labels[pivot] = "P"
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, label_pos=0.5)
 
+    # Color vertices with labels.
+    nx.draw_spectral(G,node_size=400,nodelist=blue_vertices,node_color='blue')
+    nx.draw_spectral(G,node_size=400,nodelist=red_vertices,node_color='red')
+    
     # Draw the graph on screen.
     plt.show()
 
