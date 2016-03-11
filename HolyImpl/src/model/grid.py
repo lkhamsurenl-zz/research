@@ -49,9 +49,9 @@ def compute_leafmost(spanning_tree):
         # Find which ones are the leaf
         for v_name in count.keys():
             if count[v_name] == 1 and v_name != None:
-                # TODO(lkhamsurenl): Current leafmost assignment points away from the root face. Negating would
+                # TODO(lkhamsurenl): Current leafmost assignment points towards the root face. Negating would
                 # reverse the direction.
-                leafmost[(spanning_tree[v_name], v_name)] = num_children[v_name] + 1
+                leafmost[(spanning_tree[v_name], v_name)] = -num_children[v_name] - 1
                 num_children[spanning_tree[v_name]] = num_children[spanning_tree[v_name]] + num_children[v_name] + 1 \
                     if spanning_tree[v_name] != None else 0
                 del spanning_tree[v_name]
