@@ -34,7 +34,7 @@ We define homological signature of an edge as follows:
                            0 & ,\mbox{otherwise} \end{cases}\]
 
 Furthermore, we define leafmost term $\alpha$ recursively as follows: \\
-\[ \alpha(\vec{e}^*) = \begin{cases} 1 & ,\mbox{if } e^* \mbox{ is a leaf edge of } C \\
+\[ \alpha(\vec{e}^*) = \begin{cases} 1 & ,\mbox{if } rev(e^*) \mbox{ is a leaf dart in } C \\
                            \sum \limits_{ \text{tail}(\vec{e}^{'*})
                            = \text{head}(\vec{e}^*) } \alpha(\vec{e}^{'}) & ,
                            \mbox{otherwise} \end{cases}\]
@@ -44,7 +44,7 @@ We can extend above definition with $\alpha(\vec{e}) = \alpha( \vec{e}^* )$ and
 Let $\tilde w(\vec{e}) = \langle 1, [\vec{e}], \alpha(\vec{e}) \rangle$ be new
 weight vector for each edge in $G$.
 \begin{center}
-\includegraphics[scale = 0.3]{alphaDef.jpg}
+\includegraphics[scale = 0.5]{g1.jpg}
 \end{center}
 
 \textbf{\underline{Def:}} An edge $\vec{e}$ is "holier" than $\vec{e}^{'}$, 
@@ -63,10 +63,10 @@ shortest path tree rooted at r. \\
 \begin{minipage}[t]{0.48\linewidth}
 \begin{algorithm}
 \textbf{\underline{BuildHoliestTree}}($G, \tilde w , r$): \\ \quad
-Set $d[r] \leftarrow \langle 0, [0], 0 \rangle$ \\ \quad \quad
+Set $dist[r] \leftarrow \langle 0, [0], 0 \rangle$ \\ \quad \quad
     pred($r$) $\leftarrow$ NULL \\ \quad
 for all $v : v \neq r$ \\ \quad \quad
-    $d[r] \leftarrow \langle \infty, [\infty], \infty \rangle$ \\ \quad \quad
+    $dist[r] \leftarrow \langle \infty, [\infty], \infty \rangle$ \\ \quad \quad
     pred($r$) $\leftarrow$ NULL \\ \quad
 put $r$ into queue \\ \quad
 while queue is not empty: \\ \quad \quad
@@ -83,7 +83,7 @@ while queue is not empty: \\ \quad \quad
 \begin{minipage}[t]{0.48\linewidth}
 \begin{algorithm}
 \textbf{\underline{isTense}}($u \rightarrow v$): \\ \quad
-return $d[u] + \tilde w(u \rightarrow v) < d[v]$ \\
+return $dist[u] + \tilde w(u \rightarrow v) < dist[v]$ \\
 
 \end{algorithm}
 
@@ -91,7 +91,7 @@ return $d[u] + \tilde w(u \rightarrow v) < d[v]$ \\
 
 \begin{algorithm}
 \textbf{\underline{relax}}($u \rightarrow v$): \\ \quad
-$d[v] \leftarrow d[u] + \tilde w(u \rightarrow v)$ \\ \quad
+$dist[v] \leftarrow dist[u] + \tilde w(u \rightarrow v)$ \\ \quad
 pred[v] $\leftarrow u$ \\
 \end{algorithm}
 \end{minipage}
@@ -141,6 +141,18 @@ $T_{\lambda} = T_v$.
 
 In the following algorithm, \textbf{pred} defines SSSP rooted at $u$, and 
 \textbf{dist} is corresponding distance to each vertex in the graph.
+
+% To ensure that introducing $dist_0[s \rightarrow u] = \langle 0, -2 * [
+% w(u \rightarrow v)], -2 * \alpha(w(u \rightarrow v)) \rangle$ does 
+% not introduce any dart with negative slack, we carefully choose fundamental 
+% homology cycles to not cross any of the darts of boundary face f. If we assume
+% that moving around the face process is counter-clockwise as shown below,
+% $\forall u_i -> u_{i + 1} \in f, \alpha(w(u_i \rightarrow u_{i + 1})) <= 0$.
+% Therefore, $dist[s \rightarrow u] = \langle 0, -2 * [
+% w(u \rightarrow v)], -2 * \alpha(w(u \rightarrow v)) \rangle  + \lambda
+% = \langle 0, [0], -2 * \alpha(w(u \rightarrow v)) \rangle  + \lambda$. Since we
+% are adding non-negative distance to u, no slack will be nonnegative by
+% construction. 
 
 \begin{algorithm}
 \textbf{\underline{MoveAlongAnEdge}}($G, u \rightarrow v, dist, pred$): \\ \quad
