@@ -106,15 +106,18 @@ pred[v] $\leftarrow u$ \\
 $v: r \rightarrow \ldots \rightarrow \text{pred}(\text{pred}(v)) \rightarrow 
 \text{pred}(v) \rightarrow v$ is the holiest path from $r$ to $v$.
 
-\begin{proof} Let's prove it by induction on $d[v][0]$ distance from the root $r$. \\
-\underline{Base:} $d[v][0] = 0$, then v = r, so the claim holds trivially. \\
+\begin{proof} Let's prove it by induction on $dist[v][0]$ distance from the root
+$r$. \\
+\underline{Base:} $dist[v].length = 0$, then v = r, so the claim holds trivially. \\
 \underline{Induction Step:} Suppose the claim is true for all vertex $v \in V$ 
-such that $d[v][0] < d$ for some d. Consider vertex v such that $d[v][0] = d$. 
-By induction hypothesis, all vertices with $d[u][0] = d-1$ have "holiest" path 
-correctly updated. By definition, $d[v] = \text{min}_{u \rightarrow v}{d[u] + 
-\tilde w(u \rightarrow v)}$, here $d[u][0] = d-1$. By Induction hypothesis, $d[u]$ 
-is not tense and can construct "holiest" path to $u$, so if there is no tense
-edge in G then $d[v] = \text{min}_{u \rightarrow v}{d[u] + \tilde w(u \rightarrow v)}$ 
+such that $dist[v].length < d$ for some d. Consider vertex v such that 
+$dist[v].length=d$. By induction hypothesis, all vertices with 
+$dist[u].length = d-1$ have "holiest" path 
+correctly updated. By definition, $dist[v] = \text{min}_{u \rightarrow v}{
+dist[u] + \tilde w(u \rightarrow v)}$, here $dist[u].length = d-1$. 
+By Induction hypothesis, $dist[u]$ is not tense and can construct "holiest" 
+path to $u$, so if there is no tense edge in G then 
+$dist[v] = \text{min}\{dist[u] + \tilde w(u \rightarrow v)\}$ 
 holds.
 \end{proof}
 
