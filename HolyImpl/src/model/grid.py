@@ -11,8 +11,8 @@ __author__ = 'Luvsandondov Lkhamsuren'
 def remove_edge(u, v):
     """
     Remove all the edges in u <-> v.
-    :param u:
-    :param v:
+    :param u: tail vertex.
+    :param v: head vertex.
     :return: nothing
     """
     du = u.neighbors[v].dual.head
@@ -147,14 +147,11 @@ def generate_2d_grid(m, n):
 def g1():
     """
     Manually create 3 by 3 grid graph with genus 1.
-    :return:
+    :return: Graph.
     """
     # Build vertices and faces.
-    vertices, faces = [[None for j in range(3)] for i in range(3)], [[None for j in range(3)] for i in range(3)]
-    for i in range(3):
-        for j in range(3):
-            vertices[i][j] = Vertex((i, j))
-            faces[i][j] = Vertex((i, j))
+    vertices = [[Vertex((i, j)) for j in range(3)] for i in range(3)]
+    faces = [[Vertex((i, j)) for j in range(3)] for i in range(3)]
 
     # Build darts, its reverse, dual and dual reverse respectively.
     Edge(vertices[0][0], vertices[0][2], Weight(1, [-1, 0], 0), faces[0][2], faces[2][2])
