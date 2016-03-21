@@ -49,8 +49,8 @@ def compute_leafmost(spanning_tree):
         # Find which ones are the leaf
         for v_name in count.keys():
             if count[v_name] == 1 and v_name != None:
-                # TODO(lkhamsurenl): Current leafmost assignment points towards the root face. Negating would
-                # reverse the direction.
+                # TODO(lkhamsurenl): Current leafmost assignment points towards the root face.
+                # NOTE(lkhamsurenl): Negating would reverse the direction.
                 leafmost[(spanning_tree[v_name], v_name)] = -num_children[v_name] - 1
                 num_children[spanning_tree[v_name]] = num_children[spanning_tree[v_name]] + num_children[v_name] + 1 \
                     if spanning_tree[v_name] != None else 0
@@ -68,11 +68,8 @@ def generate_2d_grid(m, n):
     :return:
     """
     # Generate vertices and faces.
-    vs, fs = [[None for j in range(n)] for i in range(m)], [[None for j in range(n)] for i in range(m)]
-    for i in range(m):
-        for j in range(n):
-            vs[i][j] = Vertex((i, j))
-            fs[i][j] = Vertex((i, j))
+    vs = [[Vertex((i, j)) for j in range(n)] for i in range(m)]
+    fs = [[Vertex((i, j)) for j in range(n)] for i in range(m)]
 
     # Generate all edges and its duals.
     for i in range(m):
@@ -114,11 +111,12 @@ def generate_2d_grid(m, n):
         c_v = c_st.get_vertex((0, j))
         remove_edge(c_u, c_v)
 
+    # Get spanning tree by computing BFS, starting at the current root.
+    # NOTE(lkhamsurenl): Assume root is at (1, 1).
     spanning_tree = bfs(c_st.get_vertex((1, 1)))
-    # print_spanning_tree(spanning_tree)
 
     # Dual spanning tree. Note that we remove all edges in spanning tree and 2g auxiliary edges (which in our case:
-    # (0,n-1) -> (0,0) and (m-1, 0) -> (0,0)).
+    # (0, n-1) -> (0, 0) and (m-1, 0) -> (0, 0)).
     c_g = copy.deepcopy(graph)
     for v_name in spanning_tree:
         u_name = spanning_tree[v_name]
@@ -127,8 +125,9 @@ def generate_2d_grid(m, n):
     remove_edge(c_g.get_vertex((0, n - 1)), c_g.get_vertex((0, 0)))
     remove_edge(c_g.get_vertex((m - 1, 0)), c_g.get_vertex((0, 0)))
 
+    # Compute dual spanning tree by computing BFS rooted at (0, 0) face.
+    # NOTE(lkhamsurenl): Assume root is at face (0, 0).
     dual_spanning_tree = bfs(c_g.get_face((0, 0)))
-    # print_spanning_tree(dual_spanning_tree)
 
     leafmost = compute_leafmost(dual_spanning_tree)
     for (u_name, v_name) in leafmost:
