@@ -4,7 +4,6 @@ import datetime
 
 from src.model.dart import Dart
 from src.model.edge import Edge
-from src.model.vertex import Vertex
 from src.model.weight import Weight
 from collections import deque
 from src.model import grid
@@ -30,7 +29,6 @@ def add_subtree(source, delta, pred, new_dist):
             if pred[v] != None and pred[v] == u:
                 new_dist[v] = new_dist[u] + u.neighbors[v].weight
                 q.appendleft(v)
-
 
 def report(pred, dist):
     # Report pred and dist for the holy tree.
@@ -130,7 +128,6 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pd
         # Get all the active darts.
         active = {}
         (blue, red) = active_darts(s1, s2, pred)
-        # print("blue: {}; red: {}".format(blue, red))
         for u in graph.vertices:
             for v in u.neighbors:
                 if u.name in blue and v.name in red:
@@ -171,7 +168,6 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pd
                 add_subtree(s2, -w, pred, dist)
 
             # Update dist and pred pointers respectively for the vertices.
-            #dist[min_dart.head] = dist[min_dart.tail] + min_dart.weight
             pred[min_dart.head] = min_dart.tail
             # here, if we check the values, it should still be the holy tree
             print("Check after pivot {} -> {}: {}".format(min_dart.tail, min_dart.head, is_holy_tree(graph, pred, dist)))
@@ -201,8 +197,6 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pd
     correct_pred, correct_dist = fast_initial_tree(graph, s2)
     assert correct_dist == dist
     assert correct_pred == pred
-    #report(correct_pred, correct_dist)
-    #report(pred, dist)
 
     # Done with the process, let's print out the new distances
     print("done with {0} -> {1}. New root is {1}".format(s1, s2))
