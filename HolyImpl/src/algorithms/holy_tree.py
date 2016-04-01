@@ -40,6 +40,14 @@ def report(pred, dist):
         print("{0} -> {1}, dist[{0}] = {2}, dist[{1}] = {3}".format(pu, u, dpu, du))
     print("------- --- -------")
 
+def report_multiple_distances(pred1, dist1, pred2, dist2):
+    print("-------  Tree - 1 -------")
+    report(pred1, dist1)
+    print("-------  Tree - 1 -------")
+
+    print("-------  Tree - 2 -------")
+    report(pred2, dist2)
+    print("-------  Tree - 2 -------")
 
 def active_darts(s1, s2, pred):
     """
@@ -105,24 +113,29 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pd
     :param s2: Destination vertex.
     :return:
     """
+    # Original value of the edge s1 -> s2.
     dart = copy.deepcopy(s1.neighbors[s2])
-
+    # Distance from s to s1.
     lambda_weight = Weight(homology=[0,0])
     s = graph.add_vertex((-1,-1)) # special vertex to walk along the s1 -> s2.
     dist[s] = Weight(homology=[0,0])
 
-    Dart(s, s1, Weight(0,[-2*h for h in s1.neighbors[s2].weight.homology], -2 * s1.neighbors[s2].weight.leafmost),\
-         s1.neighbors[s2].right, s1.neighbors[s2].left)
-
-    Dart(s, s2, copy.deepcopy(s1.neighbors[s2].weight), s1.neighbors[s2].left, s1.neighbors[s2].right)
+    Dart(s, s1, Weight(0, [0, 0], 0), dart.right, dart.left)
+    Dart(s, s2, copy.deepcopy(dart.weight), dart.left, dart.right)
 
     remove_edge(s1, s2) # Remove edge btw s1, s2.
     pred[s] = None
     pred[s1] = s
-    add_subtree(s1, s.neighbors[s1].weight, pred, dist)
 
     pred[s2] = s
     dist[s2] = s.neighbors[s2].weight
+
+    # Reduce distance to both s1 and s2 form s by same value: Weight(0, -homology, -leafmost)
+    Dart(s, s1, Weight(0, [-h for h in dart.weight.homology], -dart.weight.leafmost), dart.right, dart.left)
+    add_subtree(s1, Weight(0, [-h for h in dart.weight.homology], -dart.weight.leafmost), pred, dist)
+
+    Dart(s, s2, Weight(1, [0, 0], 0), dart.left, dart.right)
+    add_subtree(s2, Weight(0,[-h for h in dart.weight.homology], -dart.weight.leafmost), pred, dist)
 
     while True:
         # Get all the active darts.
@@ -143,7 +156,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pd
 
         # Check the value of the min_slack / 2 would not result in s "go over" s2.
         if min_dart != None and Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],\
-                       float(minimum_slack.leafmost) / 2) + lambda_weight < dart.weight:
+                       float(minimum_slack.leafmost) / 2) + lambda_weight <= Weight(1, [0, 0], 0):
             draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart, original_pdf)
             draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, min_dart, dual_pdf)
 
@@ -172,8 +185,8 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pd
             # here, if we check the values, it should still be the holy tree
             print("Check after pivot {} -> {}: {}".format(min_dart.tail, min_dart.head, is_holy_tree(graph, pred, dist)))
 
-        else: # no more pivot, move the values dart.weight - lambd, then make the s2 new pivot
-            delta = dart.weight - lambda_weight
+        else: # no more pivot, move the values dart.weight - lambda_weight, then make the s2 new pivot
+            delta = Weight(1, [0, 0], 0) - lambda_weight
             add_subtree(s2, -delta, pred, dist)
             print("When moved all the way to {0}, distance to {0}: {1}".format(s2, dist[s2]))
 
@@ -195,8 +208,8 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pd
 
     # Compute actual holy tree @ s2, then compare
     correct_pred, correct_dist = fast_initial_tree(graph, s2)
-    assert correct_dist == dist
-    assert correct_pred == pred
+    assert correct_dist == dist, report_multiple_distances(correct_pred, correct_dist, pred, dist)
+    assert correct_pred == pred, report_multiple_distances(correct_pred, correct_dist, pred, dist)
 
     # Done with the process, let's print out the new distances
     print("done with {0} -> {1}. New root is {1}".format(s1, s2))
@@ -260,7 +273,7 @@ def debug():
 
 def debug_grid():
     sys.setrecursionlimit(10000)
-    m, n = 3, 3
+    m, n = 6, 6
     g1 = grid.generate_2d_grid(m, n)
     vertices = get_face_vertices(g1, [(1, 1), (0, 1), (0, 0), (1, 0)])
     move_around_face(g1, m, n, vertices)
