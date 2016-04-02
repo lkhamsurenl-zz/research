@@ -123,10 +123,9 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pd
     Dart(s, s1, Weight(0, [0, 0], 0), dart.right, dart.left)
     Dart(s, s2, copy.deepcopy(dart.weight), dart.left, dart.right)
 
-    remove_edge(s1, s2) # Remove edge btw s1, s2.
+    remove_edge(s1, s2) # Remove edge between s1, s2.
     pred[s] = None
     pred[s1] = s
-
     pred[s2] = s
     dist[s2] = s.neighbors[s2].weight
 
@@ -197,6 +196,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pd
     graph.remove_vertex(s.name)
     del pred[s]
     del dist[s]
+    # Insert back the edge between s1 and s2.
     Edge(s1, s2, copy.deepcopy(dart.weight), dart.left, dart.right)
 
     # s2's the new root.
