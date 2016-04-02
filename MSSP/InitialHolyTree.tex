@@ -122,6 +122,79 @@ holds.
 
 We now have produced our initial "Holiest" tree.
 
+\section{Moving Along an Edge}
+Consider a single edge uv, which is on the boundary face $f$ of G. Suppose we
+already computed the holy-tree $T_u$ rooted at u.  We transform $T_u$
+into the holy-tree $T_v$ as follows. First, we insert a new vertex s in the
+interior of the uv, bisecting it into two edges su and sv with weights:
+\[ w_{0}(s \rightarrow u) = \langle 0, [\vec{0}], 0 \rangle \]
+\[ w_{0}(s \rightarrow v) = \langle 1, [w(u \rightarrow v)], 
+  \alpha(w(u \rightarrow v)) \rangle = w(u \rightarrow v)\]
+
+Observe that this condition implies $s = u$, therefore $T_s = T_u$. We reduce 
+distances to u and v as follows:
+
+\[ w_{\epsilon}(s \rightarrow u) = \langle 0, -[w(u \rightarrow v)], 
+  -\alpha(w(u \rightarrow v)) \rangle \]
+\[ w_{\epsilon}(s \rightarrow v) = \langle 1, [\vec{0}], 0 \rangle \]
+
+Since we reduced distance to all vertices in the graph equally, the process does
+not introduce any pivots. Then we define a parametric weights as follows:
+
+\[ w_{\lambda}(s \rightarrow u) = \langle 0, -[w(u \rightarrow v)], 
+  -\alpha(w(u \rightarrow v)) \rangle - \lambda \]
+\[ w_{\lambda}(s \rightarrow v) =  \langle 1, [\vec{0}], 0 \rangle  + \lambda \]
+
+Every other dart $x \rightarrow y$ has constant parametric weight 
+$w_{\lambda}(x \rightarrow y) = w(x \rightarrow y)$.
+We then maintain the holy tree $T_{\lambda}$ rooted at s, with respect
+to the weight function $w_{\lambda}$, as $\lambda$ increases continuously from
+0 to $\langle 1, [\vec{0}], 0 \rangle$. When $\lambda = w(u \rightarrow v)$, 
+$T_{\lambda} = T_v$.
+
+In the following algorithm, \textbf{pred} defines Holy tree rooted at $u$, and 
+\textbf{dist} is corresponding distance to each vertex in the graph. \\
+
+% To ensure that introducing $dist_0[s \rightarrow u] = \langle 0, -2 * [
+% w(u \rightarrow v)], -2 * \alpha(w(u \rightarrow v)) \rangle$ does 
+% not introduce any dart with negative slack, we carefully choose fundamental 
+% homology cycles to not cross any of the darts of boundary face f. If we assume
+% that moving around the face process is counter-clockwise as shown below,
+% $\forall u_i -> u_{i + 1} \in f, \alpha(w(u_i \rightarrow u_{i + 1})) <= 0$.
+% Therefore, $dist[s \rightarrow u] = \langle 0, -2 * [
+% w(u \rightarrow v)], -2 * \alpha(w(u \rightarrow v)) \rangle  + \lambda
+% = \langle 0, [0], -2 * \alpha(w(u \rightarrow v)) \rangle  + \lambda$. Since we
+% are adding non-negative distance to u, no slack will be nonnegative by
+% construction. 
+
+\begin{algorithm}
+\textbf{\underline{MoveAlongEdge}}($G, u \rightarrow v, dist, pred$): \\ \quad
+Add new vertex s \\ \quad
+$pred[u], pred[v] \leftarrow s$ \\ \quad
+$\lambda \leftarrow 0$ \\ \\ \quad
+
+$w(s \rightarrow u) \leftarrow \langle 0, -[w(s \rightarrow u)], 
+-\alpha(w(s \rightarrow u)) \rangle$ \\ \quad
+AddSubtree$(\langle 0, -[w(s \rightarrow u)], 
+-\alpha(w(s \rightarrow u)) \rangle, u)$ \\ \\ \quad
+
+$w(s \rightarrow v) \leftarrow \langle 1, [\vec{0}], 0 \rangle$ \\ \quad
+AddSubtree$(\langle 0, -[w(s \rightarrow u)], 
+-\alpha(w(s \rightarrow u)) \rangle, v)$ \\ \\ \quad
+
+while $\lambda < \langle 1, [\vec{0}], 0 \rangle$: \\ \quad \quad
+    \textbf{pivot} $\leftarrow $ FindNextPivot \\ \quad \quad
+    If \textbf{pivot} is non NULL \textbf{AND} 
+    $(\lambda + slack(\textbf{pivot}) / 2) < \langle 1, [\vec{0}], 0 \rangle$ \\ \qquad \quad
+        Pivot(\textbf{pivot}) \\ \qquad \quad
+        $\lambda \leftarrow \lambda + slack(\textbf{pivot}) / 2$ \\ \quad \quad
+    else \\ \qquad \quad
+        $\delta = \langle 1, [\vec{0}], 0 \rangle - \lambda$ \\ \qquad \quad
+        AddSubtree$(\delta, u)$ \\ \qquad \quad
+        AddSubtree$(-\delta, v)$ \\ \qquad \quad
+        $\lambda \leftarrow \lambda + \delta$ \\
+\end{algorithm}
+
 \newpage
 \section{Working on examples:}
 \textbf{Holiest Tree:} \\
