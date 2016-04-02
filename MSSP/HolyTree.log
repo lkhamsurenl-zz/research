@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.9.13)  2 APR 2016 10:10
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.9.13)  2 APR 2016 10:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -396,7 +396,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 40--43
 
  []
 
-<g1.jpg, id=4, 361.35pt x 578.16pt>
+<g1.jpg, id=12, 361.35pt x 578.16pt>
 File: g1.jpg Graphic file (type jpg)
  <use g1.jpg>
 Package pdftex.def Info: g1.jpg used on input line 47.
@@ -424,10 +424,95 @@ Underfull \hbox (badness 10000) in paragraph at lines 158--160
 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 466.
+
+Underfull \hbox (badness 10000) in paragraph at lines 216--225
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--228
+
+ []
+
 [3]
+Underfull \hbox (badness 10000) in paragraph at lines 245--249
+
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 262.
+
+(/usr/local/texlive/2015basic/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 262.
+
+Underfull \hbox (badness 10000) in paragraph at lines 292--297
+
+ []
+
+[4] <alphaNec.jpg, id=44, 642.4pt x 855.195pt>
+File: alphaNec.jpg Graphic file (type jpg)
+ <use alphaNec.jpg>
+Package pdftex.def Info: alphaNec.jpg used on input line 379.
+(pdftex.def)             Requested size: 642.39844pt x 855.19293pt.
+ [5]
+<torus.jpg, id=51, 245.91875pt x 206.7725pt>
+File: torus.jpg Graphic file (type jpg)
+ <use torus.jpg>
+Package pdftex.def Info: torus.jpg used on input line 387.
+(pdftex.def)             Requested size: 245.91814pt x 206.77199pt.
+ [6 <./alphaNec.jpg> <./torus.jpg>] <genus1.jpg, id=57, 642.4pt x 855.195pt>
+File: genus1.jpg Graphic file (type jpg)
+ <use genus1.jpg>
+Package pdftex.def Info: genus1.jpg used on input line 398.
+(pdftex.def)             Requested size: 385.44298pt x 513.12097pt.
+
+[7 <./genus1.jpg>] <genus2.jpg, id=64, 855.195pt x 642.4pt>
+File: genus2.jpg Graphic file (type jpg)
+ <use genus2.jpg>
+Package pdftex.def Info: genus2.jpg used on input line 407.
+(pdftex.def)             Requested size: 855.19293pt x 642.39844pt.
+
+[8 <./genus2.jpg>] <genus3.jpg, id=69, 855.195pt x 642.4pt>
+File: genus3.jpg Graphic file (type jpg)
+ <use genus3.jpg>
+Package pdftex.def Info: genus3.jpg used on input line 415.
+(pdftex.def)             Requested size: 855.19293pt x 642.39844pt.
+
+[9 <./genus3.jpg>] <Genus4_InitialHolyTree.jpg, id=74, 855.195pt x 642.4pt>
+File: Genus4_InitialHolyTree.jpg Graphic file (type jpg)
+
+<use Genus4_InitialHolyTree.jpg>
+Package pdftex.def Info: Genus4_InitialHolyTree.jpg used on input line 423.
+(pdftex.def)             Requested size: 855.19293pt x 642.39844pt.
+ [10 <./Genus4_InitialHolyTree.jpg>]
+<genus4_initialPivot.jpg, id=79, 855.195pt x 642.4pt>
+File: genus4_initialPivot.jpg Graphic file (type jpg)
+
+<use genus4_initialPivot.jpg>
+Package pdftex.def Info: genus4_initialPivot.jpg used on input line 431.
+(pdftex.def)             Requested size: 855.19293pt x 642.39844pt.
+ [11 <./genus4_initialPivot.jpg>]
+<genus4_after4Pivots.jpg, id=84, 855.195pt x 642.4pt>
+File: genus4_after4Pivots.jpg Graphic file (type jpg)
+
+<use genus4_after4Pivots.jpg>
+Package pdftex.def Info: genus4_after4Pivots.jpg used on input line 439.
+(pdftex.def)             Requested size: 855.19293pt x 642.39844pt.
+ [12 <./genus4_after4Pivots.jpg>]
+<genus4_after5Pivots.jpg, id=89, 855.195pt x 642.4pt>
+File: genus4_after5Pivots.jpg Graphic file (type jpg)
+
+<use genus4_after5Pivots.jpg>
+Package pdftex.def Info: genus4_after5Pivots.jpg used on input line 448.
+(pdftex.def)             Requested size: 855.19293pt x 642.39844pt.
+ [13 <./genus4_after5Pivots.jpg>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 466.
+ [14]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 466.
- (./HolyTree.aux)
+
+(./HolyTree.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 466.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 466.
 
@@ -437,18 +522,18 @@ Package rerunfilecheck Warning: File `HolyTree.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `HolyTree.out':
-(rerunfilecheck)             Before: D41D8CD98F00B204E9800998ECF8427E;0
-(rerunfilecheck)             After:  2D1DEB52AC378517C0C46E706B541C1B;102.
+(rerunfilecheck)             Before: 2D1DEB52AC378517C0C46E706B541C1B;102
+(rerunfilecheck)             After:  9B55F119C40A99C341D9F3153B8D845F;433.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 466.
  ) 
 Here is how much of TeX's memory you used:
- 7877 strings out of 494501
- 113919 string characters out of 6167030
- 207611 words of memory out of 5000000
- 11062 multiletter control sequences out of 15000+600000
+ 7964 strings out of 494501
+ 115346 string characters out of 6167030
+ 208715 words of memory out of 5000000
+ 11120 multiletter control sequences out of 15000+600000
  7747 words of font info for 32 fonts, out of 8000000 for 9000
  328 hyphenation exceptions out of 8191
- 36i,13n,32p,441b,351s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,17n,32p,441b,415s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx1
 0.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/type1/public/amsfonts/cm/c
 mbx12.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/type1/public/amsfonts/
@@ -456,15 +541,16 @@ cm/cmex10.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/type1/public/amsfo
 nts/cm/cmmi10.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmmi7.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/type1/publi
 c/amsfonts/cm/cmr10.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/type1/pu
-blic/amsfonts/cm/cmr7.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2015basic/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2015basic/texmf-dist/fo
-nts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on HolyTree.pdf (3 pages, 150016 bytes).
+blic/amsfonts/cm/cmr5.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2015basic/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2015basic/texmf-dist/
+fonts/type1/public/amsfonts/symbols/msam10.pfb>
+Output written on HolyTree.pdf (14 pages, 1629246 bytes).
 PDF statistics:
- 68 PDF objects out of 1000 (max. 8388607)
- 50 compressed objects within 1 object stream
- 6 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 147 PDF objects out of 1000 (max. 8388607)
+ 107 compressed objects within 2 object streams
+ 23 named destinations out of 1000 (max. 500000)
+ 67 words of extra memory for PDF output out of 10000 (max. 10000000)
 
