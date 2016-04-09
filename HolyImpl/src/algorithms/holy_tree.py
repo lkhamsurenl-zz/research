@@ -72,7 +72,7 @@ def active_darts(s1, s2, pred):
     red = set([v.name for v in pred.keys()]) - set(blue)
     return (set(blue), red)
 
-def is_holy_tree(graph, pred, dist):
+def is_holy_tree(graph, pred, dist, title="is_holy_tree()"):
     """
     Check if there is no tense dart in graph.
     :param graph:
@@ -80,15 +80,14 @@ def is_holy_tree(graph, pred, dist):
     :param dist:
     :return:
     """
-    is_holy = True
+    print(u"\u25bc\u25bc\u25bc {} \u25bc\u25bc\u25bc".format(title))
     for u in graph.vertices:
         for v in u.neighbors:
             slack = dist[u] + u.neighbors[v].weight - dist[v]
             if slack < Weight(homology=[0, 0]) or (slack == Weight(homology=[0, 0]) and pred[v] != u):
                 print("is_holy_tree()={0}->{1} tense; dist[{0}]={2};dist[{1}]={3};weight={4};slack={5}".
                       format(u, v, dist[u], dist[v], u.neighbors[v].weight, slack))
-                is_holy = False
-    return is_holy
+    print(u"\u25b2\u25b2\u25b2 {} \u25b2\u25b2\u25b2".format(" " * len(title)))
 
 def remove_edge(u, v):
     """
@@ -105,7 +104,7 @@ def remove_edge(u, v):
     # du.remove_dart(dv)
     # dv.remove_dart(du)
 
-def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pdf):
+def move_across_dart(graph, m, n, s1, s2, pred, dist, original_pdf=None, dual_pdf=None):
     """
     Perform moving from s1 -> s2. Assume s1 and s2 are valid vertices in graph and connected by an edge.
     :param graph:
@@ -156,15 +155,10 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pd
         # Check the value of the min_slack / 2 would not result in s "go over" s2.
         if min_dart != None and Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],\
                        float(minimum_slack.leafmost) / 2) + lambda_weight <= Weight(1, [0, 0], 0):
-            draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart, original_pdf)
-            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, min_dart, dual_pdf)
-
-            # DEBUG
-            print("{} -> {} pivots in. {}. {}".format(min_dart.tail, min_dart.head, min_dart.weight, minimum_slack))
-            acc[(min_dart.tail.name, min_dart.head.name)] = acc[(min_dart.tail.name, min_dart.head.name)] + 1 \
-                if (min_dart.tail.name, min_dart.head.name) in acc else 1
-            # report(pred, dist)
-            print("-------------------------------")
+            if original_pdf != None:
+                draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart, original_pdf)
+            if dual_pdf != None:
+                draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, min_dart, dual_pdf)
 
             # w represents the value to move s from s1 to s2.
             w = Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],\
@@ -182,7 +176,8 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pd
             # Update dist and pred pointers respectively for the vertices.
             pred[min_dart.head] = min_dart.tail
             # here, if we check the values, it should still be the holy tree
-            print("Check after pivot {} -> {}: {}".format(min_dart.tail, min_dart.head, is_holy_tree(graph, pred, dist)))
+            print("-------------------------------")
+            is_holy_tree(graph, pred, dist, "Pivot: {}, slack: {}".format(min_dart, minimum_slack))
 
         else: # no more pivot, move the values dart.weight - lambda_weight, then make the s2 new pivot
             delta = Weight(1, [0, 0], 0) - lambda_weight
@@ -204,7 +199,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pd
     pred[s1] = s2
 
     # Ensure that there is no tense dart at the end of the root move.
-    print("no tense dart at root {}: {}".format(s2, is_holy_tree(graph, pred, dist)))
+    is_holy_tree(graph, pred, dist, "Root {}".format(s2))
 
     # Compute actual holy tree @ s2, then compare
     correct_pred, correct_dist = fast_initial_tree(graph, s2)
@@ -226,14 +221,10 @@ def move_around_face(graph, m, n, vertices):
     s1 = vertices[0]  # first source vertex
     (pred, dist) = fast_initial_tree(graph, s1)
     (init_pred, init_dist) = (pred, dist)
-    acc = {}
-    for v in pred:
-        u = pred[v]
-        if u != None:
-            acc[(u.name, v.name)] = 1
+
     print("---Initial tree---")
     report(pred, dist)
-    print("initial tree holy: {}".format(is_holy_tree(graph, pred, dist)))
+    is_holy_tree(graph, pred, dist, "Root {}".format(s1))
     print("----------------------")
 
     # Create a new pdf file with current timestamp.
@@ -245,12 +236,13 @@ def move_around_face(graph, m, n, vertices):
         s1 = vertices[i]
         s2 = vertices[(i + 1) % len(vertices)]
         # Source will move from s1 -> s2, updating pred and dist dictionaries.
-        move_across_dart(graph, m, n, s1, s2, pred, dist, acc, original_pdf, dual_pdf)
+        move_across_dart(graph, m, n, s1, s2, pred, dist, original_pdf, dual_pdf)
 
     # Close the pdf file.
-    original_pdf.close()
-    dual_pdf.close()
-    print("Pivot summary: \n {}".format(acc))
+    if original_pdf != None:
+        original_pdf.close()
+    if dual_pdf != None:
+        dual_pdf.close()
 
     # For sanity check, at the end of the cycle, dist and pred should be exactly same as the initial holy tree
     # computation.
