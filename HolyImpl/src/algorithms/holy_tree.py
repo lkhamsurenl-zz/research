@@ -41,10 +41,12 @@ def report(pred, dist):
     print(u"\u25b3\u25b3\u25b3 Holy Tree \u25b3\u25b3\u25b3")
 
 def report_multiple_distances(pred1, dist1, pred2, dist2):
+    # Report the correct tree.
     print(u"\u25bd\u25bd\u25bd Correct Tree \u25bd\u25bd\u25bd")
     report(pred1, dist1)
     print(u"\u25b3\u25b3\u25b3 Correct Tree \u25b3\u25b3\u25b3")
 
+    # Report the differing tree.
     print(u"\u25bd\u25bd\u25bd Output Tree \u25bd\u25bd\u25bd")
     report(pred2, dist2)
     print(u"\u25b3\u25b3\u25b3 Output Tree \u25b3\u25b3\u25b3")
@@ -201,12 +203,11 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, original_pdf=None, dual_pd
     # Ensure that there is no tense dart at the end of the root move.
     is_holy_tree(graph, pred, dist, "Root {}".format(s2))
 
-    # Compute actual holy tree @ s2, then compare
+    # Compute actual holy tree @ s2, then compare it with the current tree.
     correct_pred, correct_dist = fast_initial_tree(graph, s2)
     assert correct_dist == dist, report_multiple_distances(correct_pred, correct_dist, pred, dist)
     assert correct_pred == pred, report_multiple_distances(correct_pred, correct_dist, pred, dist)
 
-    # Done with the process, let's print out the new distances
     print("done with {0} -> {1}. New root is {1}".format(s1, s2))
 
 def move_around_face(graph, m, n, vertices):
