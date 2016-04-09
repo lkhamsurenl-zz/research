@@ -32,22 +32,22 @@ def add_subtree(source, delta, pred, new_dist):
 
 def report(pred, dist):
     # Report pred and dist for the holy tree.
-    print("-------  Holy tree -------")
+    print(u"\u25bd\u25bd\u25bd Holy Tree \u25bd\u25bd\u25bd")
     for u in pred.keys():
         pu = pred[u] if pred[u] != None else "None"
         dpu = dist[pred[u]] if pred[u] != None and dist[pred[u]] != None else "None"
         du = dist[u] if dist[u] != None else "None"
         print("{0} -> {1}, dist[{0}] = {2}, dist[{1}] = {3}".format(pu, u, dpu, du))
-    print("------- --- -------")
+    print(u"\u25b3\u25b3\u25b3 Holy Tree \u25b3\u25b3\u25b3")
 
 def report_multiple_distances(pred1, dist1, pred2, dist2):
-    print("-------  Tree - 1 -------")
+    print(u"\u25bd\u25bd\u25bd Correct Tree \u25bd\u25bd\u25bd")
     report(pred1, dist1)
-    print("-------  Tree - 1 -------")
+    print(u"\u25b3\u25b3\u25b3 Correct Tree \u25b3\u25b3\u25b3")
 
-    print("-------  Tree - 2 -------")
+    print(u"\u25bd\u25bd\u25bd Output Tree \u25bd\u25bd\u25bd")
     report(pred2, dist2)
-    print("-------  Tree - 2 -------")
+    print(u"\u25b3\u25b3\u25b3 Output Tree \u25b3\u25b3\u25b3")
 
 def active_darts(s1, s2, pred):
     """
