@@ -13,13 +13,35 @@
 
 % Title
 \begin{center}
-\textbf{\large Multiple Source Shortest Path with unit weights}
+\textbf{\large Multiple-source shortest paths with unit weights in embedded
+graphs}
 \end{center}
+
+\DRAFT
+
+\begin{bigabstract}
+We describe a new algorithm that computes multiple-source shortest paths from
+vertices in a given boundary face to all other vertices in a embedded graph
+with unit weight edges.
+\end{bigabstract}
 
 \section{Introduction}
 
+Recently, Eisanstat and Klein $[?]$ introduced a new algorithm for computing
+multiple source shortest path problem for a planar graphs in linear time. Our 
+paper attempts to generalize this idea to embedded graphs. In their paper,
+they maintain so-called leafmost shortest tree to get around an issue of 
+ambiguous shortest paths between a pair of vertices. There is no direct way 
+to generalize leafmost tree computing to an embedded graphs, largely because
+there is no way to define leafmost edge of a data structure in a embedded graphs.
+In the following section we introduce terms that alleviate the process of 
+ambiguous pivoting.\\
+
+We can formally define multiple-source shortest paths problem as follows: \\
+
 \textbf{\underline{Given:}} Let $G$ be a directed graph $(V, \vec{E})$, embedded
 on a surface with genus $g$. All edge weights are unit. \\
+
 \textbf{\underline{Find:}} Consider boundary $f$ of $G$. $\forall v \in f$, find
 a shortest path to $\forall u \in V$. \\
 
@@ -47,16 +69,24 @@ weight vector for each edge in $G$.
 \includegraphics[scale = 0.5]{g1.jpg}
 \end{center}
 
-\textbf{\underline{Def:}} An edge $\vec{e}$ is "holier" than $\vec{e}^{'}$, 
+\vspace{-4.0cm} % Remove the space after the picture.
+
+\begin{oneshot}{Definition}
+An edge $\vec{e}$ is holier than $\vec{e}^{'}$, 
 if $\tilde w(\vec{e}) < \tilde w(\vec{e}^{'})$ in lexicographic comparison. 
-Therefore, we can define "holiness" of any $S \subset G $ as follows:
+Therefore, we can define holiness of any $S \subset G $ as follows:
 \[\text{Ho}(S) = \sum \limits_{\vec{e} \in S} \tilde w(\vec{e})\]
+\end{oneshot}
 
+\section{Need of holy-ness}
+We provide a simple explanation on why it is necessary to introduce holy-ness
+to cope with ambiguity.
 
+{\color{red} ???}
 
 \newpage
 
-Holiest tree is a spanning tree with minimal "holiness". We build Holiest tree 
+Holiest tree is a spanning tree with minimal holiness. We build Holiest tree 
 rooted at $r$, using slight tweak in the Bellman-Ford algorithm for finding 
 shortest path tree rooted at r. \\
 
@@ -98,32 +128,40 @@ pred[v] $\leftarrow u$ \\
 
 \vspace{0.5cm}
 
-\textbf{\underline{Observation:}} Each vertex will be added once to the queue. \\
+\begin{oneshot}{Observation}
+Each vertex will be added once to the queue.
+\end{oneshot}
 
-\textbf{\underline{Corollary:}} Each edge will be relaxed at most once. \\
+\begin{oneshot}{Corollary}
+Each edge will be relaxed at most once.
+\end{oneshot}
 
-\textbf{\underline{Lemma-1:}} If there is no tense edge in $G$, then for each 
+\begin{oneshot}{Lemma 2.1}
+If there is no tense edge in $G$, then for each 
 $v: r \rightarrow \ldots \rightarrow \text{pred}(\text{pred}(v)) \rightarrow 
 \text{pred}(v) \rightarrow v$ is the holiest path from $r$ to $v$.
-
-\begin{proof} Let's prove it by induction on $dist[v][0]$ distance from the root
+\end{oneshot}
+\begin{proof}
+Let's prove it by induction on $dist[v][0]$ distance from the root
 $r$. \\
 \underline{Base:} $dist[v].length = 0$, then v = r, so the claim holds trivially. \\
 \underline{Induction Step:} Suppose the claim is true for all vertex $v \in V$ 
 such that $dist[v].length < d$ for some d. Consider vertex v such that 
 $dist[v].length=d$. By induction hypothesis, all vertices with 
-$dist[u].length = d-1$ have "holiest" path 
+$dist[u].length = d-1$ have holiest path 
 correctly updated. By definition, $dist[v] = \text{min}_{u \rightarrow v}{
 dist[u] + \tilde w(u \rightarrow v)}$, here $dist[u].length = d-1$. 
-By Induction hypothesis, $dist[u]$ is not tense and can construct "holiest" 
+By Induction hypothesis, $dist[u]$ is not tense and can construct holiest 
 path to $u$, so if there is no tense edge in G then 
 $dist[v] = \text{min}\{dist[u] + \tilde w(u \rightarrow v)\}$ 
 holds.
 \end{proof}
 
-\textbf{\underline{Corollary:}} The algorithm will produce "holiest" tree rooted at r in linear time.
+\begin{oneshot}{Corollary}
+The algorithm will produce holiest tree rooted at r in linear time.
+\end{oneshot}
 
-We now have produced our initial "Holiest" tree.
+We now have produced our initial Holiest tree.
 
 \section{Moving Along an Edge}
 Consider a single edge uv, which is on the boundary face $f$ of G. Suppose we
@@ -170,6 +208,7 @@ In the following algorithm, \textbf{pred} defines Holy tree rooted at $u$, and
 % are adding non-negative distance to u, no slack will be nonnegative by
 % construction. 
 
+\begin{center}
 \begin{algorithm}
 \textbf{\underline{MoveAlongEdge}}($G, u \rightarrow v, dist, pred$): \\ \quad
 Add new vertex s \\ \quad
@@ -197,6 +236,29 @@ while $\lambda < \langle 1, [\vec{0}], 0 \rangle$: \\ \quad \quad
         AddSubtree$(-\delta, v)$ \\ \qquad \quad
         $\lambda \leftarrow \lambda + \delta$ \\
 \end{algorithm}
+\end{center}
+
+\section{Bounding number of pivots}
+
+We introce a clocking lemma to prove that each edge is involved in pivoting 
+process at most $O(g)$ times.
+
+\begin{oneshot}{Lemma 4.1}
+Here is the claim of the clocking lemma.
+\end{oneshot}
+\begin{proof}
+Here is the proof.
+\end{proof}
+
+
+\begin{oneshot}{Theorem 4.1}
+Total running time of MSSP is $O(gn)$.
+\end{oneshot}
+\begin{proof}
+Building initial holy tree takes $O(n)$ time. The process of moving arond the
+face and pivoting takes $O(gn)$ as each dart enters and replaces $O(g)$ times.
+\end{proof}
+
 
 \section{Minimum Cost Flow Problem and methods to solve them}
 There are several ways to define minimum cost flow and with different types of 
@@ -223,9 +285,10 @@ Let $\phi(v)$ be a any potential function on a vertex. Then
 $\bar{\text{cost}}(u \rightarrow v) = \phi(u) - \phi(v) + \bar{\text{cost}} (u \rightarrow v)$ 
 satisfies the condition that cost(C) =  $\bar{\text{cost}}(C)$ for any cycle C.\\
 
-\textbf{\underline{Lemma: }} A feasible flow f is optimal $\leftrightarrow$ there 
-is no augmenting cycle in the residual graph. \\
-
+\begin{oneshot}{Lemma} 
+A feasible flow f is optimal $\leftrightarrow$ there is no augmenting cycle in
+the residual graph.
+\end{oneshot}
 \begin{proof}
 $\rightarrow$ Suppose the flow is optimal. If there is an augmenting cycle C, 
 then we can send flow through C and reduce the cost of current flow, contradicting the f is optimal. \\
@@ -373,7 +436,8 @@ that slack is not negative, ensuring that the nothing bad happens.
 \end{itemize}
 
 \section{Additional}
-\textbf{NOTE: } Necessity of the $\alpha$ definition on the edges for "Holiness" \\
+\textbf{NOTE: } Necessity of the $\alpha$ definition on the edges for holiness.  
+\\
 Consider the following picture:
 \begin{center}
 \includegraphics[angle = 90, scale = 0.3]{alphaNec.jpg}
@@ -387,8 +451,6 @@ This will ensure that any two paths $p_1, p_2$, whose $w(p_1) = w(p_2)$ and
 \includegraphics{torus.jpg}
 \end{center}
 $\href{http://en.wikipedia.org/wiki/Homology_(mathematics)}{http://en.wikipedia.org/wiki/Homology_(mathematics)}$
-
-
 
 \newpage
 \section{Working on examples:}
@@ -459,7 +521,7 @@ On genus $g = 5$ surface with initial pivot:
 \item Eisenstat, David, and Philip N. Klein. "Linear-time algorithms for max 
   flow and multiple-source shortest paths in unit-weight planar graphs." 
   Proceedings of the forty-fifth annual ACM symposium on Theory of computing. ACM, 2013.
-\item Erickson, Jeff. "Maximum flows and parametric shortest paths in planar graphs." 
+\item Erickson, Jeff. Maximum flows and parametric shortest paths in planar graphs.
   Proceedings of the twenty-first annual ACM-SIAM symposium on Discrete Algorithms. 
   Society for Industrial and Applied Mathematics, 2010.
 \end{itemize}
