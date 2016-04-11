@@ -39,9 +39,14 @@ the process of ambiguous pivoting.\\
 
 We can formally define multiple-source shortest paths problem as follows: \\
 
+\begin{center}
+{\color{red}Introduce notations, homology, and dual graphs.}
+\end{center}
+
 \begin{oneshot}{Given}
 Let $G$ be a directed graph $(V, \vec{E})$, embedded on a surface with genus $g$.
-All edge weights are unit.
+All edge weights are unit and $|V| = n$. Using Euler's theorem, we can derive 
+$|E| = n + 2g - 1$.
 \end{oneshot}
 
 \begin{oneshot}{Find}
@@ -56,38 +61,44 @@ There exists a unique cycle $\lambda_i$ in $C \cup {e_i}$, and $(\lambda_1,
 \lambda_2, \ldots, \lambda_{2g}) = \Lambda$ defining homology basis. \\
 We define homological signature of an edge as follows:
 \[ [e]_{i} = \begin{cases} 1 & ,\mbox{if } e \in \lambda_i \\
-                          -1 & ,\mbox{if } rev(r) \in \lambda_i \\
+                          -1 & ,\mbox{if } rev(e) \in \lambda_i \\
                            0 & ,\mbox{otherwise} \end{cases}\]
 
 Furthermore, we define leafmost term $\alpha$ recursively as follows: \\
-\[ \alpha(\vec{e}^*) = \begin{cases} 1 & ,\mbox{if } rev(e^*) \mbox{ is a leaf dart in } C \\
-                           \sum \limits_{ \text{tail}(\vec{e}^{'*})
-                           = \text{head}(\vec{e}^*) } \alpha(\vec{e}^{'}) & ,
+\[ \alpha(e^*) = \begin{cases} 1 & ,\mbox{if } rev(e^*) \mbox{ is a leaf dart in } C \\
+                           \sum \limits_{ \text{tail}(e^{'*})
+                           = \text{head}(e^*) } \alpha(e^{'}) & ,
                            \mbox{otherwise} \end{cases}\]
-We can extend above definition with $\alpha(\vec{e}) = \alpha( \vec{e}^* )$ and 
-  $\alpha(e)^* = - \alpha(\text{rev}(\vec{e}^*))$. \\
+We can extend above definition with $\alpha(e) = \alpha(e^*)$ and 
+  $\alpha(e)^* = - \alpha(\text{rev}(e^*))$. \\
 
-Let $\tilde w(\vec{e}) = \langle 1, [\vec{e}], \alpha(\vec{e}) \rangle$ be new
-weight vector for each edge in $G$. We refer to each component by length,
-homology, and leafmost terms respectively.
+Let $\tilde w(e) = \langle 1, \vec{[e]}, \alpha(e) \rangle$ be new
+weight vector for each edge in $G$. We refer to each component this weight vector
+as length, homology, and leafmost terms respectively.
+
 \begin{center}
 \includegraphics[scale = 0.5]{g1.jpg}
 \end{center}
-
 \vspace{-4.0cm} % Remove the space after the picture.
 
 \begin{oneshot}{Definition}
-An edge $\vec{e}$ is holier than $\vec{e}^{'}$, 
-if $\tilde w(\vec{e}) < \tilde w(\vec{e}^{'})$ in lexicographic comparison. 
+An edge $e_1$ is holier than $e_2$, 
+if $\tilde w(e_1) < \tilde w(e_2)$ in lexicographic comparison. 
 Therefore, we can define holiness of any $S \subset G $ as follows:
-\[\text{Ho}(S) = \sum \limits_{\vec{e} \in S} \tilde w(\vec{e})\]
+\[\text{Ho}(S) = \sum \limits_{e \in S} \tilde w(e)\]
 \end{oneshot}
 
 \section{Need of holiness}
 We provide a simple explanation on why it is necessary to introduce holiness
-to cope with ambiguity.
+to cope with ambiguity. \\
 
-{\color{red} ???}
+\begin{center}
+{\color{red}
+1. Describe why homology and leafmost term resolves the issue in higher
+genus graphs. 
+\\ 
+2. Show difference of holy tree and leafmost tree in planar graph case.}
+\end{center}
 
 \section{Initial holy tree}
 
@@ -98,10 +109,10 @@ shortest path tree rooted at r. \\
 \begin{minipage}[t]{0.48\linewidth}
 \begin{algorithm}
 \textbf{\underline{BuildHoliestTree}}($G, \tilde w , r$): \\ \quad
-Set $dist[r] \leftarrow \langle 0, [\vec{0}], 0 \rangle$ \\ \quad \quad
+Set $dist[r] \leftarrow \langle 0, \vec{[0]}, 0 \rangle$ \\ \quad \quad
     pred($r$) $\leftarrow$ NULL \\ \quad
 for all $v : v \neq r$ \\ \quad \quad
-    $dist[r] \leftarrow \langle \infty, [\infty], \infty \rangle$ \\ \quad \quad
+    $dist[r] \leftarrow \langle \infty, \vec{[\infty]}, \infty \rangle$ \\ \quad \quad
     pred($r$) $\leftarrow$ NULL \\ \quad
 put $r$ into queue \\ \quad
 while queue is not empty: \\ \quad \quad
@@ -168,17 +179,26 @@ holds.
 \end{proof}
 
 \begin{oneshot}{Corollary}
-The algorithm will produce holiest tree rooted at r in linear time.
+The algorithm will produce holiest tree rooted at r in $O(n + g)$ time.
 \end{oneshot}
 
-We now have produced our initial holiest tree.
-
 \section{Moving Along an Edge}
+\begin{center}
+{\color{red}
+1. First attempt of not maintain holy tree at all times.
+\\
+2. Second attempt of continuously moving by changing homology and 
+leafmost terms, also reducing destination distance initially.
+\\ 
+3. Necessity of resolving homology and leafmost values for an edge 
+that source is moving.}
+\end{center}
+
 Consider a single edge uv, which is on the boundary face $f$ of G. Suppose we
 already computed the holy-tree $T_u$ rooted at u.  We transform $T_u$
 into the holy-tree $T_v$ as follows. First, we insert a new vertex s in the
 interior of the uv, bisecting it into two edges su and sv with weights:
-\[ w_{0}(s \rightarrow u) = \langle 0, [\vec{0}], 0 \rangle \]
+\[ w_{0}(s \rightarrow u) = \langle 0, \vec{[0]}, 0 \rangle \]
 \[ w_{0}(s \rightarrow v) = \langle 1, [w(u \rightarrow v)], 
   \alpha(w(u \rightarrow v)) \rangle = w(u \rightarrow v)\]
 
@@ -187,20 +207,20 @@ distances to u and v as follows:
 
 \[ w_{\epsilon}(s \rightarrow u) = \langle 0, -[w(u \rightarrow v)], 
   -\alpha(w(u \rightarrow v)) \rangle \]
-\[ w_{\epsilon}(s \rightarrow v) = \langle 1, [\vec{0}], 0 \rangle \]
+\[ w_{\epsilon}(s \rightarrow v) = \langle 1, \vec{[0]}, 0 \rangle \]
 
 Since we reduced distance to all vertices in the graph equally, the process does
 not introduce any pivots. Then we define a parametric weights as follows:
 
 \[ w_{\lambda}(s \rightarrow u) = \langle 0, -[w(u \rightarrow v)], 
   -\alpha(w(u \rightarrow v)) \rangle - \lambda \]
-\[ w_{\lambda}(s \rightarrow v) =  \langle 1, [\vec{0}], 0 \rangle  + \lambda \]
+\[ w_{\lambda}(s \rightarrow v) =  \langle 1, \vec{[0]}, 0 \rangle  + \lambda \]
 
 Every other dart $x \rightarrow y$ has constant parametric weight 
 $w_{\lambda}(x \rightarrow y) = w(x \rightarrow y)$.
 We then maintain the holy tree $T_{\lambda}$ rooted at s, with respect
 to the weight function $w_{\lambda}$, as $\lambda$ increases continuously from
-0 to $\langle 1, [\vec{0}], 0 \rangle$. When $\lambda = w(u \rightarrow v)$, 
+0 to $\langle 1, \vec{[0]}, 0 \rangle$. When $\lambda = w(u \rightarrow v)$, 
 $T_{\lambda} = T_v$.
 
 In the following algorithm, \textbf{pred} defines holy tree rooted at $u$, and 
@@ -230,18 +250,18 @@ $w(s \rightarrow u) \leftarrow \langle 0, -[w(s \rightarrow u)],
 AddSubtree$(\langle 0, -[w(s \rightarrow u)], 
 -\alpha(w(s \rightarrow u)) \rangle, u)$ \\ \\ \quad
 
-$w(s \rightarrow v) \leftarrow \langle 1, [\vec{0}], 0 \rangle$ \\ \quad
+$w(s \rightarrow v) \leftarrow \langle 1, \vec{[0]}, 0 \rangle$ \\ \quad
 AddSubtree$(\langle 0, -[w(s \rightarrow u)], 
 -\alpha(w(s \rightarrow u)) \rangle, v)$ \\ \\ \quad
 
-while $\lambda < \langle 1, [\vec{0}], 0 \rangle$: \\ \quad \quad
+while $\lambda < \langle 1, \vec{[0]}, 0 \rangle$: \\ \quad \quad
     \textbf{pivot} $\leftarrow $ FindNextPivot \\ \quad \quad
     If \textbf{pivot} is non NULL \textbf{AND} 
-    $(\lambda + slack(\textbf{pivot}) / 2) < \langle 1, [\vec{0}], 0 \rangle$ \\ \qquad \quad
+    $(\lambda + slack(\textbf{pivot}) / 2) < \langle 1, \vec{[0]}, 0 \rangle$ \\ \qquad \quad
         Pivot(\textbf{pivot}) \\ \qquad \quad
         $\lambda \leftarrow \lambda + slack(\textbf{pivot}) / 2$ \\ \quad \quad
     else \\ \qquad \quad
-        $\delta = \langle 1, [\vec{0}], 0 \rangle - \lambda$ \\ \qquad \quad
+        $\delta = \langle 1, \vec{[0]}, 0 \rangle - \lambda$ \\ \qquad \quad
         AddSubtree$(\delta, u)$ \\ \qquad \quad
         AddSubtree$(-\delta, v)$ \\ \qquad \quad
         $\lambda \leftarrow \lambda + \delta$ \\
@@ -249,6 +269,14 @@ while $\lambda < \langle 1, [\vec{0}], 0 \rangle$: \\ \quad \quad
 \end{center}
 
 \section{Bounding number of pivots}
+
+\begin{center}
+{\color{red}
+1. Describe how Eisenstat Klein clock lemma works and why it is not easily
+generalizable in higher genus graphs. 
+\\
+2. Describe $P_i^{v}, P_j^{v}$ non-crossing.}
+\end{center}
 
 We introce a clocking lemma to prove that each edge is involved in pivoting 
 process at most $O(g)$ times.
@@ -265,14 +293,15 @@ Here is the proof.
 Total running time of MSSP is $O(gn)$.
 \end{oneshot}
 \begin{proof}
-Building initial holy tree takes $O(n)$ time. The process of moving arond the
+Building initial holy tree takes $O(n + g)$ time. The process of moving arond the
 face and pivoting takes $O(gn)$ as each dart enters and replaces $O(g)$ times.
 \end{proof}
 
 \section{Finding pivot quickly}
 \begin{itemize}
 \item What data structure do we maintain in the G*?
-Finding shortest path in network can also be understood as a Linear Programming problem as follows:
+Finding shortest path in network can also be understood as a Linear Programming 
+problem as follows:
 \item How do we find next pivot quickly using above structure?
 \end{itemize}
 
