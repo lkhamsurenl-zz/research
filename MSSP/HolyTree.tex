@@ -87,7 +87,7 @@ as length, homology, and leafmost terms respectively.
 An edge $e_1$ is holier than $e_2$, 
 if $\tilde w(e_1) < \tilde w(e_2)$ in lexicographic comparison. 
 Therefore, we can define holiness of any $S \subset G $ as follows:
-\[\text{Ho}(S) = \sum \limits_{e \in S} \tilde w(e)\]
+\[\text{H}(S) = \sum \limits_{e \in S} \tilde w(e)\]
 \end{oneshot}
 
 \section{Need of holiness}
@@ -224,11 +224,15 @@ $w(u \rightarrow v) = (0, -\vec{[h]}, -\alpha)$. This change allows us to define
 
 Since we decrease distance to $u$ at the start, this could potentially introduce
 pivots. Suppose, for instance, $x$ be descendant of $u$ and $y$ be of $v$ in $T_s$,
-then $slack(x \rightarrow y) = dist(x) + w(x \rightarrow y) - dist(y) = 
-dist_0(x) + (0, -\vec{[h]}, -\alpha) + w(x \rightarrow y) - dist_0(y) = 
-slack_0(x \rightarrow y) + (0, -\vec{[h]}, -\alpha)$.
+then:
+\begin{align}
+& slack(x \rightarrow y) = dist(x) + w(x \rightarrow y) - dist(y) = \\
+& = dist_0(x) + (0, -\vec{[h]}, -\alpha) + w(x \rightarrow y) - dist_0(y) = \\
+& = slack_0(x \rightarrow y) + (0, -\vec{[h]}, -\alpha) \Rightarrow \\
+& slack(x \rightarrow y) < 0, \text{ if } slack_0(x \rightarrow y) < 
+(0,\vec{[h]},\alpha)
+\end{align}
 
-$slack(x \rightarrow y) < 0$, if $slack_0(x \rightarrow y) < (0,\vec{[h]},\alpha)$
 Therefore, this could be potentially problamatic. Furthermore, \textbf{What if 
 $u \rightarrow v$ has non-trivial homology or leafmost term?}
 
@@ -332,7 +336,25 @@ We introce a clocking lemma to prove that each edge is involved in pivoting
 process at most $O(g)$ times.
 
 \begin{oneshot}{Lemma 4.1}
-Here is the claim of the clocking lemma.
+Let $v_0$ be a first vertex in our given face $f$, and $v_i$ be the source right
+after $i^{th}$ pivot. Consider a vertex $y$. We denote holiest path from 
+$v_i$ to $y$ as $P_i^{y}$. Then $P_i^{y}$ and $P_j^{y}$ are non-crossing for 
+all $i, j$.
+\end{oneshot}
+\begin{proof}
+This is immediate from our definition of holiest path, as no two paths can have
+same value. {\color{red} [???]}
+\end{proof}
+
+\begin{oneshot}{Lemma 4.2}
+As source vertex $s$ moves around the given face f, any dart $d$ has exactly
+$2g$ continuous clock state: 
+\begin{align}
+& d \in T \\
+& d^{*} \in (G/T)^{*} \\
+& rev(d) \in T \\
+& rev(d^{*}) \in (G/T)^{*}
+\end{align}
 \end{oneshot}
 \begin{proof}
 Here is the proof.
