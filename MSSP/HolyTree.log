@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.9.13)  10 APR 2016 23:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.9.13)  11 APR 2016 19:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -387,29 +387,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 40--41
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 57--59
+Underfull \hbox (badness 10000) in paragraph at lines 57--60
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 67--68
+Underfull \hbox (badness 10000) in paragraph at lines 68--69
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 71--74
+Underfull \hbox (badness 10000) in paragraph at lines 73--76
 
  []
 
 <g1.jpg, id=44, 361.35pt x 578.16pt>
 File: g1.jpg Graphic file (type jpg)
  <use g1.jpg>
-Package pdftex.def Info: g1.jpg used on input line 80.
+Package pdftex.def Info: g1.jpg used on input line 82.
 (pdftex.def)             Requested size: 180.67456pt x 289.07928pt.
  [1
 
 {/usr/local/texlive/2015basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 92--94
+Underfull \hbox (badness 10000) in paragraph at lines 94--96
 
  []
 
@@ -419,96 +419,105 @@ Underfull \hbox (badness 10000) in paragraph at lines 105--108
  []
 
 [2 <./g1.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 226--228
+Underfull \hbox (badness 10000) in paragraph at lines 187--190
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 191--195
 
  []
 
 [3]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 302.
+Underfull \hbox (badness 10000) in paragraph at lines 276--278
+
+ []
+
+[4]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 352.
 
  (/usr/local/texlive/2015basic/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 302.
- [4]
-<alphaNec.jpg, id=75, 642.4pt x 855.195pt>
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 352.
+
+<alphaNec.jpg, id=87, 642.4pt x 855.195pt>
 File: alphaNec.jpg Graphic file (type jpg)
  <use alphaNec.jpg>
-Package pdftex.def Info: alphaNec.jpg used on input line 336.
+Package pdftex.def Info: alphaNec.jpg used on input line 386.
 (pdftex.def)             Requested size: 642.39844pt x 855.19293pt.
-
-<torus.jpg, id=76, 245.91875pt x 206.7725pt>
+ [5]
+<torus.jpg, id=92, 245.91875pt x 206.7725pt>
 File: torus.jpg Graphic file (type jpg)
  <use torus.jpg>
-Package pdftex.def Info: torus.jpg used on input line 344.
+Package pdftex.def Info: torus.jpg used on input line 394.
 (pdftex.def)             Requested size: 245.91814pt x 206.77199pt.
- [5 <./alphaNec.jpg>] [6 <./torus.jpg>] <genus1.jpg, id=86, 642.4pt x 855.195pt
->
+ [6 <./alphaNec.jpg> <./torus.jpg>] <genus1.jpg, id=98, 642.4pt x 855.195pt>
 File: genus1.jpg Graphic file (type jpg)
  <use genus1.jpg>
-Package pdftex.def Info: genus1.jpg used on input line 353.
+Package pdftex.def Info: genus1.jpg used on input line 403.
 (pdftex.def)             Requested size: 385.44298pt x 513.12097pt.
 
-[7 <./genus1.jpg>] <genus2.jpg, id=92, 855.195pt x 642.4pt>
+[7 <./genus1.jpg>] <genus2.jpg, id=104, 855.195pt x 642.4pt>
 File: genus2.jpg Graphic file (type jpg)
  <use genus2.jpg>
-Package pdftex.def Info: genus2.jpg used on input line 362.
+Package pdftex.def Info: genus2.jpg used on input line 412.
 (pdftex.def)             Requested size: 855.19293pt x 642.39844pt.
 
-[8 <./genus2.jpg>] <genus3.jpg, id=97, 855.195pt x 642.4pt>
+[8 <./genus2.jpg>] <genus3.jpg, id=109, 855.195pt x 642.4pt>
 File: genus3.jpg Graphic file (type jpg)
  <use genus3.jpg>
-Package pdftex.def Info: genus3.jpg used on input line 370.
+Package pdftex.def Info: genus3.jpg used on input line 420.
 (pdftex.def)             Requested size: 855.19293pt x 642.39844pt.
 
-[9 <./genus3.jpg>] <Genus4_InitialHolyTree.jpg, id=102, 855.195pt x 642.4pt>
+[9 <./genus3.jpg>] <Genus4_InitialHolyTree.jpg, id=114, 855.195pt x 642.4pt>
 File: Genus4_InitialHolyTree.jpg Graphic file (type jpg)
 
 <use Genus4_InitialHolyTree.jpg>
-Package pdftex.def Info: Genus4_InitialHolyTree.jpg used on input line 378.
+Package pdftex.def Info: Genus4_InitialHolyTree.jpg used on input line 428.
 (pdftex.def)             Requested size: 855.19293pt x 642.39844pt.
  [10 <./Genus4_InitialHolyTree.jpg>]
-<genus4_initialPivot.jpg, id=107, 855.195pt x 642.4pt>
+<genus4_initialPivot.jpg, id=119, 855.195pt x 642.4pt>
 File: genus4_initialPivot.jpg Graphic file (type jpg)
 
 <use genus4_initialPivot.jpg>
-Package pdftex.def Info: genus4_initialPivot.jpg used on input line 386.
+Package pdftex.def Info: genus4_initialPivot.jpg used on input line 436.
 (pdftex.def)             Requested size: 855.19293pt x 642.39844pt.
  [11 <./genus4_initialPivot.jpg>]
-<genus4_after4Pivots.jpg, id=112, 855.195pt x 642.4pt>
+<genus4_after4Pivots.jpg, id=124, 855.195pt x 642.4pt>
 File: genus4_after4Pivots.jpg Graphic file (type jpg)
 
 <use genus4_after4Pivots.jpg>
-Package pdftex.def Info: genus4_after4Pivots.jpg used on input line 394.
+Package pdftex.def Info: genus4_after4Pivots.jpg used on input line 444.
 (pdftex.def)             Requested size: 855.19293pt x 642.39844pt.
  [12 <./genus4_after4Pivots.jpg>]
-<genus4_after5Pivots.jpg, id=117, 855.195pt x 642.4pt>
+<genus4_after5Pivots.jpg, id=129, 855.195pt x 642.4pt>
 File: genus4_after5Pivots.jpg Graphic file (type jpg)
 
 <use genus4_after5Pivots.jpg>
-Package pdftex.def Info: genus4_after5Pivots.jpg used on input line 403.
+Package pdftex.def Info: genus4_after5Pivots.jpg used on input line 453.
 (pdftex.def)             Requested size: 855.19293pt x 642.39844pt.
  [13 <./genus4_after5Pivots.jpg>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 421.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 471.
  [14]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 421.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 471.
 
 (./HolyTree.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 421.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 421.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 471.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 471.
 Package rerunfilecheck Info: File `HolyTree.out' has not changed.
 (rerunfilecheck)             Checksum: E525E4D165EC64489999FC201D5D2061;512.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 421.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 471.
  ) 
 Here is how much of TeX's memory you used:
- 7985 strings out of 494501
- 115567 string characters out of 6167030
- 207715 words of memory out of 5000000
+ 7997 strings out of 494501
+ 115714 string characters out of 6167030
+ 209715 words of memory out of 5000000
  11134 multiletter control sequences out of 15000+600000
  9706 words of font info for 38 fonts, out of 8000000 for 9000
  328 hyphenation exceptions out of 8191
- 36i,13n,32p,441b,426s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,13n,32p,441b,409s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx1
 0.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/type1/public/amsfonts/cm/c
 mbx12.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/type1/public/amsfonts/
@@ -523,10 +532,10 @@ nts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015basic/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2015basic/texmf-
 dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2015basic/tex
 mf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on HolyTree.pdf (14 pages, 1643790 bytes).
+Output written on HolyTree.pdf (14 pages, 1646663 bytes).
 PDF statistics:
- 178 PDF objects out of 1000 (max. 8388607)
- 137 compressed objects within 2 object streams
- 25 named destinations out of 1000 (max. 500000)
+ 194 PDF objects out of 1000 (max. 8388607)
+ 153 compressed objects within 2 object streams
+ 37 named destinations out of 1000 (max. 500000)
  131 words of extra memory for PDF output out of 10000 (max. 10000000)
 
