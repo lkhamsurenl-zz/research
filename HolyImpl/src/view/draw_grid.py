@@ -117,7 +117,7 @@ def display_dual(graph, m, n, root_name, blue, red, pred, pivot_dart, pp=None):
     # Construct the m + 1 by n + 1 grid with directed edges.
     G = nx.grid_2d_graph(m + 1, n + 1)
     # First let's not worry about the direction of the darts in the dual.
-    # G = nx.DiGraph(G)
+    G = nx.DiGraph(G)
     pos = nx.spectral_layout(G)
 
     # blue: distance decreasing
