@@ -29,7 +29,7 @@ def resolve_boundary_darts(u_name, v_name, m, n):
                 duplicates.append((i, j))
     return duplicates
 
-def display(graph, m, n, root_name, blue, red, pred, pivot_dart, pp=None):
+def display(graph, m, n, root_name, blue, red, pred, pivot_dart=None, pp=None):
     node_size = 400
     # Construct the m + 1 by n + 1 grid with directed edges.
     G = nx.grid_2d_graph(m + 1, n + 1)
@@ -93,8 +93,8 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart, pp=None):
     # Label root with special text: "Root"
     nx.draw_spectral(G,node_size=node_size,nodelist=[root_name],labels={root_name:'\n\n\n Root'})
 
-
-    pivot_dups = resolve_boundary_darts(pivot_dart.tail.name, pivot_dart.head.name, m, n)
+    pivot_dups = resolve_boundary_darts(pivot_dart.tail.name, pivot_dart.head.name, m, n) if pivot_dart is not None \
+        else []
     nx.draw_spectral(G,edgelist=pivot_dups,width=6,alpha=1,edge_color='black')
     # Annotate pivot dart. Make duplicates for the pivot if it's boundary.
     edge_labels = {}
@@ -113,7 +113,7 @@ def display(graph, m, n, root_name, blue, red, pred, pivot_dart, pp=None):
     else:
         plt.show()
 
-def display_dual(graph, m, n, root_name, blue, red, pred, pivot_dart, pp=None):
+def display_dual(graph, m, n, root_name, blue, red, pred, pivot_dart=None, pp=None):
     # Construct the m + 1 by n + 1 grid with directed edges.
     G = nx.grid_2d_graph(m + 1, n + 1)
     # First let's not worry about the direction of the darts in the dual.
@@ -185,7 +185,8 @@ def display_dual(graph, m, n, root_name, blue, red, pred, pivot_dart, pp=None):
 
     # Annotate pivot dart. Make duplicates for the pivot if it's boundary.
     # TODO(lkhamsurenl): Modify the color of pivoted vertex at the first time pivot.
-    pivot_dups = resolve_boundary_darts(pivot_dart.dual.tail.name, pivot_dart.dual.head.name, m, n)
+    pivot_dups = resolve_boundary_darts(pivot_dart.dual.tail.name, pivot_dart.dual.head.name, m, n) if \
+        pivot_dart != None else []
 
     nx.draw_spectral(G,edgelist=pivot_dups,width=6,alpha=1,edge_color='black',node_color='white')
     # NOTE(lkhamsurenl): Label pivot with text label.

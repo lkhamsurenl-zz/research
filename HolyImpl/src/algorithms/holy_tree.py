@@ -202,6 +202,8 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, original_pdf=None, dual_pd
             is_holy_tree(graph, pred, dist, "Pivot: {}, slack: {}".format(min_dart, minimum_slack))
 
         else:  # no more pivot, move the values dart.weight - lambda_weight, then make the s2 new pivot
+            draw_grid.display(graph, m, n, s1.name, blue, red, pred, None, original_pdf)
+            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, None, dual_pdf)
             delta = Weight(1, [0, 0], 0) - lambda_weight
             add_subtree(s2, -delta, pred, dist)
             print("When moved all the way to {0}, distance to {0}: {1}".format(s2, dist[s2]))
