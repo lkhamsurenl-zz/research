@@ -31,7 +31,7 @@ class TestInitialTree(TestCase):
         fast_end = time.time()
         (slow_pred, slow_dist) = initial_holy_tree.bellman_ford_initial_tree(graph_1, g, vertex)
         slow_end = time.time()
-        print("fast: {}, slow: {}".format(fast_end - fast_start, slow_end - fast_end))
+        print("g = 1 \n fast: {}, slow: {}".format(fast_end - fast_start, slow_end - fast_end))
 
         self.assertEqual(fast_pred, slow_pred)
         self.assertEqual(fast_dist, slow_dist)
@@ -41,14 +41,15 @@ class TestInitialTree(TestCase):
         sys.setrecursionlimit(10000)
 
         graph_1 = grid.g2()
+        g = 2
         # Source vertex.
         vertex = graph_1.get_vertex((1, 1))
         fast_start = time.time()
-        (fast_pred, fast_dist) = initial_holy_tree.fast_initial_tree(graph_1, vertex)
+        (fast_pred, fast_dist) = initial_holy_tree.fast_initial_tree(graph_1, g,  vertex)
         fast_end = time.time()
-        (slow_pred, slow_dist) = initial_holy_tree.bellman_ford_initial_tree(graph_1, vertex)
+        (slow_pred, slow_dist) = initial_holy_tree.bellman_ford_initial_tree(graph_1, g, vertex)
         slow_end = time.time()
-        print("fast: {}, slow: {}".format(fast_end - fast_start, slow_end - fast_end))
+        print("g = 2 \n fast: {}, slow: {}".format(fast_end - fast_start, slow_end - fast_end))
 
         self.assertEqual(fast_pred, slow_pred)
         self.assertEqual(fast_dist, slow_dist)

@@ -189,21 +189,21 @@ def g2():
     faces = [[Vertex((i, j)) for j in range(6)] for i in range(6)]
 
     # Build darts, its reverse, dual and dual reverse respectively.
-    Edge(vertices[0][0], vertices[0][1], Weight(1, [0, 0, 0, 0], 0), faces[5][0], faces[0][0])
-    Edge(vertices[0][0], vertices[1][0], Weight(1, [0, 0, 0, 0], 0), faces[0][0], faces[0][5])
+    Edge(vertices[0][0], vertices[0][1], Weight(1, [0, 0, 0, 0], 0), faces[5][3], faces[0][0])
+    Edge(vertices[0][0], vertices[1][0], Weight(1, [0, 0, 0, 0], 0), faces[0][0], faces[3][5])
     Edge(vertices[1][0], vertices[1][1], Weight(1, [0, 0, 0, 0], 0), faces[0][0], faces[1][0])
-    Edge(vertices[1][0], vertices[2][0], Weight(1, [0, 0, 0, 0], 0), faces[1][0], faces[1][5])
+    Edge(vertices[1][0], vertices[2][0], Weight(1, [0, 0, 0, 0], 0), faces[1][0], faces[4][5])
     Edge(vertices[2][0], vertices[2][1], Weight(1, [0, 0, 0, 0], 0), faces[1][0], faces[2][0])
-    Edge(vertices[2][0], vertices[0][0], Weight(1, [0, -1, 0, 0], 0), faces[2][0], faces[2][5])
+    Edge(vertices[2][0], vertices[0][0], Weight(1, [0, -1, 0, 0], 0), faces[2][0], faces[5][5])
     Edge(vertices[0][0], vertices[3][1], Weight(1, [0, 1, 0, 0], 0), faces[2][0], faces[3][0])
-    Edge(vertices[0][0], vertices[4][0], Weight(1, [0, 0, 0, 0], 0), faces[3][0], faces[3][5])
+    Edge(vertices[0][0], vertices[4][0], Weight(1, [0, 0, 0, 0], 0), faces[3][0], faces[0][5])
     Edge(vertices[4][0], vertices[4][1], Weight(1, [0, 1, 0, 0], 0), faces[3][0], faces[4][0])
-    Edge(vertices[4][0], vertices[5][0], Weight(1, [0, 0, 0, 0], 0), faces[4][0], faces[4][5])
+    Edge(vertices[4][0], vertices[5][0], Weight(1, [0, 0, 0, 0], 0), faces[4][0], faces[1][5])
     Edge(vertices[5][0], vertices[5][1], Weight(1, [0, 1, 0, 0], 0), faces[4][0], faces[5][0])
-    Edge(vertices[5][0], vertices[0][0], Weight(1, [0, 0, -1, 0], 0), faces[5][0], faces[5][5])
+    Edge(vertices[5][0], vertices[0][0], Weight(1, [0, 0, -1, 0], 0), faces[5][0], faces[2][5])
 
 
-    Edge(vertices[0][1], vertices[0][2], Weight(1, [0, 0, 0, 0], 0), faces[5][1], faces[0][1])
+    Edge(vertices[0][1], vertices[0][2], Weight(1, [0, 0, 0, 0], 0), faces[5][4], faces[0][1])
     Edge(vertices[0][1], vertices[1][1], Weight(1, [0, 0, 0, 0], 0), faces[0][1], faces[0][0])
     Edge(vertices[1][1], vertices[1][2], Weight(1, [0, 0, 0, 0], 0), faces[0][1], faces[1][1])
     Edge(vertices[1][1], vertices[2][1], Weight(1, [0, 0, 0, 0], 0), faces[1][1], faces[1][0])
@@ -217,7 +217,7 @@ def g2():
     Edge(vertices[5][1], vertices[0][4], Weight(1, [0, -1, -1, 0], 0), faces[5][1], faces[5][0])
 
 
-    Edge(vertices[0][2], vertices[0][0], Weight(1, [1, 0, 0, 0], 0), faces[5][2], faces[0][2])
+    Edge(vertices[0][2], vertices[0][0], Weight(1, [1, 0, 0, 0], 0), faces[5][5], faces[0][2])
     Edge(vertices[0][2], vertices[1][2], Weight(1, [0, 0, 0, 0], 0), faces[0][2], faces[0][1])
     Edge(vertices[1][2], vertices[1][3], Weight(1, [0, 0, 0, 0], 0), faces[0][2], faces[1][2])
     Edge(vertices[1][2], vertices[2][2], Weight(1, [0, 0, 0, 0], 0), faces[1][2], faces[1][1])
@@ -230,7 +230,7 @@ def g2():
     Edge(vertices[5][2], vertices[5][3], Weight(1, [0, 0, 0, 0], 0), faces[4][2], faces[5][2])
     Edge(vertices[5][2], vertices[0][5], Weight(1, [0, -1, -1, 0], 0), faces[5][2], faces[5][1])
 
-    Edge(vertices[0][0], vertices[0][4], Weight(1, [0, 0, 0, 0], 0), faces[5][3], faces[0][3])
+    Edge(vertices[0][0], vertices[0][4], Weight(1, [0, 0, 0, 0], 0), faces[5][0], faces[0][3])
     Edge(vertices[0][0], vertices[1][3], Weight(1, [-1, 0, 0, 0], 0), faces[0][3], faces[0][2])
     Edge(vertices[1][3], vertices[1][4], Weight(1, [0, 0, 0, 0], 0), faces[0][3], faces[1][3])
     Edge(vertices[1][3], vertices[2][3], Weight(1, [0, 0, 0, 0], 0), faces[1][3], faces[1][2])
@@ -243,7 +243,7 @@ def g2():
     Edge(vertices[5][3], vertices[5][4], Weight(1, [0, 0, 0, 0], 0), faces[4][3], faces[5][3])
     Edge(vertices[5][3], vertices[0][0], Weight(1, [0, -1, -1, 1], 0), faces[5][3], faces[5][2])
 
-    Edge(vertices[0][4], vertices[0][5], Weight(1, [0, 0, 0, 0], 0), faces[5][4], faces[0][4])
+    Edge(vertices[0][4], vertices[0][5], Weight(1, [0, 0, 0, 0], 0), faces[5][1], faces[0][4])
     Edge(vertices[0][4], vertices[1][4], Weight(1, [-1, 0, 0, 0], 0), faces[0][4], faces[0][3])
     Edge(vertices[1][4], vertices[1][5], Weight(1, [0, 0, 0, 0], 0), faces[0][4], faces[1][4])
     Edge(vertices[1][4], vertices[2][4], Weight(1, [0, 0, 0, 0], 0), faces[1][4], faces[1][3])
@@ -256,7 +256,7 @@ def g2():
     Edge(vertices[5][4], vertices[5][5], Weight(1, [0, 0, 0, 0], 0), faces[4][4], faces[5][4])
     Edge(vertices[5][4], vertices[0][1], Weight(1, [0, -1, -1, 1], 0), faces[5][4], faces[5][3])
 
-    Edge(vertices[0][5], vertices[0][0], Weight(1, [0, 0, 0, 1], 0), faces[5][5], faces[0][5])
+    Edge(vertices[0][5], vertices[0][0], Weight(1, [0, 0, 0, 1], 0), faces[5][2], faces[0][5])
     Edge(vertices[0][5], vertices[1][5], Weight(1, [-1, 0, 0, 0], 0), faces[0][5], faces[0][4])
     Edge(vertices[1][5], vertices[4][0], Weight(1, [1, 0, 0, 1], 0), faces[0][5], faces[1][5])
     Edge(vertices[1][5], vertices[2][5], Weight(1, [0, 0, 0, 0], 0), faces[1][5], faces[1][4])
@@ -272,30 +272,20 @@ def g2():
     graph = Graph(vertices=sum(vertices, []), faces=sum(faces, []))
 
     # Num Edge(spanning tree) + Num edges(dual spanning tree) + 2 * g
-    # Spanning tree in original graph. Note that we first remove non-trivial homology edges from graph prior to
-    # computing spanning tree.
+    # Spanning tree in original graph.
     # TODO(lkhamsurenl): Figure out a way to find Spanning tree without explicit copy of the entire graph.
     c_st = copy.deepcopy(graph)
-    remove_edge(c_st.get_vertex((0, 2)), c_st.get_vertex((0, 0)))
-    remove_edge(c_st.get_vertex((0, 0)), c_st.get_vertex((2, 0)))
-    remove_edge(c_st.get_vertex((0, 0)), c_st.get_vertex((5, 0)))
-    remove_edge(c_st.get_vertex((0, 5)), c_st.get_vertex((0, 0)))
 
     # Get spanning tree by computing BFS, starting at the current root.
     # NOTE(lkhamsurenl): Assume root is at (1, 1).
     spanning_tree = bfs(c_st.get_vertex((1, 1)))
 
-    # Dual spanning tree. Note that we remove all edges in spanning tree and 2g auxiliary edges (which in our case:
-    # (0, n-1) -> (0, 0) and (m-1, 0) -> (0, 0)).
+    # Dual spanning tree.
     c_g = copy.deepcopy(graph)
     for v_name in spanning_tree:
         u_name = spanning_tree[v_name]
         if u_name != None:
             remove_edge(c_g.get_vertex(u_name), c_g.get_vertex(v_name))
-    remove_edge(c_g.get_vertex((0, 2)), c_g.get_vertex((0, 0)))
-    remove_edge(c_g.get_vertex((0, 0)), c_g.get_vertex((2, 0)))
-    remove_edge(c_g.get_vertex((0, 0)), c_g.get_vertex((5, 0)))
-    remove_edge(c_g.get_vertex((0, 5)), c_g.get_vertex((0, 0)))
 
     # Compute dual spanning tree by computing BFS rooted at (0, 0) face.
     # NOTE(lkhamsurenl): Assume root is at face (0, 0).
