@@ -8,57 +8,24 @@ from src.algorithms.traversal import bfs
 
 __author__ = 'Luvsandondov Lkhamsuren'
 
-def remove_edge(u, v):
-    """
-    Remove all the edges in u <-> v.
-    :param u: tail vertex.
-    :param v: head vertex.
-    :return: nothing
-    """
-    du = u.neighbors[v].dual.head
-    dv = u.neighbors[v].dual.tail
+class Grid(Graph):
+    def __init__(self, g, m, n):
+        """
+        Create m x n grid graph with genus g.
+        :return: Nothing.
+        """
+        assert g < 3, "We only support g < 3 options for now."
+        self.genus = g
+        self.width = m
+        self.height = n
 
-    u.remove_dart(v)
-    v.remove_dart(u)
-    du.remove_dart(dv)
-    dv.remove_dart(du)
+        graph = __g1_grid_graph__(m, n) if g == 1 else __g2_grid_graph__(m, n)
+        self.vertices = graph.vertices
+        self.faces = graph.faces
 
-def print_spanning_tree(pred):
-    print("-------------------")
-    for v in pred:
-        print("{} -> {}".format(pred[v], v))
-    print("-------------------")
+#####################                        Specific grid graphs                          #############################
 
-def compute_leafmost(spanning_tree):
-    """
-    Return learfmost term for each edge in following format:
-    (source_name, destination_name): leafmost_term
-    :param spanning_tree: dict of {src_name: dst_name}
-    :return:
-    """
-    leafmost = {}
-    num_children = {}
-    for v_name in spanning_tree.keys():
-        num_children[v_name] = 0
-    while len(spanning_tree) != 0:
-        count = {}
-        for v_name in spanning_tree.keys():
-            u_name = spanning_tree[v_name]
-            count[v_name] = count[v_name] + 1 if v_name in count else 1
-            count[u_name] = count[u_name] + 1 if u_name in count else 1
-        # Find which ones are the leaf
-        for v_name in count.keys():
-            if count[v_name] == 1 and v_name != None:
-                # TODO(lkhamsurenl): Current leafmost assignment points away from the root face.
-                # NOTE(lkhamsurenl): Negating would reverse the direction.
-                leafmost[(spanning_tree[v_name], v_name)] = num_children[v_name] + 1
-                num_children[spanning_tree[v_name]] = num_children[spanning_tree[v_name]] + num_children[v_name] + 1 \
-                    if spanning_tree[v_name] != None else 0
-                del spanning_tree[v_name]
-
-    return leafmost
-
-def generate_2d_grid(m, n):
+def __g1_grid_graph__(m, n):
     """
     Create m x n grid graph with genus 1.
     1st row and last column are the homology cycles.
@@ -105,11 +72,11 @@ def generate_2d_grid(m, n):
     for i in range(m):
         c_u = c_st.get_vertex((i, n - 1))
         c_v = c_st.get_vertex((i, 0))
-        remove_edge(c_u, c_v)
+        __remove_edge__(c_u, c_v)
     for j in range(n):
         c_u = c_st.get_vertex((m - 1, j))
         c_v = c_st.get_vertex((0, j))
-        remove_edge(c_u, c_v)
+        __remove_edge__(c_u, c_v)
 
     # Get spanning tree by computing BFS, starting at the current root.
     # NOTE(lkhamsurenl): Assume root is at (1, 1).
@@ -121,15 +88,15 @@ def generate_2d_grid(m, n):
     for v_name in spanning_tree:
         u_name = spanning_tree[v_name]
         if u_name != None:
-            remove_edge(c_g.get_vertex(u_name), c_g.get_vertex(v_name))
-    remove_edge(c_g.get_vertex((0, n - 1)), c_g.get_vertex((0, 0)))
-    remove_edge(c_g.get_vertex((m - 1, 0)), c_g.get_vertex((0, 0)))
+            __remove_edge__(c_g.get_vertex(u_name), c_g.get_vertex(v_name))
+    __remove_edge__(c_g.get_vertex((0, n - 1)), c_g.get_vertex((0, 0)))
+    __remove_edge__(c_g.get_vertex((m - 1, 0)), c_g.get_vertex((0, 0)))
 
     # Compute dual spanning tree by computing BFS rooted at (0, 0) face.
     # NOTE(lkhamsurenl): Assume root is at face (0, 0).
     dual_spanning_tree = bfs(c_g.get_face((0, 0)))
 
-    leafmost = compute_leafmost(dual_spanning_tree)
+    leafmost = __compute_leafmost__(dual_spanning_tree)
     for (u_name, v_name) in leafmost:
         if u_name != None:
             u = graph.get_face(u_name)
@@ -142,48 +109,12 @@ def generate_2d_grid(m, n):
 
     return graph
 
-
-def g1():
+def __g2_grid_graph__(m, n):
     """
-    Manually create 3 by 3 grid graph with genus 1.
+    Manually create m by n grid graph with genus 2.
     :return: Graph.
     """
-    # Build vertices and faces.
-    vertices = [[Vertex((i, j)) for j in range(3)] for i in range(3)]
-    faces = [[Vertex((i, j)) for j in range(3)] for i in range(3)]
-
-    # Build darts, its reverse, dual and dual reverse respectively.
-    Edge(vertices[0][0], vertices[0][2], Weight(1, [-1, 0], 0), faces[0][2], faces[2][2])
-    Edge(vertices[1][0], vertices[1][2], Weight(1, [-1, 0], 6), faces[1][2], faces[0][2])
-    Edge(vertices[2][0], vertices[2][2], Weight(1, [-1, 0], 4), faces[2][2], faces[1][2])
-
-    Edge(vertices[2][0], vertices[0][0], Weight(1, [0, -1], 0), faces[2][0], faces[2][2])
-    Edge(vertices[2][2], vertices[0][2], Weight(1, [0, -1], -3), faces[2][2], faces[2][1])
-    Edge(vertices[2][1], vertices[0][1], Weight(1, [0, -1], -1), faces[2][1], faces[2][0])
-
-    Edge(vertices[0][0], vertices[1][0], Weight(1, [0, 0], -8), faces[0][0], faces[0][2])
-    Edge(vertices[1][0], vertices[2][0], Weight(1, [0, 0], 1), faces[1][0], faces[1][2])
-    Edge(vertices[0][2], vertices[1][2], Weight(1, [0, 0], -1), faces[0][2], faces[0][1])
-
-    Edge(vertices[1][2], vertices[2][2], Weight(1, [0, 0], 0), faces[1][2], faces[1][1])
-    Edge(vertices[0][1], vertices[1][1], Weight(1, [0, 0], 0), faces[0][1], faces[0][0])
-    Edge(vertices[1][1], vertices[2][1], Weight(1, [0, 0], 0), faces[1][1], faces[1][0])
-
-    Edge(vertices[0][2], vertices[0][1], Weight(1, [0, 0], 0), faces[0][1], faces[2][1])
-    Edge(vertices[1][2], vertices[1][1], Weight(1, [0, 0], 0), faces[1][1], faces[0][1])
-    Edge(vertices[2][2], vertices[2][1], Weight(1, [0, 0], -1), faces[2][1], faces[1][1])
-
-    Edge(vertices[0][1], vertices[0][0], Weight(1, [0, 0], 0), faces[0][0], faces[2][0])
-    Edge(vertices[1][1], vertices[1][0], Weight(1, [0, 0], 0), faces[1][0], faces[0][0])
-    Edge(vertices[2][1], vertices[2][0], Weight(1, [0, 0], 0), faces[2][0], faces[1][0])
-
-    return Graph(vertices=sum(vertices, []), faces=sum(faces, []))
-
-def g2():
-    """
-    Manually create 6 by 6 grid graph with genus 2.
-    :return: Graph.
-    """
+    assert m == 6 and n == 6, "We only support m = 6, n = 6 option for now."
     # Build vertices and faces.
     vertices = [[Vertex((i, j)) for j in range(6)] for i in range(6)]
     faces = [[Vertex((i, j)) for j in range(6)] for i in range(6)]
@@ -285,13 +216,13 @@ def g2():
     for v_name in spanning_tree:
         u_name = spanning_tree[v_name]
         if u_name != None:
-            remove_edge(c_g.get_vertex(u_name), c_g.get_vertex(v_name))
+            __remove_edge__(c_g.get_vertex(u_name), c_g.get_vertex(v_name))
 
     # Compute dual spanning tree by computing BFS rooted at (0, 0) face.
     # NOTE(lkhamsurenl): Assume root is at face (0, 0).
     dual_spanning_tree = bfs(c_g.get_face((0, 0)))
 
-    leafmost = compute_leafmost(dual_spanning_tree)
+    leafmost = __compute_leafmost__(dual_spanning_tree)
     for (u_name, v_name) in leafmost:
         if u_name != None:
             u = graph.get_face(u_name)
@@ -303,3 +234,90 @@ def g2():
             Edge(dart.tail, dart.head, dart.weight, dart.dual.tail, dart.dual.head)
 
     return graph
+
+def g1():
+    """
+    Manually create 3 by 3 grid graph with genus 1.
+    :return: Graph.
+    """
+    # Build vertices and faces.
+    vertices = [[Vertex((i, j)) for j in range(3)] for i in range(3)]
+    faces = [[Vertex((i, j)) for j in range(3)] for i in range(3)]
+
+    # Build darts, its reverse, dual and dual reverse respectively.
+    Edge(vertices[0][0], vertices[0][2], Weight(1, [-1, 0], 0), faces[0][2], faces[2][2])
+    Edge(vertices[1][0], vertices[1][2], Weight(1, [-1, 0], 6), faces[1][2], faces[0][2])
+    Edge(vertices[2][0], vertices[2][2], Weight(1, [-1, 0], 4), faces[2][2], faces[1][2])
+
+    Edge(vertices[2][0], vertices[0][0], Weight(1, [0, -1], 0), faces[2][0], faces[2][2])
+    Edge(vertices[2][2], vertices[0][2], Weight(1, [0, -1], -3), faces[2][2], faces[2][1])
+    Edge(vertices[2][1], vertices[0][1], Weight(1, [0, -1], -1), faces[2][1], faces[2][0])
+
+    Edge(vertices[0][0], vertices[1][0], Weight(1, [0, 0], -8), faces[0][0], faces[0][2])
+    Edge(vertices[1][0], vertices[2][0], Weight(1, [0, 0], 1), faces[1][0], faces[1][2])
+    Edge(vertices[0][2], vertices[1][2], Weight(1, [0, 0], -1), faces[0][2], faces[0][1])
+
+    Edge(vertices[1][2], vertices[2][2], Weight(1, [0, 0], 0), faces[1][2], faces[1][1])
+    Edge(vertices[0][1], vertices[1][1], Weight(1, [0, 0], 0), faces[0][1], faces[0][0])
+    Edge(vertices[1][1], vertices[2][1], Weight(1, [0, 0], 0), faces[1][1], faces[1][0])
+
+    Edge(vertices[0][2], vertices[0][1], Weight(1, [0, 0], 0), faces[0][1], faces[2][1])
+    Edge(vertices[1][2], vertices[1][1], Weight(1, [0, 0], 0), faces[1][1], faces[0][1])
+    Edge(vertices[2][2], vertices[2][1], Weight(1, [0, 0], -1), faces[2][1], faces[1][1])
+
+    Edge(vertices[0][1], vertices[0][0], Weight(1, [0, 0], 0), faces[0][0], faces[2][0])
+    Edge(vertices[1][1], vertices[1][0], Weight(1, [0, 0], 0), faces[1][0], faces[0][0])
+    Edge(vertices[2][1], vertices[2][0], Weight(1, [0, 0], 0), faces[2][0], faces[1][0])
+
+    return Graph(vertices=sum(vertices, []), faces=sum(faces, []))
+
+#####################                           HELPER METHODS                            #############################
+def __remove_edge__(u, v):
+    """
+    Remove all the edges in u <-> v.
+    :param u: tail vertex.
+    :param v: head vertex.
+    :return: nothing
+    """
+    du = u.neighbors[v].dual.head
+    dv = u.neighbors[v].dual.tail
+
+    u.remove_dart(v)
+    v.remove_dart(u)
+    du.remove_dart(dv)
+    dv.remove_dart(du)
+
+def __print_spanning_tree__(pred):
+    print("-------------------")
+    for v in pred:
+        print("{} -> {}".format(pred[v], v))
+    print("-------------------")
+
+def __compute_leafmost__(spanning_tree):
+    """
+    Return learfmost term for each edge in following format:
+    (source_name, destination_name): leafmost_term
+    :param spanning_tree: dict of {src_name: dst_name}
+    :return:
+    """
+    leafmost = {}
+    num_children = {}
+    for v_name in spanning_tree.keys():
+        num_children[v_name] = 0
+    while len(spanning_tree) != 0:
+        count = {}
+        for v_name in spanning_tree.keys():
+            u_name = spanning_tree[v_name]
+            count[v_name] = count[v_name] + 1 if v_name in count else 1
+            count[u_name] = count[u_name] + 1 if u_name in count else 1
+        # Find which ones are the leaf
+        for v_name in count.keys():
+            if count[v_name] == 1 and v_name != None:
+                # TODO(lkhamsurenl): Current leafmost assignment points away from the root face.
+                # NOTE(lkhamsurenl): Negating would reverse the direction.
+                leafmost[(spanning_tree[v_name], v_name)] = num_children[v_name] + 1
+                num_children[spanning_tree[v_name]] = num_children[spanning_tree[v_name]] + num_children[v_name] + 1 \
+                    if spanning_tree[v_name] != None else 0
+                del spanning_tree[v_name]
+
+    return leafmost

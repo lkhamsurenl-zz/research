@@ -14,7 +14,7 @@ def get_face_vertices(graph, names):
 def holy_tree():
     sys.setrecursionlimit(10000)
     m, n = 6, 6
-    g1 = grid.generate_2d_grid(m, n)
+    g1 = grid.__g1_grid_graph__(m, n)
     vertices = get_face_vertices(g1, [(1, 1), (0, 1), (0, 0), (1, 0)])
     move_around_face(g1, m, n, vertices)
 

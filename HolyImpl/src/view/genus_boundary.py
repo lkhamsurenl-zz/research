@@ -66,3 +66,17 @@ def resolve_boundary_darts(us, vs):
             if abs(i[0] - j[0]) + abs(i[1] - j[1]) == 1:
                 duplicates.append((i, j))
     return duplicates
+
+def expand_vertices_list(ls, mapping):
+    """
+    :param ls: List to expand.
+    :param mapping: {(i, j) -> [(i, j), (x, y), (a, b), etc]}
+    :return:
+    """
+    # Expanded list.
+    expanded_list = []
+    for vertex in ls:
+        if vertex in mapping:
+            expanded_list += mapping[vertex]
+
+    return expanded_list
