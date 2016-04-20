@@ -229,7 +229,7 @@ def move_across_dart(graph, m, n, g, s1, s2, pred, dist, original_pdf=None, dual
     is_holy_tree(graph, g, pred, dist, "Root {}".format(s2))
 
     # Compute actual holy tree @ s2, then compare it with the current tree.
-    correct_pred, correct_dist = fast_initial_tree(graph, s2)
+    correct_pred, correct_dist = fast_initial_tree(graph, g, s2)
     assert correct_dist == dist, report_multiple_distances(correct_pred, correct_dist, pred, dist)
     assert correct_pred == pred, report_multiple_distances(correct_pred, correct_dist, pred, dist)
 
@@ -248,7 +248,7 @@ def move_around_face(graph, m, n, g, vertices):
     # Ensure there is at least one vertex when computing SSSP for each vertex in vertices.
     assert (len(vertices) > 1)
     s1 = vertices[0]  # first source vertex
-    (pred, dist) = fast_initial_tree(graph, s1)
+    (pred, dist) = fast_initial_tree(graph, g, s1)
     (init_pred, init_dist) = (pred, dist)
 
     print("---Initial tree---")
