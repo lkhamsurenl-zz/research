@@ -1,9 +1,11 @@
+# genus_boundary includes functions handle duplication of edges in visualization.
+
 def get_vertex_mapping(g, m, n):
     """
     Compute the vertex mapping (resolve duplication of boundary for visualization).
-    :param g:
-    :param m:
-    :param n:
+    :param g: Genus of graph embedding surface.
+    :param m: Width of the grid.
+    :param n: Height of the grid.
     :return:
     """
     assert g < 3, "For now, genus can be at most 2."
@@ -32,19 +34,35 @@ def get_vertex_mapping(g, m, n):
 
     return vertex_mapping
 
+def get_face_mapping(g, m, n):
+    """
+    Compute the face mapping (resolve duplication of boundary for visualization).
+    :param g: Genus of graph embedding surface.
+    :param m: Width of the grid.
+    :param n: Height of the grid.
+    :return:
+    """
+    face_mapping = get_vertex_mapping(g, m, n)
+    # Mapping of face is slightly different when g = 2.
+    if g == 2:
+        face_mapping[(0,0)] = [(0, 0), (3,6), (6, 3)]
+        face_mapping[(0,3)] = [(0, 3), (6,0)]
+        face_mapping[(3,0)] = [(3, 0), (0,6)]
+
+    return face_mapping
+
 def resolve_boundary_darts(us, vs):
     """
     Boundary darts must be duplicated and resolved. For instance, (0, 0) -> (2, 0) must be resolved to
     { (3, 0) -> (2, 0), (2, 3) -> (3, 3) } when m = 3, n = 3
     :param us: Tail vertex name (its boundary duplicates).
     :param vs: Head vertex name (its boundary duplicates).
-    :param m: Width of the grid graph.
-    :param n: Height of the grid graph.
     :return: All possible duplicates of (u_name -> v_name).
     """
     duplicates = []
     for i in us:
         for j in vs:
+            # Return only valid darts (vertex that are connected.)
             if abs(i[0] - j[0]) + abs(i[1] - j[1]) == 1:
                 duplicates.append((i, j))
     return duplicates

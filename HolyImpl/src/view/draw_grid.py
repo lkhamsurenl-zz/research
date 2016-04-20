@@ -49,11 +49,13 @@ def display(graph, m, n, root_name, blue, red, pred, vertex_mapping, pivot_dart=
     nx.draw_spectral(G,edgelist=blue_darts,width=3,alpha=1,edge_color='blue')
     nx.draw_spectral(G,edgelist=green_darts,width=4,alpha=1,edge_color='green')
 
-    # Override label vertices with (m, j) -> (0, j) and (i, n) -> (i, 0)
+    # Override label vertices with boundary.
     labels = {}
     for i in range(m + 1):
         for j in range(n + 1):
-            labels[(i, j)] = "{},{}".format(i % m, j % n)
+            for v in vertex_mapping:
+                if (i, j) in vertex_mapping[v]:
+                    labels[(i, j)] = "{},{}".format(v[0], v[1])
     nx.draw_networkx_labels(G, pos, labels=labels)
 
     # Label root with special text: "Root"
@@ -136,11 +138,13 @@ def display_dual(graph, m, n, root_name, blue, red, pred, vertex_mapping, pivot_
     nx.draw_spectral(G,edgelist=blue_darts,width=3,alpha=1,edge_color='blue')
     nx.draw_spectral(G,edgelist=green_darts,width=4,alpha=1,edge_color='green')
 
-    # Override label vertices with (m, j) -> (0, j) and (i, n) -> (i, 0)
+    # Override label vertices with boundary.
     labels = {}
     for i in range(m + 1):
         for j in range(n + 1):
-            labels[(i, j)] = "{},{}".format(i % m, j % n)
+            for v in vertex_mapping:
+                if (i, j) in vertex_mapping[v]:
+                    labels[(i, j)] = "{},{}".format(v[0], v[1])
     nx.draw_networkx_labels(G, pos, labels=labels, font_size=10)
 
     # Label root with special text: "Root". In dual graph, root is always (0, 0)

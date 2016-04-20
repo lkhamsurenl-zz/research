@@ -12,7 +12,7 @@ from src.model import grid
 from src.model.dart import Dart
 from src.model.weight import Weight
 from src.view import draw_grid
-from src.view.genus_boundary import get_vertex_mapping
+from src.view.genus_boundary import get_vertex_mapping, get_face_mapping
 
 
 def add_subtree(source, delta, pred, new_dist):
@@ -123,18 +123,17 @@ def remove_edge(u, v):
     # dv.remove_dart(du)
 
 
-def move_across_dart(graph, m, n, g, s1, s2, pred, dist, vertex_mapping, original_pdf=None, dual_pdf=None):
+def move_across_dart(graph, m, n, g, s1, s2, pred, dist, visual_params):
     """
     Perform moving from s1 -> s2. Assume s1 and s2 are valid vertices in graph and connected by an edge.
     :param m:
     :param n:
     :param dist:
-    :param original_pdf: PDF file name to save the pivoting process.
     :param pred: predeccesor pointers defining current holy tree.
-    :param dual_pdf: name of pdf file to save pivoting process.
     :param graph:
     :param s1: Source vertex.
     :param s2: Destination vertex.
+    :param visual_params: (vertex_mapping, face_mapping, primal_pdf, dual_pdf).
     :return:
     """
     # Original value of the edge s1 -> s2.
@@ -182,8 +181,8 @@ def move_across_dart(graph, m, n, g, s1, s2, pred, dist, vertex_mapping, origina
                                            [float(i) / 2 for i in minimum_slack.homology],
                                            float(minimum_slack.leafmost) / 2) + lambda_weight <= \
                 Weight(1, [0 for _ in range(2 * g)], 0):
-            draw_grid.display(graph, m, n, s1.name, blue, red, pred, vertex_mapping, min_dart, original_pdf)
-            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, vertex_mapping, min_dart, dual_pdf)
+            draw_grid.display(graph, m, n, s1.name, blue, red, pred, visual_params[0], min_dart, visual_params[2])
+            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, visual_params[1], min_dart, visual_params[3])
 
             # w represents the value to move s from s1 to s2.
             w = Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],
@@ -205,8 +204,8 @@ def move_across_dart(graph, m, n, g, s1, s2, pred, dist, vertex_mapping, origina
             is_holy_tree(graph, g, pred, dist, "Pivot: {}, slack: {}".format(min_dart, minimum_slack))
 
         else:  # no more pivot, move the values dart.weight - lambda_weight, then make the s2 new pivot
-            draw_grid.display(graph, m, n, s1.name, blue, red, pred, vertex_mapping, None, original_pdf)
-            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, vertex_mapping, None, dual_pdf)
+            draw_grid.display(graph, m, n, s1.name, blue, red, pred, visual_params[0], None, visual_params[2])
+            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, visual_params[1], None, visual_params[3])
 
             delta = Weight(1, [0 for _ in range(2 * g)], 0) - lambda_weight
             add_subtree(s2, -delta, pred, dist)
@@ -238,7 +237,7 @@ def move_across_dart(graph, m, n, g, s1, s2, pred, dist, vertex_mapping, origina
     print("done with {0} -> {1}. New root is {1}".format(s1, s2))
 
 
-def move_around_face(graph, m, n, g, vertices, vertex_mapping):
+def move_around_face(graph, m, n, g, vertices, visual_params):
     """
     Move around the vertices in face in order, return all the SSSP for each vertex in vertices.
     :param n: Height of the grid graph.
@@ -258,24 +257,13 @@ def move_around_face(graph, m, n, g, vertices, vertex_mapping):
     is_holy_tree(graph, g, pred, dist, "Root {}".format(s1))
     print("----------------------")
 
-    # Create a new pdf file with current timestamp.
-    now = datetime.datetime.now()
-    # original_pdf = PdfPages('../../resources/{}-original.pdf'.format(now.strftime("%m-%d-%H:%M")))
-    # dual_pdf = PdfPages('../../resources/{}-dual.pdf'.format(now.strftime("%m-%d-%H:%M")))
-    original_pdf = None
-    dual_pdf = None
+
 
     for i in range(len(vertices)):
         s1 = vertices[i]
         s2 = vertices[(i + 1) % len(vertices)]
         # Source will move from s1 -> s2, updating pred and dist dictionaries.
-        move_across_dart(graph, m, n, g, s1, s2, pred, dist, vertex_mapping, original_pdf, dual_pdf)
-
-    # Close the pdf file.
-    if original_pdf is not None:
-        original_pdf.close()
-    if dual_pdf is not None:
-        dual_pdf.close()
+        move_across_dart(graph, m, n, g, s1, s2, pred, dist, visual_params)
 
     # For sanity check, at the end of the cycle, dist and pred should be exactly same as the initial holy tree
     # computation.
@@ -290,24 +278,35 @@ def get_face_vertices(graph, names):
         vertices.append(graph.get_vertex(name))
     return vertices
 
-def debug():
-    m, n = 3, 3
-    g = 1
-    g1 = grid.g1()
-    vertices = get_face_vertices(g1, [(1, 1), (0, 1), (0, 0), (1, 0)])
-    move_around_face(g1, m, n, g, vertices)
-
-
 def debug_grid():
     m, n = 6, 6
-    g = 2
     # Set deeper recursion level to avoid max recursion depth exceeded.
     if m > 5 or n > 5:
         sys.setrecursionlimit(10000)
 
-    g1 = grid.generate_2d_grid(m, n)
-    vertices = get_face_vertices(g1, [(1, 1), (0, 1), (0, 0), (1, 0)])
-    move_around_face(g1, m, n, g, vertices, get_vertex_mapping(g, m, n))
+    g =2
+    g1 = grid.g2()
 
+    # Get vertices in the boundary face.
+    vertices = get_face_vertices(g1, [(1, 1), (0, 1), (0, 0), (1, 0)])
+
+    # Create a new pdf file with current timestamp.
+    now = datetime.datetime.now()
+    primal_pdf = PdfPages('../../resources/{}-primal.pdf'.format(now.strftime("%m-%d-%H:%M")))
+    dual_pdf = PdfPages('../../resources/{}-dual.pdf'.format(now.strftime("%m-%d-%H:%M")))
+
+    vertex_mapping = get_vertex_mapping(g, m, n)
+    face_mapping = get_face_mapping(g, m, n)
+
+    # Wrap all visualization related parameters in tuple.
+    visual_params = (vertex_mapping, face_mapping, primal_pdf, dual_pdf)
+
+    move_around_face(g1, m, n, g, vertices, visual_params)
+
+    # Close the pdf files, if created.
+    if primal_pdf is not None:
+        primal_pdf.close()
+    if dual_pdf is not None:
+        dual_pdf.close()
 
 debug_grid()
