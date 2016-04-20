@@ -86,7 +86,7 @@ def active_darts(s1, s2, pred):
     return set(blue), red
 
 
-def is_holy_tree(graph, pred, dist, title="is_holy_tree()"):
+def is_holy_tree(graph, g, pred, dist, title="is_holy_tree()"):
     """
     Check if there is no tense dart in graph.
     :param title: Example: Pivot (1, 2) -> (0, 2).
@@ -99,7 +99,8 @@ def is_holy_tree(graph, pred, dist, title="is_holy_tree()"):
     for u in graph.vertices:
         for v in u.neighbors:
             slack = dist[u] + u.neighbors[v].weight - dist[v]
-            if slack < Weight(homology=[0, 0]) or (slack == Weight(homology=[0, 0]) and pred[v] != u):
+            if slack < Weight(homology=[0 for _ in range(2 * g)]) or \
+                    (slack == Weight(homology=[0 for _ in range(2 * g)]) and pred[v] != u):
                 print("is_holy_tree()={0}->{1} tense; dist[{0}]={2};dist[{1}]={3};weight={4};slack={5}".
                       format(u, v, dist[u], dist[v], u.neighbors[v].weight, slack))
     print(u"\u25b2\u25b2\u25b2 {} \u25b2\u25b2\u25b2".format(" " * len(title)))
@@ -121,7 +122,7 @@ def remove_edge(u, v):
     # dv.remove_dart(du)
 
 
-def move_across_dart(graph, m, n, s1, s2, pred, dist, original_pdf=None, dual_pdf=None):
+def move_across_dart(graph, m, n, g, s1, s2, pred, dist, original_pdf=None, dual_pdf=None):
     """
     Perform moving from s1 -> s2. Assume s1 and s2 are valid vertices in graph and connected by an edge.
     :param m:
@@ -138,11 +139,11 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, original_pdf=None, dual_pd
     # Original value of the edge s1 -> s2.
     dart = copy.deepcopy(s1.neighbors[s2])
     # Distance from s to s1.
-    lambda_weight = Weight(homology=[0, 0])
+    lambda_weight = Weight(homology=[0 for _ in range(2 * g)])
     s = graph.add_vertex((-1, -1))  # special vertex to walk along the s1 -> s2.
-    dist[s] = Weight(homology=[0, 0])
+    dist[s] = Weight(homology=[0 for _ in range(2 * g)])
 
-    Dart(s, s1, Weight(0, [0, 0], 0), dart.right, dart.left)
+    Dart(s, s1, Weight(0, [0 for _ in range(2 * g)], 0), dart.right, dart.left)
     Dart(s, s2, copy.deepcopy(dart.weight), dart.left, dart.right)
 
     remove_edge(s1, s2)  # Remove edge between s1, s2.
@@ -155,7 +156,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, original_pdf=None, dual_pd
     Dart(s, s1, Weight(0, [-h for h in dart.weight.homology], -dart.weight.leafmost), dart.right, dart.left)
     add_subtree(s1, Weight(0, [-h for h in dart.weight.homology], -dart.weight.leafmost), pred, dist)
 
-    Dart(s, s2, Weight(1, [0, 0], 0), dart.left, dart.right)
+    Dart(s, s2, Weight(1, [0 for _ in range(2 * g)], 0), dart.left, dart.right)
     add_subtree(s2, Weight(0, [-h for h in dart.weight.homology], -dart.weight.leafmost), pred, dist)
 
     while True:
@@ -178,7 +179,8 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, original_pdf=None, dual_pd
         # Check the value of the min_slack / 2 would not result in s "go over" s2.
         if min_dart is not None and Weight(float(minimum_slack.length) / 2,
                                            [float(i) / 2 for i in minimum_slack.homology],
-                                           float(minimum_slack.leafmost) / 2) + lambda_weight <= Weight(1, [0, 0], 0):
+                                           float(minimum_slack.leafmost) / 2) + lambda_weight <= \
+                Weight(1, [0 for _ in range(2 * g)], 0):
             draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart, original_pdf)
             draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, min_dart, dual_pdf)
 
@@ -199,12 +201,12 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, original_pdf=None, dual_pd
             pred[min_dart.head] = min_dart.tail
             # here, if we check the values, it should still be the holy tree
             print("-------------------------------")
-            is_holy_tree(graph, pred, dist, "Pivot: {}, slack: {}".format(min_dart, minimum_slack))
+            is_holy_tree(graph, g, pred, dist, "Pivot: {}, slack: {}".format(min_dart, minimum_slack))
 
         else:  # no more pivot, move the values dart.weight - lambda_weight, then make the s2 new pivot
             draw_grid.display(graph, m, n, s1.name, blue, red, pred, None, original_pdf)
             draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, None, dual_pdf)
-            delta = Weight(1, [0, 0], 0) - lambda_weight
+            delta = Weight(1, [0 for _ in range(2 * g)], 0) - lambda_weight
             add_subtree(s2, -delta, pred, dist)
             print("When moved all the way to {0}, distance to {0}: {1}".format(s2, dist[s2]))
 
@@ -224,7 +226,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, original_pdf=None, dual_pd
     pred[s1] = s2
 
     # Ensure that there is no tense dart at the end of the root move.
-    is_holy_tree(graph, pred, dist, "Root {}".format(s2))
+    is_holy_tree(graph, g, pred, dist, "Root {}".format(s2))
 
     # Compute actual holy tree @ s2, then compare it with the current tree.
     correct_pred, correct_dist = fast_initial_tree(graph, s2)
@@ -234,7 +236,7 @@ def move_across_dart(graph, m, n, s1, s2, pred, dist, original_pdf=None, dual_pd
     print("done with {0} -> {1}. New root is {1}".format(s1, s2))
 
 
-def move_around_face(graph, m, n, vertices):
+def move_around_face(graph, m, n, g, vertices):
     """
     Move around the vertices in face in order, return all the SSSP for each vertex in vertices.
     :param n: Height of the grid graph.
@@ -251,7 +253,7 @@ def move_around_face(graph, m, n, vertices):
 
     print("---Initial tree---")
     report(pred, dist)
-    is_holy_tree(graph, pred, dist, "Root {}".format(s1))
+    is_holy_tree(graph, g, pred, dist, "Root {}".format(s1))
     print("----------------------")
 
     # Create a new pdf file with current timestamp.
@@ -263,7 +265,7 @@ def move_around_face(graph, m, n, vertices):
         s1 = vertices[i]
         s2 = vertices[(i + 1) % len(vertices)]
         # Source will move from s1 -> s2, updating pred and dist dictionaries.
-        move_across_dart(graph, m, n, s1, s2, pred, dist, original_pdf, dual_pdf)
+        move_across_dart(graph, m, n, g, s1, s2, pred, dist, original_pdf, dual_pdf)
 
     # Close the pdf file.
     if original_pdf is not None:
@@ -287,19 +289,21 @@ def get_face_vertices(graph, names):
 
 def debug():
     m, n = 3, 3
+    g = 1
     g1 = grid.g1()
     vertices = get_face_vertices(g1, [(1, 1), (0, 1), (0, 0), (1, 0)])
-    move_around_face(g1, m, n, vertices)
+    move_around_face(g1, m, n, g, vertices)
 
 
 def debug_grid():
     m, n = 6, 6
+    g = 1
     # Set deeper recursion level to avoid max recursion depth exceeded.
     if m > 5 or n > 5:
         sys.setrecursionlimit(10000)
     g1 = grid.generate_2d_grid(m, n)
     vertices = get_face_vertices(g1, [(1, 1), (0, 1), (0, 0), (1, 0)])
-    move_around_face(g1, m, n, vertices)
+    move_around_face(g1, m, n, g, vertices)
 
 
 debug_grid()
