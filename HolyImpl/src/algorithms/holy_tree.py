@@ -181,8 +181,8 @@ def move_across_dart(graph, m, n, g, s1, s2, pred, dist, original_pdf=None, dual
                                            [float(i) / 2 for i in minimum_slack.homology],
                                            float(minimum_slack.leafmost) / 2) + lambda_weight <= \
                 Weight(1, [0 for _ in range(2 * g)], 0):
-            draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart, original_pdf)
-            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, min_dart, dual_pdf)
+            #draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart, original_pdf)
+            #draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, min_dart, dual_pdf)
 
             # w represents the value to move s from s1 to s2.
             w = Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],
@@ -204,8 +204,8 @@ def move_across_dart(graph, m, n, g, s1, s2, pred, dist, original_pdf=None, dual
             is_holy_tree(graph, g, pred, dist, "Pivot: {}, slack: {}".format(min_dart, minimum_slack))
 
         else:  # no more pivot, move the values dart.weight - lambda_weight, then make the s2 new pivot
-            draw_grid.display(graph, m, n, s1.name, blue, red, pred, None, original_pdf)
-            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, None, dual_pdf)
+            #draw_grid.display(graph, m, n, s1.name, blue, red, pred, None, original_pdf)
+            #draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, None, dual_pdf)
             delta = Weight(1, [0 for _ in range(2 * g)], 0) - lambda_weight
             add_subtree(s2, -delta, pred, dist)
             print("When moved all the way to {0}, distance to {0}: {1}".format(s2, dist[s2]))
@@ -258,8 +258,10 @@ def move_around_face(graph, m, n, g, vertices):
 
     # Create a new pdf file with current timestamp.
     now = datetime.datetime.now()
-    original_pdf = PdfPages('../../resources/{}-original.pdf'.format(now.strftime("%m-%d-%H:%M")))
-    dual_pdf = PdfPages('../../resources/{}-dual.pdf'.format(now.strftime("%m-%d-%H:%M")))
+    # original_pdf = PdfPages('../../resources/{}-original.pdf'.format(now.strftime("%m-%d-%H:%M")))
+    # dual_pdf = PdfPages('../../resources/{}-dual.pdf'.format(now.strftime("%m-%d-%H:%M")))
+    original_pdf = None
+    dual_pdf = None
 
     for i in range(len(vertices)):
         s1 = vertices[i]
@@ -297,13 +299,13 @@ def debug():
 
 def debug_grid():
     m, n = 6, 6
-    g = 1
+    g = 2
     # Set deeper recursion level to avoid max recursion depth exceeded.
     if m > 5 or n > 5:
         sys.setrecursionlimit(10000)
-    g1 = grid.generate_2d_grid(m, n)
-    vertices = get_face_vertices(g1, [(1, 1), (0, 1), (0, 0), (1, 0)])
-    move_around_face(g1, m, n, g, vertices)
+    g2 = grid.g2()
+    vertices = get_face_vertices(g2, [(1, 1), (0, 1), (0, 0), (1, 0)])
+    move_around_face(g2, m, n, g, vertices)
 
 
 debug_grid()
