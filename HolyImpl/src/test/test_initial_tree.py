@@ -33,3 +33,20 @@ class TestInitialTree(TestCase):
 
         self.assertEqual(fast_pred, slow_pred)
         self.assertEqual(fast_dist, slow_dist)
+
+    def test_initial_tree_g2(self):
+        # NOTE(lkhamsurenl): Following line is needed if copying graph is too deep, when using copy.deepcopy
+        sys.setrecursionlimit(10000)
+
+        graph_1 = grid.g2()
+        # Source vertex.
+        vertex = graph_1.get_vertex((1, 1))
+        fast_start = time.time()
+        (fast_pred, fast_dist) = initial_holy_tree.fast_initial_tree(graph_1, vertex)
+        fast_end = time.time()
+        (slow_pred, slow_dist) = initial_holy_tree.bellman_ford_initial_tree(graph_1, vertex)
+        slow_end = time.time()
+        print("fast: {}, slow: {}".format(fast_end - fast_start, slow_end - fast_end))
+
+        self.assertEqual(fast_pred, slow_pred)
+        self.assertEqual(fast_dist, slow_dist)
