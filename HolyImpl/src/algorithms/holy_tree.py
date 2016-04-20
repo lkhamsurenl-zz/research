@@ -11,7 +11,7 @@ from src.algorithms.initial_holy_tree import fast_initial_tree
 from src.model.dart import Dart
 from src.model.grid import Grid
 from src.model.weight import Weight
-from src.view import draw_grid
+from src.view.draw_grid import draw_dual, draw_primal
 from src.view.genus_boundary import get_vertex_mapping, get_face_mapping
 
 
@@ -193,8 +193,8 @@ def move_across_dart(grid, s1, s2, pred, dist, visual_params):
                                            [float(i) / 2 for i in minimum_slack.homology],
                                            float(minimum_slack.leafmost) / 2) + lambda_weight <= \
                 Weight(1, [0 for _ in range(2 * grid.genus)], 0):
-            draw_grid.draw_primal(grid, s1.name, blue, red, pred, visual_params[0], min_dart, visual_params[2])
-            draw_grid.draw_dual(grid, s1.name, blue, red, pred, visual_params[1], min_dart, visual_params[3])
+            draw_primal(grid, s1.name, blue, red, pred, visual_params[0], min_dart, visual_params[2])
+            draw_dual(grid, s1.name, blue, red, pred, visual_params[1], min_dart, visual_params[3])
 
             # w represents the value to move s from s1 to s2.
             w = Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],
@@ -216,8 +216,8 @@ def move_across_dart(grid, s1, s2, pred, dist, visual_params):
             __is_holy_tree__(grid, grid.genus, pred, dist, "Pivot: {}, slack: {}".format(min_dart, minimum_slack))
 
         else:  # no more pivot, move the values dart.weight - lambda_weight, then make the s2 new pivot
-            draw_grid.draw_primal(grid, s1.name, blue, red, pred, visual_params[0], None, visual_params[2])
-            draw_grid.draw_dual(grid, s1.name, blue, red, pred, visual_params[1], None, visual_params[3])
+            draw_primal(grid, s1.name, blue, red, pred, visual_params[0], None, visual_params[2])
+            draw_dual(grid, s1.name, blue, red, pred, visual_params[1], None, visual_params[3])
 
             delta = Weight(1, [0 for _ in range(2 * grid.genus)], 0) - lambda_weight
             __add_subtree__(s2, -delta, pred, dist)
