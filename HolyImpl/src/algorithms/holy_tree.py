@@ -12,6 +12,7 @@ from src.model import grid
 from src.model.dart import Dart
 from src.model.weight import Weight
 from src.view import draw_grid
+from src.view.genus_boundary import get_vertex_mapping
 
 
 def add_subtree(source, delta, pred, new_dist):
@@ -122,7 +123,7 @@ def remove_edge(u, v):
     # dv.remove_dart(du)
 
 
-def move_across_dart(graph, m, n, g, s1, s2, pred, dist, original_pdf=None, dual_pdf=None):
+def move_across_dart(graph, m, n, g, s1, s2, pred, dist, vertex_mapping, original_pdf=None, dual_pdf=None):
     """
     Perform moving from s1 -> s2. Assume s1 and s2 are valid vertices in graph and connected by an edge.
     :param m:
@@ -181,8 +182,8 @@ def move_across_dart(graph, m, n, g, s1, s2, pred, dist, original_pdf=None, dual
                                            [float(i) / 2 for i in minimum_slack.homology],
                                            float(minimum_slack.leafmost) / 2) + lambda_weight <= \
                 Weight(1, [0 for _ in range(2 * g)], 0):
-            draw_grid.display(graph, m, n, s1.name, blue, red, pred, min_dart, original_pdf)
-            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, min_dart, dual_pdf)
+            draw_grid.display(graph, m, n, s1.name, blue, red, pred, vertex_mapping, min_dart, original_pdf)
+            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, vertex_mapping, min_dart, dual_pdf)
 
             # w represents the value to move s from s1 to s2.
             w = Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],
@@ -204,8 +205,8 @@ def move_across_dart(graph, m, n, g, s1, s2, pred, dist, original_pdf=None, dual
             is_holy_tree(graph, g, pred, dist, "Pivot: {}, slack: {}".format(min_dart, minimum_slack))
 
         else:  # no more pivot, move the values dart.weight - lambda_weight, then make the s2 new pivot
-            draw_grid.display(graph, m, n, s1.name, blue, red, pred, None, original_pdf)
-            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, None, dual_pdf)
+            draw_grid.display(graph, m, n, s1.name, blue, red, pred, vertex_mapping, None, original_pdf)
+            draw_grid.display_dual(graph, m, n, s1.name, blue, red, pred, vertex_mapping, None, dual_pdf)
             delta = Weight(1, [0 for _ in range(2 * g)], 0) - lambda_weight
             add_subtree(s2, -delta, pred, dist)
             print("When moved all the way to {0}, distance to {0}: {1}".format(s2, dist[s2]))
@@ -236,7 +237,7 @@ def move_across_dart(graph, m, n, g, s1, s2, pred, dist, original_pdf=None, dual
     print("done with {0} -> {1}. New root is {1}".format(s1, s2))
 
 
-def move_around_face(graph, m, n, g, vertices):
+def move_around_face(graph, m, n, g, vertices, vertex_mapping):
     """
     Move around the vertices in face in order, return all the SSSP for each vertex in vertices.
     :param n: Height of the grid graph.
@@ -265,7 +266,7 @@ def move_around_face(graph, m, n, g, vertices):
         s1 = vertices[i]
         s2 = vertices[(i + 1) % len(vertices)]
         # Source will move from s1 -> s2, updating pred and dist dictionaries.
-        move_across_dart(graph, m, n, g, s1, s2, pred, dist, original_pdf, dual_pdf)
+        move_across_dart(graph, m, n, g, s1, s2, pred, dist, vertex_mapping, original_pdf, dual_pdf)
 
     # Close the pdf file.
     if original_pdf is not None:
@@ -286,7 +287,6 @@ def get_face_vertices(graph, names):
         vertices.append(graph.get_vertex(name))
     return vertices
 
-
 def debug():
     m, n = 3, 3
     g = 1
@@ -303,7 +303,7 @@ def debug_grid():
         sys.setrecursionlimit(10000)
     g1 = grid.generate_2d_grid(m, n)
     vertices = get_face_vertices(g1, [(1, 1), (0, 1), (0, 0), (1, 0)])
-    move_around_face(g1, m, n, g, vertices)
+    move_around_face(g1, m, n, g, vertices, get_vertex_mapping(g, m, n))
 
 
 debug_grid()
