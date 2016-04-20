@@ -89,21 +89,21 @@ def __active_darts__(s1, s2, pred):
     return set(blue), red
 
 
-def __is_holy_tree__(graph, g, pred, dist, title="is_holy_tree()"):
+def __is_holy_tree__(grid, pred, dist, title="is_holy_tree()"):
     """
-    Check if there is no tense dart in graph.
+    Check if there is no tense dart in grid graph.
     :param title: Example: Pivot (1, 2) -> (0, 2).
-    :param graph:
+    :param grid:
     :param pred:
     :param dist:
     :return:
     """
     print(u"\u25bc\u25bc\u25bc {} \u25bc\u25bc\u25bc".format(title))
-    for u in graph.vertices:
+    for u in grid.vertices:
         for v in u.neighbors:
             slack = dist[u] + u.neighbors[v].weight - dist[v]
-            if slack < Weight(homology=[0 for _ in range(2 * g)]) or \
-                    (slack == Weight(homology=[0 for _ in range(2 * g)]) and pred[v] != u):
+            if slack < Weight(homology=[0 for _ in range(2 * grid.genus)]) or \
+                    (slack == Weight(homology=[0 for _ in range(2 * grid.genus)]) and pred[v] != u):
                 print("is_holy_tree()={0}->{1} tense; dist[{0}]={2};dist[{1}]={3};weight={4};slack={5}".
                       format(u, v, dist[u], dist[v], u.neighbors[v].weight, slack))
     print(u"\u25b2\u25b2\u25b2 {} \u25b2\u25b2\u25b2".format(" " * len(title)))
@@ -122,19 +122,6 @@ def __remove_edge__(u, v):
     v.remove_dart(u)
     # du.remove_dart(dv)
     # dv.remove_dart(du)
-
-def __get_face_vertices__(graph, names):
-    """
-    Get boundary vertices to find MSSP.
-    :param graph:
-    :param names: names of the vertices to obtain vertices.
-    :return:
-    """
-    vertices = []
-    # Populate all the vertices given their names.
-    for name in names:
-        vertices.append(graph.get_vertex(name))
-    return vertices
 
 #####################                                                                     #############################
 
@@ -213,7 +200,7 @@ def move_across_dart(grid, s1, s2, pred, dist, visual_params):
             pred[min_dart.head] = min_dart.tail
             # here, if we check the values, it should still be the holy tree
             print("-------------------------------")
-            __is_holy_tree__(grid, grid.genus, pred, dist, "Pivot: {}, slack: {}".format(min_dart, minimum_slack))
+            __is_holy_tree__(grid, pred, dist, "Pivot: {}, slack: {}".format(min_dart, minimum_slack))
 
         else:  # no more pivot, move the values dart.weight - lambda_weight, then make the s2 new pivot
             draw_primal(grid, s1.name, blue, red, pred, visual_params[0], None, visual_params[2])
@@ -239,7 +226,7 @@ def move_across_dart(grid, s1, s2, pred, dist, visual_params):
     pred[s1] = s2
 
     # Ensure that there is no tense dart at the end of the root move.
-    __is_holy_tree__(grid, grid.genus, pred, dist, "Root {}".format(s2))
+    __is_holy_tree__(grid, pred, dist, "Root {}".format(s2))
 
     # Compute actual holy tree @ s2, then compare it with the current tree.
     correct_pred, correct_dist = fast_initial_tree(grid, grid.genus, s2)
@@ -264,7 +251,7 @@ def move_around_face(grid, vertices, visual_params):
 
     print("---Initial tree---")
     __report__(pred, dist)
-    __is_holy_tree__(grid, grid.genus, pred, dist, "Root {}".format(s1))
+    __is_holy_tree__(grid, pred, dist, "Root {}".format(s1))
     print("----------------------")
 
     for i in range(len(vertices)):
@@ -287,7 +274,7 @@ def debug_grid():
     grid = Grid(2, m, n)
 
     # Get vertices in the boundary face.
-    vertices = __get_face_vertices__(grid, [(1, 1), (0, 1), (0, 0), (1, 0)])
+    vertices = grid.get_vertices([(1, 1), (0, 1), (0, 0), (1, 0)])
 
     # Create a new pdf file with current timestamp.
     now = datetime.datetime.now()

@@ -33,6 +33,13 @@ class Graph:
                 return v
         return None
 
+    def get_vertices(self, vertices_names):
+        vs = []
+        # Populate all the vertices given their names.
+        for name in vertices_names:
+            vs.append(self.get_vertex(name))
+        return vs
+
     def get_face(self, face_name):
         for f in self.faces:
             if f.name == face_name:
