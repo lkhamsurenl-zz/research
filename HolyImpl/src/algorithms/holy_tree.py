@@ -16,6 +16,7 @@ from src.view.genus_boundary import get_vertex_mapping, get_face_mapping
 
 def move_across_dart(grid, s1, s2, holy_tree, visual_params):
     """
+    Move across dart s1 -> s2, changing holy_tree through series of pivots.
     :param grid:
     :param holy_tree: Holy tree rooted at s1.
     :param s1: Source vertex.
@@ -95,8 +96,7 @@ def move_across_dart(grid, s1, s2, holy_tree, visual_params):
             print("-------------------------------")
             print(holy_tree.is_holy_tree(grid, "Pivot: {}, slack: {}".format(min_dart, minimum_slack)))
 
-        else:
-            # no more pivot, move the values dart.weight - lambda_weight, then make the s2 new pivot
+        else: # no more pivot, move the values dart.weight - lambda_weight, then make the s2 new pivot
             draw_primal(grid, s1.name, blue, red, holy_tree.pred, visual_params[0], None, visual_params[2])
             draw_dual(grid, s1.name, blue, red, holy_tree.pred, visual_params[1], None, visual_params[3])
 
@@ -124,7 +124,7 @@ def move_across_dart(grid, s1, s2, holy_tree, visual_params):
     # Ensure that there is no tense dart at the end of the root move.
     print(holy_tree.is_holy_tree(grid, "Root {}".format(s2)))
 
-    # Compute actual holy tree @ s2, then compare it with the current tree.
+    # Compute correct holy tree rooted at s2, ensure it is equal to the current holy tree.
     correct_holy_tree = fast_initial_tree(grid, grid.genus, s2)
     assert correct_holy_tree == holy_tree, holy_tree.report_difference(correct_holy_tree)
 
@@ -133,8 +133,9 @@ def move_across_dart(grid, s1, s2, holy_tree, visual_params):
 
 def move_around_face(grid, vertices, visual_params):
     """
-    Move around the vertices in face in order, return all the SSSP for each vertex in vertices.
-    :param grid: Grid graph to find MSSP
+    Move around the vertices of the given face in order, by continuously moving across darts connecting consecutive
+    vertices.
+    :param grid: Grid graph to compute MSSP
     :param vertices: face vertices given in order
     :return: All the shortest path distances for each vertex in the vertices list.
     """

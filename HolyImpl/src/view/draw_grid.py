@@ -195,7 +195,8 @@ def __pivot_labels__(pivot_dups, label):
 
 def __draw_plot__(file):
     """
-    Either save plot to file if given, otherwise draw on screen.
+    Either save plot to a file if given, otherwise draw on the screen. Note that user would have to close the drawing
+    manually if drawn on the screen.
     :param file: File to save the plot.
     :return:
     """

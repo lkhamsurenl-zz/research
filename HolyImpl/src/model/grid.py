@@ -9,6 +9,9 @@ from src.algorithms.traversal import bfs
 __author__ = 'Luvsandondov Lkhamsuren'
 
 class Grid(Graph):
+    """
+    Grid is subclass of Graph with grid structure.
+    """
     def __init__(self, g, m, n):
         """
         Create m x n grid graph with genus g.
