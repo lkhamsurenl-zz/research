@@ -46,8 +46,8 @@ def get_face_mapping(g, m, n):
     # Mapping of face is slightly different when g = 2.
     if g == 2:
         face_mapping[(0,0)] = [(0, 0), (3,6), (6, 3)]
-        face_mapping[(0,3)] = [(0, 3), (6,0)]
-        face_mapping[(3,0)] = [(3, 0), (0,6)]
+        face_mapping[(0,3)] = [(0, 3)]
+        face_mapping[(3,0)] = [(3, 0)]
 
     return face_mapping
 
