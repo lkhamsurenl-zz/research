@@ -74,7 +74,7 @@ def move_across_dart(grid, s1, s2, holy_tree, visual_params):
                                            [float(i) / 2 for i in minimum_slack.homology],
                                            float(minimum_slack.leafmost) / 2) + lambda_weight <= \
                 Weight(1, [0 for _ in range(2 * grid.genus)], 0):
-            draw_primal(grid, s1.name, blue, red, holy_tree.pred, visual_params[0], min_dart, visual_params[2])
+            #draw_primal(grid, s1.name, blue, red, holy_tree.pred, visual_params[0], min_dart, visual_params[2])
             draw_dual(grid, s1.name, blue, red, holy_tree.pred, visual_params[1], min_dart, visual_params[3])
 
             # w represents the value to move s from s1 to s2.
@@ -97,7 +97,7 @@ def move_across_dart(grid, s1, s2, holy_tree, visual_params):
             print(holy_tree.is_holy_tree(grid, "Pivot: {}, slack: {}".format(min_dart, minimum_slack)))
 
         else: # no more pivot, move the values dart.weight - lambda_weight, then make the s2 new pivot
-            draw_primal(grid, s1.name, blue, red, holy_tree.pred, visual_params[0], None, visual_params[2])
+            #draw_primal(grid, s1.name, blue, red, holy_tree.pred, visual_params[0], None, visual_params[2])
             draw_dual(grid, s1.name, blue, red, holy_tree.pred, visual_params[1], None, visual_params[3])
 
             delta = Weight(1, [0 for _ in range(2 * grid.genus)], 0) - lambda_weight
@@ -213,8 +213,10 @@ def main():
 
     # Create a new pdf file with current timestamp.
     now = datetime.datetime.now()
-    primal_pdf = PdfPages('../../resources/{}-primal.pdf'.format(now.strftime("%m-%d-%H:%M")))
-    dual_pdf = PdfPages('../../resources/{}-dual.pdf'.format(now.strftime("%m-%d-%H:%M")))
+    # primal_pdf = PdfPages('../../resources/{}-primal.pdf'.format(now.strftime("%m-%d-%H:%M")))
+    # dual_pdf = PdfPages('../../resources/{}-dual.pdf'.format(now.strftime("%m-%d-%H:%M")))
+    primal_pdf = None
+    dual_pdf = None
 
     vertex_mapping = get_vertex_mapping(grid.genus, grid.width, grid.height)
     face_mapping = get_face_mapping(grid.genus, grid.width, grid.height)

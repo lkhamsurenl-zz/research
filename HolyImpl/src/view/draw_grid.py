@@ -100,6 +100,7 @@ def draw_dual(grid, root_name, blue, red, pred, face_mapping, pivot_dart=None, f
     if (-1,-1) in red_vertices:
         red_vertices.remove((-1, -1))
 
+    core = Set() # keep track of all the edges in the 2-core in the dual.
     # blue: both head and tail are blue
     # red: both head and tail are red
     # green: active darts with blue tail and red head.
@@ -118,6 +119,7 @@ def draw_dual(grid, root_name, blue, red, pred, face_mapping, pivot_dart=None, f
                 continue
             # Get the dual dart.
             dd = u.neighbors[v].dual
+            core.add((min(dd.head.name, dd.tail.name), max(dd.head.name, dd.tail.name)))
             # If both u, v are blue, then dual dart is blue.
             if u.name in blue_vertices and v.name in blue_vertices:
                 blue_darts += resolve_boundary_darts(face_mapping[dd.tail.name], face_mapping[dd.head.name])
@@ -128,13 +130,46 @@ def draw_dual(grid, root_name, blue, red, pred, face_mapping, pivot_dart=None, f
             elif u.name in blue_vertices and v.name in red_vertices:
                 green_darts += resolve_boundary_darts(face_mapping[dd.tail.name], face_mapping[dd.head.name])
 
+    # Remove all hairs.
+    done = False
+    while not done:
+        total_removed = 0
+        for (t1, h1) in core:
+            count_t1 = 1
+            count_h1 = 1
+            for (t2, h2) in core:
+                if t1 == t2 and h1 == h2:
+                    continue
+                if t1 == t2 or t1 == h2:
+                    count_t1 += 1
+                if h1 == t2 or h1 == h2:
+                    count_h1 += 1
+            if count_t1 == 1 or count_h1 == 1:
+                core.remove((t1, h1))
+                total_removed += 1
+                break
+        if total_removed == 0:
+            done = True
+
+    # count how many time each vertex appear.
+    count_vertex = {}
+    for (t, h) in core:
+        count_vertex[t] = count_vertex[t] + 1 if t in count_vertex else 1
+        count_vertex[h] = count_vertex[h] + 1 if h in count_vertex else 1
+
+    # Vertices appearing more than 2 are anchor vertices.
+    anchor_vertices = []
+    for v in count_vertex:
+        if count_vertex[v] > 2:
+            anchor_vertices.append(v)
+
     # Draw darts with colored labels.
     nx.draw_spectral(G,edgelist=red_darts,width=3,alpha=1,edge_color='red')
     nx.draw_spectral(G,edgelist=blue_darts,width=3,alpha=1,edge_color='blue')
     nx.draw_spectral(G,edgelist=green_darts,width=4,alpha=1,edge_color='green')
 
     # Override label vertices with boundary.
-    labels = __boundary_labels__(grid, face_mapping)
+    labels = __boundary_labels__(grid, face_mapping, anchor_vertices)
     nx.draw_networkx_labels(G, pos, labels=labels, font_size=10)
 
     # Label root with special text: "Root". In dual graph, root is always (0, 0)
@@ -162,7 +197,7 @@ def __grid_layout__(width, height):
 
     return (G, pos)
 
-def __boundary_labels__(grid, mapping):
+def __boundary_labels__(grid, mapping, anchor_vertices={}):
     """
     Create labels for each vertex or face in grid, with resolved boundary. If (i, j) -> [(i, j), (a, b)], then
     both (i, j) and (a, b) should have label (i, j) in labels.
@@ -174,7 +209,9 @@ def __boundary_labels__(grid, mapping):
     for i in range(grid.width + 1):
         for j in range(grid.height + 1):
             for v in mapping:
-                if (i, j) in mapping[v]:
+                if (i, j) in mapping[v] and (i, j) in anchor_vertices:
+                    labels[(i, j)] = u"\u2022{},{}\u2022".format(v[0], v[1])
+                elif (i, j) in mapping[v]:
                     labels[(i, j)] = "{},{}".format(v[0], v[1])
 
     return labels
