@@ -1,6 +1,7 @@
 \documentclass{article}
 
-\usepackage{amsmath, ../packages/enumitem, listings, graphicx, ../packages/jeffe}
+\usepackage{../packages/jeffe,../packages/enumitem,amsmath,listings, graphicx, 
+caption, subcaption}
 \oddsidemargin 0in
 \evensidemargin 0in
 \textwidth 6.5in
@@ -54,6 +55,7 @@ Consider boundary face $f$ of $G$. $\forall v \in f$, find a shortest path to
 $\forall u \in V$.
 \end{oneshot}
 
+\section{Holy Tree}
 Let $T$ be a breadth first search(BFS) tree of $G$, and $C^{*}$ be a BFS 
 co-tree in $G$. Then there is exactly $2g$ leftover edges 
 $L = \{e_1, e_2, \ldots, e_{2g}\}$. \\
@@ -79,7 +81,7 @@ weight vector for each edge in $G$. We refer to each component this weight vecto
 as length, homology, and leafmost terms respectively.
 
 \begin{center}
-\includegraphics[scale = 0.5]{g1.jpg}
+\includegraphics[scale = 0.5]{figures/g1.jpg}
 \end{center}
 \vspace{-4.0cm} % Remove the space after the picture.
 
@@ -100,8 +102,33 @@ to cope with ambiguity. \\
 genus graphs.}
 \end{center}
 
-\section{Initial holy tree}
+\section{Leftmost tree vs Holy tree}
+\begin{center}
+{\color{red}
+1. Explain our initial attempts on leafmost tree maintaining to show it is 
+sufficient for dealing with non-unique shortest paths.\\
+2. Show counterexample.}
+\end{center}
 
+\textbf{Difference of holiest Tree and leftmost tree:} \\
+Our initial hope was that by computing only leftmost tree, we might be able to 
+compute holy tree. However, on genus $g = 4$ surface, we show that no
+configuration of homology and leafmost terms can result in equal holy and
+leftmost trees. Consider below picture, \\
+\begin{itemize}
+\item Leftmost tree is rooted at $A$ and noted by solid black darts.
+\item There are exactly 8 homology cycles, each specifically denoted with
+special darts crossing the boundaries.
+\item Leafmost term building tree is denoted with red darts.
+\end{itemize}
+The observation on the figure is 2 darts highlighted in blue will be tense, 
+regardless of the homology and leafmost choice configurations.
+\begin{center}
+\includegraphics[angle = -90, scale = 0.7]{figures/Genus4_InitialHolyTree.jpg}
+\end{center}
+
+
+\section{Initial holy tree}
 Holiest tree is a spanning tree with minimal holiness. We build holiest tree 
 rooted at $r$, using slight tweak in the Bellman-Ford algorithm for finding 
 shortest path tree rooted at r. \\
@@ -322,6 +349,29 @@ while $\lambda < ( 1, \vec{[0]}, 0 )$: \\ \quad \quad
 \end{algorithm}
 \end{center}
 
+Below, we show an example of moving along an edge process on genus $g=2$ grid.\\
+On a left side, we see primal holy tree H with nodes increasing in distance are 
+red, decreasing are blue, and next pivot is denoted as P.\\
+On right side, we see the dual graph $(G/T)^*$ and active darts are noted 
+with green color.
+
+\begin{figure}
+\centering
+\begin{subfigure}{.5\textwidth}
+  \vspace{-6.0\baselineskip}
+  \includegraphics[width=0.8\linewidth,angle=-90]{figures/g2_primal_1.png}\\[9ex]
+  \includegraphics[width=0.8\linewidth,angle=-90]{figures/g2_primal_2.png}\\[9ex]
+  \includegraphics[width=0.8\linewidth,angle=-90]{figures/g2_primal_3.png}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \vspace{-5.1\baselineskip}
+  \includegraphics[width=1.1\linewidth,angle=-8]{figures/g2_dual_1.png}\\[0.5ex]
+  \includegraphics[width=1.1\linewidth,angle=-8]{figures/g2_dual_2.png}
+  \includegraphics[width=1.1\linewidth,angle=-8]{figures/g2_dual_3.png}
+\end{subfigure}
+\end{figure}
+
+\newpage
 \section{Bounding number of pivots}
 
 \begin{center}
@@ -405,33 +455,19 @@ that slack is not negative, ensuring that the nothing bad happens.
 \\
 Consider the following picture:
 \begin{center}
-\includegraphics[angle = 90, scale = 0.3]{alphaNec.jpg}
+\includegraphics[angle = 90, scale = 0.3]{figures/alphaNec.jpg}
 \end{center}
 By the definition of $alpha$:
 \[\alpha(p_1) - \alpha(p_2) = \sum_f \alpha(\partial f) > 0\]
 This will ensure that any two paths $p_1, p_2$, whose $w(p_1) = w(p_2)$ and 
   $[p_1]_{\Lambda} = [p_2]_{\Lambda}$, has $\alpha(p_1) \neq \alpha(p_2)$
 
-\begin{center}
-\includegraphics{torus.jpg}
-\end{center}
-$\href{http://en.wikipedia.org/wiki/Homology_(mathematics)}{http://en.wikipedia.org/wiki/Homology_(mathematics)}$
-
 \newpage
 \section{Working on examples:}
-\textbf{Difference of holiest Tree and leftmost tree:} \\
-On genus $g = 1$ surface:
-\begin{center}
-\includegraphics[scale = 0.6]{genus1.jpg}
-\end{center}
 
-
-
-
-\newpage
 On genus $g = 2$ surface:
 \begin{center}
-\includegraphics[angle = -90, scale = 0.7]{genus2.jpg}
+\includegraphics[angle = -90, scale = 0.7]{figures/genus2.jpg}
 \end{center}
 
 
@@ -439,15 +475,7 @@ On genus $g = 2$ surface:
 \newpage
 On genus $g = 3$ surface:
 \begin{center}
-\includegraphics[angle = -90, scale = 0.7]{genus3.jpg}
-\end{center}
-
-
-
-\newpage
-On genus $g = 4$ surface with initial Holy Tree build:
-\begin{center}
-\includegraphics[angle = -90, scale = 0.7]{Genus4_InitialHolyTree.jpg}
+\includegraphics[angle = -90, scale = 0.7]{figures/genus3.jpg}
 \end{center}
 
 
@@ -455,7 +483,7 @@ On genus $g = 4$ surface with initial Holy Tree build:
 \newpage
 On genus $g = 4$ surface with initial pivot:
 \begin{center}
-\includegraphics[angle = -90, scale = 0.7]{genus4_initialPivot.jpg}
+\includegraphics[angle = -90, scale = 0.7]{figures/genus4_initialPivot.jpg}
 \end{center}
 
 
@@ -463,7 +491,7 @@ On genus $g = 4$ surface with initial pivot:
 \newpage
 On genus $g = 4$ surface with initial pivot:
 \begin{center}
-\includegraphics[angle = -90, scale = 0.7]{genus4_after4Pivots.jpg}
+\includegraphics[angle = -90, scale = 0.7]{figures/genus4_after4Pivots.jpg}
 \end{center}
 
 
@@ -472,7 +500,7 @@ On genus $g = 4$ surface with initial pivot:
 \newpage
 On genus $g = 5$ surface with initial pivot:
 \begin{center}
-\includegraphics[angle = -90, scale = 0.7]{genus4_after5Pivots.jpg}
+\includegraphics[angle = -90, scale = 0.7]{figures/genus4_after5Pivots.jpg}
 \end{center}
 
 

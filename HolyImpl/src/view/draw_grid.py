@@ -4,11 +4,11 @@ from sets import Set
 from genus_boundary import resolve_boundary_darts, expand_vertices_list
 
 
-def draw_primal(grid, root_name, blue, red, pred, vertex_mapping, pivot_dart=None, file=None):
+def draw_primal(grid, sliding_dart, blue, red, pred, vertex_mapping, pivot_dart=None, file=None):
     """
     Draw primal grid. Note that we replicate boundary vertices on visualization.
     :param grid: Grid graph to draw.
-    :param root_name: Current root name. Used for annotating root vertex on visualization.
+    :param sliding_dart: Current root name -> Next root name.
     :param blue: Vertices decreasing in distance.
     :param red: Vertices increasing in distance.
     :param pred: Predecessor pointer dictionary for current holy tree.
@@ -17,7 +17,7 @@ def draw_primal(grid, root_name, blue, red, pred, vertex_mapping, pivot_dart=Non
     :param file: File to save the drawing.
     :return: Nothing
     """
-    node_size = 400
+    node_size = 200
     # Construct the width + 1 by height + 1 grid with directed edges.
     (G, pos) = __grid_layout__(grid.width, grid.height)
 
@@ -49,35 +49,36 @@ def draw_primal(grid, root_name, blue, red, pred, vertex_mapping, pivot_dart=Non
                 green_darts += resolve_boundary_darts(vertex_mapping[u.name], vertex_mapping[v.name])
 
     # Draw darts with colored labels.
-    nx.draw_spectral(G,edgelist=red_darts,width=3,alpha=1,edge_color='red')
-    nx.draw_spectral(G,edgelist=blue_darts,width=3,alpha=1,edge_color='blue')
-    nx.draw_spectral(G,edgelist=green_darts,width=4,alpha=1,edge_color='green')
+    nx.draw_spectral(G,node_size=node_size,edgelist=red_darts,width=2,edge_color='red',arrows=True)
+    nx.draw_spectral(G,node_size=node_size,edgelist=blue_darts,width=2,edge_color='blue',arrows=True)
+    nx.draw_spectral(G,node_size=node_size,edgelist=green_darts,width=2,edge_color='green',arrows=True)
 
     # Override label vertices with boundary.
     labels = __boundary_labels__(grid, vertex_mapping)
-    nx.draw_networkx_labels(G, pos, labels=labels)
+    nx.draw_networkx_labels(G, pos,labels=labels,font_size=8,arrows=False)
 
-    # Label root with special text: "Root"
-    nx.draw_spectral(G,node_size=node_size,nodelist=[root_name],labels={root_name:'\n\n\n Root'})
+    # Annotate the sliding dart by dashed line when drawing.
+    nx.draw_spectral(G,node_size=node_size,
+                     edgelist=resolve_boundary_darts(vertex_mapping[sliding_dart[0]], vertex_mapping[sliding_dart[1]]),
+                     width=3,edge_color='black',style='dashed',arrows=False)
 
     # Use different color for pivot dart (Handle boundary duplication if necessary).
     pivot_dups = resolve_boundary_darts(vertex_mapping[pivot_dart.tail.name], vertex_mapping[pivot_dart.head.name]) if \
         pivot_dart is not None else []
-    nx.draw_spectral(G,edgelist=pivot_dups,width=6,alpha=1,edge_color='black')
+    nx.draw_spectral(G,node_size=node_size,edgelist=pivot_dups,width=3,edge_color='black',arrows=True)
     # Annotate pivot dart label with "P".
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=__pivot_labels__(pivot_dups, "P"), label_pos=0.5)
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=__pivot_labels__(pivot_dups, "P"), label_pos=0.5,arrows=True)
 
     # Color vertices with labels.
-    nx.draw_spectral(G,node_size=node_size,nodelist=blue_vertices,node_color='blue')
-    nx.draw_spectral(G,node_size=node_size,nodelist=red_vertices,node_color='red')
+    nx.draw_spectral(G,node_size=node_size,nodelist=blue_vertices,node_color='blue',arrows=False)
+    nx.draw_spectral(G,node_size=node_size,nodelist=red_vertices,node_color='red',arrows=False)
 
     __draw_plot__(file)
 
-def draw_dual(grid, root_name, blue, red, pred, face_mapping, pivot_dart=None, file=None):
+def draw_dual(grid, blue, red, pred, face_mapping, pivot_dart=None, file=None):
     """
     Draw dual grid. Note that we replicate boundary faces on visualization.
     :param grid: Grid graph to draw.
-    :param root_name: Current root name. Used for annotating root vertex on visualization.
     :param blue: Vertices decreasing in distance.
     :param red: Vertices increasing in distance.
     :param pred: Predecessor pointer dictionary for current holy tree.
@@ -86,15 +87,11 @@ def draw_dual(grid, root_name, blue, red, pred, face_mapping, pivot_dart=None, f
     :param file: File to save the drawing.
     :return: Nothing
     """
+    node_size=200
     # Construct the width + 1 by height + 1 grid with directed edges.
-    (G, pos) = __grid_layout__(grid.width, grid.height)
+    (G, pos) = __grid_layout__(grid.width + 1, grid.height + 1)
 
-    # blue: distance decreasing
-    blue_vertices = expand_vertices_list(blue, face_mapping)
-    # red: distance increasing
-    red_vertices = expand_vertices_list(red, face_mapping)
-
-    blue_vertices, red_vertices = Set(blue_vertices), Set(red_vertices)
+    blue_vertices, red_vertices = Set(blue), Set(red)
     if (-1,-1) in blue_vertices:
         blue_vertices.remove((-1, -1))
     if (-1,-1) in red_vertices:
@@ -162,25 +159,30 @@ def draw_dual(grid, root_name, blue, red, pred, face_mapping, pivot_dart=None, f
     for v in count_vertex:
         if count_vertex[v] > 2:
             anchor_vertices.append(v)
+    print(anchor_vertices)
 
-    # Draw darts with colored labels.
-    nx.draw_spectral(G,edgelist=red_darts,width=3,alpha=1,edge_color='red')
-    nx.draw_spectral(G,edgelist=blue_darts,width=3,alpha=1,edge_color='blue')
-    nx.draw_spectral(G,edgelist=green_darts,width=4,alpha=1,edge_color='green')
+    # Draw darts with colored labels. Note that boundary to boundary darts are removed to avoid duplicate boundary
+    # darts confusion.
+    nx.draw_spectral(G,node_size=node_size,
+                     edgelist=__remove_boundary_to_boundary_darts(red_darts, grid.width, grid.height),
+                     width=2,edge_color='red',arrows=False)
+    nx.draw_spectral(G,node_size=node_size,
+                     edgelist=__remove_boundary_to_boundary_darts(blue_darts, grid.width, grid.height)
+                     ,width=2,edge_color='blue',arrows=False)
+    nx.draw_spectral(G,node_size=node_size,
+                     edgelist=__remove_boundary_to_boundary_darts(green_darts, grid.width, grid.height)
+                     ,width=2,edge_color='green',arrows=True)
 
     # Override label vertices with boundary.
-    labels = __boundary_labels__(grid, face_mapping, anchor_vertices)
-    nx.draw_networkx_labels(G, pos, labels=labels, font_size=10)
-
-    # Label root with special text: "Root". In dual graph, root is always (0, 0)
-    # nx.draw_spectral(G,node_size=600,nodelist=[(0,0)],labels={(0, 0):'\n\n\n Root'})
+    labels = __boundary_labels__(grid, face_mapping)
+    nx.draw_networkx_labels(G, pos, labels=labels, font_size=8)
 
     # Use different color for pivot dart (Handle boundary duplication if necessary).
     pivot_dups = resolve_boundary_darts(
         face_mapping[pivot_dart.dual.tail.name], face_mapping[pivot_dart.dual.head.name]) if \
         pivot_dart != None else []
-
-    nx.draw_spectral(G,edgelist=pivot_dups,width=6,alpha=1,edge_color='black',node_color='white')
+    pivot_dups = __remove_boundary_to_boundary_darts(pivot_dups, grid.width, grid.height)
+    nx.draw_spectral(G,node_size=node_size,edgelist=pivot_dups,width=3,edge_color='black',node_color='white')
     # Label pivot dart with "P".
     nx.draw_networkx_edge_labels(G, pos, edge_labels=__pivot_labels__(pivot_dups, "P"), label_pos=0.5)
 
@@ -206,8 +208,8 @@ def __boundary_labels__(grid, mapping, anchor_vertices={}):
     :return:
     """
     labels = {}
-    for i in range(grid.width + 1):
-        for j in range(grid.height + 1):
+    for i in range(grid.width + 2):
+        for j in range(grid.height + 2):
             for v in mapping:
                 if (i, j) in mapping[v] and (i, j) in anchor_vertices:
                     labels[(i, j)] = u"\u2022{},{}\u2022".format(v[0], v[1])
@@ -215,6 +217,27 @@ def __boundary_labels__(grid, mapping, anchor_vertices={}):
                     labels[(i, j)] = "{},{}".format(v[0], v[1])
 
     return labels
+
+def __remove_boundary_to_boundary_darts(dart_names, m, n):
+    """
+    In dual visualization drawing, boundary-to-boundary darts should be removed to avoid duplicate edges on boundaries.
+    :param dart_names: Darts collection to remove boundary-to-boundary edges.
+    :param m: Width of the grid.
+    :param n: Height of the grid.
+    :return: Resulting non boundary-to-boundary edges.
+    """
+    ds = []
+    for ((i_1, j_1), (i_2, j_2)) in dart_names:
+        if i_1 == 0 and i_2 == 0:
+            continue
+        if j_1 == 0 and j_2 == 0:
+            continue
+        if i_1 == m + 1 and i_2 == m + 1:
+            continue
+        if j_1 == n + 1 and j_2 == n + 1:
+            continue
+        ds.append(((i_1, j_1), (i_2, j_2)))
+    return ds
 
 def __pivot_labels__(pivot_dups, label):
     """
@@ -238,7 +261,7 @@ def __draw_plot__(file):
     :return:
     """
     if file != None:
-        plt.savefig(file, format='pdf')
+        plt.savefig(file, format='pdf', papertype='letter', bbox_inches='tight', pad_inches=0)
         plt.close()
     else:
         plt.show()

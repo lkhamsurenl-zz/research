@@ -74,8 +74,8 @@ def move_across_dart(grid, s1, s2, holy_tree, visual_params):
                                            [float(i) / 2 for i in minimum_slack.homology],
                                            float(minimum_slack.leafmost) / 2) + lambda_weight <= \
                 Weight(1, [0 for _ in range(2 * grid.genus)], 0):
-            #draw_primal(grid, s1.name, blue, red, holy_tree.pred, visual_params[0], min_dart, visual_params[2])
-            draw_dual(grid, s1.name, blue, red, holy_tree.pred, visual_params[1], min_dart, visual_params[3])
+            #draw_primal(grid, (s1.name,s2.name), blue, red, holy_tree.pred, visual_params[0], min_dart, visual_params[2])
+            draw_dual(grid, blue, red, holy_tree.pred, visual_params[1], min_dart, visual_params[3])
 
             # w represents the value to move s from s1 to s2.
             w = Weight(float(minimum_slack.length) / 2, [float(i) / 2 for i in minimum_slack.homology],
@@ -97,8 +97,8 @@ def move_across_dart(grid, s1, s2, holy_tree, visual_params):
             print(holy_tree.is_holy_tree(grid, "Pivot: {}, slack: {}".format(min_dart, minimum_slack)))
 
         else: # no more pivot, move the values dart.weight - lambda_weight, then make the s2 new pivot
-            #draw_primal(grid, s1.name, blue, red, holy_tree.pred, visual_params[0], None, visual_params[2])
-            draw_dual(grid, s1.name, blue, red, holy_tree.pred, visual_params[1], None, visual_params[3])
+            #draw_primal(grid, (s1.name,s2.name), blue, red, holy_tree.pred, visual_params[0], None, visual_params[2])
+            draw_dual(grid, blue, red, holy_tree.pred, visual_params[1], None, visual_params[3])
 
             delta = Weight(1, [0 for _ in range(2 * grid.genus)], 0) - lambda_weight
             holy_tree.add_subtree(s2, -delta)

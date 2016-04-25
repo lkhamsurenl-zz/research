@@ -42,12 +42,42 @@ def get_face_mapping(g, m, n):
     :param n: Height of the grid.
     :return:
     """
-    face_mapping = get_vertex_mapping(g, m, n)
-    # Mapping of face is slightly different when g = 2.
-    if g == 2:
-        face_mapping[(0,0)] = [(0, 0), (3,6), (6, 3)]
-        face_mapping[(0,3)] = [(0, 3)]
-        face_mapping[(3,0)] = [(3, 0)]
+    face_mapping = {}
+    # Non-boundary face mapping
+    for i in range(m):
+        for j in range(n):
+            face_mapping[(i, j)] = [(i + 1, j + 1)]
+    if g == 1:
+        for i in range(m):
+            face_mapping[(i, 0)].append((i + 1, n + 1))
+            face_mapping[(i, n - 1)].append((i + 1, 0))
+        for j in range(n):
+            face_mapping[(0, j)].append((m + 1, j + 1))
+            face_mapping[(m - 1, j)].append((0, j + 1))
+    elif g == 2:
+        face_mapping[(0,0)] = [(1,1), (4,7), (7, 4)]
+        face_mapping[(3,5)].append((1,0))
+        face_mapping[(4,5)].append((2,0))
+        face_mapping[(0,5)] += [(4,0), (7, 3)]
+        face_mapping[(1,5)].append((5,0))
+        face_mapping[(2,5)].append((6,0))
+
+        face_mapping[(5,3)].append((0,1))
+        face_mapping[(5,4)].append((0,2))
+        face_mapping[(5,5)] += [(0,3), (3,0)]
+        face_mapping[(5,0)] += [(0,4), (3, 7)]
+        face_mapping[(5,1)].append((0,5))
+        face_mapping[(5,2)].append((0,6))
+
+        face_mapping[(0, 3)].append((7, 1))
+        face_mapping[(0, 4)].append((7, 2))
+        face_mapping[(0, 1)].append((7, 5))
+        face_mapping[(0, 2)].append((7, 6))
+
+        face_mapping[(3, 0)].append((1, 7))
+        face_mapping[(4, 0)].append((2, 7))
+        face_mapping[(1, 0)].append((5, 7))
+        face_mapping[(2, 0)].append((6, 7))
 
     return face_mapping
 
@@ -60,11 +90,11 @@ def resolve_boundary_darts(us, vs):
     :return: All possible duplicates of (u_name -> v_name).
     """
     duplicates = []
-    for i in us:
-        for j in vs:
+    for tail in us:
+        for heaad in vs:
             # Return only valid darts (vertex that are connected.)
-            if abs(i[0] - j[0]) + abs(i[1] - j[1]) == 1:
-                duplicates.append((i, j))
+            if abs(tail[0] - heaad[0]) + abs(tail[1] - heaad[1]) == 1:
+                duplicates.append((tail, heaad))
     return duplicates
 
 def expand_vertices_list(ls, mapping):
