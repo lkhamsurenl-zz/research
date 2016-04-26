@@ -6,7 +6,7 @@
 \usepackage[
 backend=biber,
 style=numeric,
-sorting=nty
+sorting=nyt
 ]{biblatex}
 \addbibresource{citation.bib}
 
@@ -36,21 +36,7 @@ with unit weight edges.
 
 \section{Introduction}
 
-Recently, Eisenstat and Klein \cite{eisenstat2013linear} introduced a new algorithm for computing
-multiple source shortest path problem for a planar graphs in linear time. Our 
-paper attempts to generalize this idea to embedded graphs. In their paper,
-they maintain so-called leafmost shortest tree to get around an issue of 
-ambiguous shortest paths between a pair of vertices. There is no direct way 
-to generalize a leafmost tree computing process to an embedded graphs, since 
-leafmost tree is not well defined data structure in an embedded graphs. 
-In the following section we introduce terms that alleviate
-the process of ambiguous pivoting.\\
-
-\begin{center}
-{\color{red}Introduce notations, homology, and dual graphs.}
-\end{center}
-
-We can formally define multiple-source shortest paths problem as follows: \\
+We can formally define multiple-source shortest paths problem as follows: 
 
 \begin{oneshot}{Given}
 Let $G$ be a directed graph $(V, \vec{E})$, embedded on a surface with genus $g$.
@@ -62,6 +48,15 @@ $|E| = n + 2g - 1$.
 Consider boundary face $f$ of $G$. $\forall v \in f$, find a shortest path to
 $\forall u \in V$.
 \end{oneshot}
+
+Klein \cite{klein2005multiple} described first algorithm to solve MSSP problem in planar graphs in $O(n logn)$-time. Later, Cabello, Chamber, and Erickson \cite{cabello2013multiple} described an alternate method and generalized it to graphs embedded in higher genus surfaces. 
+Recently, Eisenstat and Klein \cite{eisenstat2013linear} introduced a new algorithm to compute MSSP in planar graphs in linear time when edge weights are unit. Our 
+paper attempts to generalize this idea to graphs embedded in higher genus surfaces. In their paper, Eisenstat and Klein use so-called leafmost pivoting rule to deal with possibility more than one pivots at the given time. However, there is no direct way 
+to generalize a leafmost pivoting rule in graphs embedded in higher genus surfaces 
+In this paper, we describe ways to alleviate this difficulties and how to compute MSSP. 
+
+\subsection{Definition and Notation}
+We adapt definitions and notations of surfaces, embedding, and duality from Cabello et al.'s paper \cite{cabello2013multiple}. Furthermore, we refer to graphs embedded on higher genus surfaces as ``embedded graphs''.
 
 \section{Holy Tree}
 Let $T$ be a breadth first search(BFS) tree of $G$, and $C^{*}$ be a BFS 
@@ -113,7 +108,7 @@ leafmost terms. Holy tree is rooted at $(1, 1)$.
 \caption{An example of holy tree in graph with genus 1.}
 \end{figure}
 
-\section{Need of holiness}
+\subsection{Need of holiness}
 We provide a simple explanation on why it is necessary to introduce holiness
 to cope with ambiguity. \\
 
@@ -124,7 +119,7 @@ could still cause ambiguity when computing shortest paths. \\
 2. By introducing homology terms, we avoid this ambiguity.}
 \end{center}
 
-\section{Leftmost tree vs Holy tree}
+\subsection{Leftmost tree vs Holy tree}
 \begin{center}
 {\color{red}
 1. Explain our initial attempts on leafmost tree maintaining to show it is NOT
@@ -138,7 +133,7 @@ tree would be equal. However, on genus $g = 4$ surface, we show that no
 choice of homology and leafmost terms can result in equal holy and
 leftmost trees. Consider below picture, \\
 \begin{itemize}
-\item Leftmost tree is rooted at $A$ and noted by solid black darts.
+\item Leftmost tree is rooted at $A$ and denoted by solid black darts.
 \item There are exactly 8 homology cycles, each specifically denoted with
 special darts crossing the boundaries.
 \item Leafmost term building tree is denoted with red darts.
@@ -274,19 +269,17 @@ $w(u \rightarrow v) = (0, -\vec{[h]}, -\alpha)$. This change allows us to define
 Since we decrease distance to $u$ at the start, this could potentially introduce
 pivots. Suppose, for instance, $x$ be descendant of $u$ and $y$ be of $v$ in $T_s$,
 then:
-\begin{align}
+\begin{align*}
 & slack(x \rightarrow y) = dist(x) + w(x \rightarrow y) - dist(y) = \\
 & = dist_0(x) + (0, -\vec{[h]}, -\alpha) + w(x \rightarrow y) - dist_0(y) = \\
 & = slack_0(x \rightarrow y) + (0, -\vec{[h]}, -\alpha) \Rightarrow \\
 & slack(x \rightarrow y) < 0, \text{ if } slack_0(x \rightarrow y) < 
 (0,\vec{[h]},\alpha)
-\end{align}
+\end{align*}
 
 Therefore, this could be potentially problamatic. Furthermore, \textbf{What if 
 $u \rightarrow v$ has non-trivial homology or leafmost term?}
 
-We need to take into account that $u \rightarrow v$ has non-trivial homology and
-leafmost terms. 
 \begin{center}
 {\color{red}
 1. First attempt of not maintain holy tree at all times.
@@ -298,21 +291,23 @@ leafmost terms, also reducing destination distance initially.
 that source is moving.}
 \end{center}
 
-\begin{align}
-& w_{0}(s \rightarrow u) = ( 0, \vec{[0]}, 0 ) \\
-& w_{0}(s \rightarrow v) = ( 1, \vec{[h]}, \alpha ) = w(u \rightarrow v)
-\end{align}
-
-Observe that this condition implies $s = u$, therefore $T_s = T_u$. We reduce 
-distances to u and v as follows:
+We need to take into account that $u \rightarrow v$ has non-trivial homology and
+leafmost terms $\vec{[h]}, \alpha$. To deal with the problem of potential non-trivial homology edge splitting process,  we reduce distances to u and v as follows:
 
 \begin{align}
 & w_{\epsilon}(s \rightarrow u) = ( 0, -\vec{[h]}, -\alpha ) \\ 
 & w_{\epsilon}(s \rightarrow v) = ( 1, \vec{[0]}, 0 )
 \end{align}
 
-Since we reduced distance to all vertices in the graph equally, the process does
-not introduce any pivots. Then we define a parametric weights as follows:
+This process can explained in following way: 
+\begin{enumerate}
+\item When we split $uv$ to 2 edges $(us, sv)$, we assume $\vec{[h]}, \alpha$ terms reside in $sv$ side of $uv$ at the start.
+\item By reducing weight of $w(s \rightarrow v) $ by $( 0, -\vec{[h]}, -\alpha )$, we are removing homology and leafmost terms from $sv$ edge.
+\item Then we add those values to $su$, which is equivalent to adding  $( 0, -\vec{[h]}, -\alpha )$ to dart $w(s \rightarrow u) $.
+\end{enumerate}
+
+Since we reduced distance to all vertices in the graph by equal amount (this is because each vertex is either child of $u$ or $v$ in $T_s$, so reducing distances to $u$ and $v$ is same as reducing distances to all vertices), the process does
+not introduce any pivots. We define a parametric weights as follows:
 
 \begin{align}
 & w_{\lambda}(s \rightarrow u) = ( 0, -\vec{[h]}, -\alpha ) - \lambda \\
@@ -426,12 +421,12 @@ $[p_1]_{\Lambda} = [p_2]_{\Lambda}$, has $\alpha(p_1) \neq \alpha(p_2)$
 \begin{oneshot}{Lemma 4.2}
 As source vertex $s$ moves around the given face f, any dart $d$ has exactly
 $2g$ continuous clock state: 
-\begin{align}
+\begin{align*}
 & d \in T \\
 & d^{*} \in (G/T)^{*} \\
 & rev(d) \in T \\
 & rev(d^{*}) \in (G/T)^{*}
-\end{align}
+\end{align*}
 \end{oneshot}
 \begin{proof}
 Here is the proof.
@@ -462,6 +457,8 @@ problem as follows:
 \item Overall running time
 \end{itemize}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\iffalse
 \newpage
 \section{Working on examples:}
 
@@ -470,15 +467,11 @@ On genus $g = 2$ surface:
 \includegraphics[angle = -90, scale = 0.7]{figures/genus2.jpg}
 \end{center}
 
-
-
 \newpage
 On genus $g = 3$ surface:
 \begin{center}
 \includegraphics[angle = -90, scale = 0.7]{figures/genus3.jpg}
 \end{center}
-
-
 
 \newpage
 On genus $g = 4$ surface with initial pivot:
@@ -486,23 +479,23 @@ On genus $g = 4$ surface with initial pivot:
 \includegraphics[angle = -90, scale = 0.7]{figures/genus4_initialPivot.jpg}
 \end{center}
 
-
-
 \newpage
 On genus $g = 4$ surface with initial pivot:
 \begin{center}
 \includegraphics[angle = -90, scale = 0.7]{figures/genus4_after4Pivots.jpg}
 \end{center}
 
-
-
-
 \newpage
 On genus $g = 5$ surface with initial pivot:
 \begin{center}
 \includegraphics[angle = -90, scale = 0.7]{figures/genus4_after5Pivots.jpg}
 \end{center}
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\newpage
+% Show all the references in citation.bib
+\nocite{*}
 \printbibliography
 
 \end{document}

@@ -18,7 +18,139 @@
 
 
 \refsection{0}
-  \sortlist[entry]{nty/global}
+  \sortlist[entry]{nyt/global}
+    \entry{borradaile2009n}{article}{}
+      \name{author}{2}{}{%
+        {{hash=8fd8149b6f96e049303120d781645b11}{%
+           family={Borradaile},
+           family_i={B\bibinitperiod},
+           given={Glencora},
+           given_i={G\bibinitperiod}}}%
+        {{hash=8fcf65d13cbda16dd45370a516cc1180}{%
+           family={Klein},
+           family_i={K\bibinitperiod},
+           given={Philip},
+           given_i={P\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{53d815f950ce2cab2128298d131aca17}
+      \strng{fullhash}{53d815f950ce2cab2128298d131aca17}
+      \field{sortinit}{B}
+      \field{sortinithash}{4ecbea03efd0532989d3836d1a048c32}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of the ACM (JACM)}
+      \field{number}{2}
+      \field{title}{An O (n log n) algorithm for maximum st-flow in a directed planar graph}
+      \field{volume}{56}
+      \field{year}{2009}
+      \field{pages}{9}
+      \range{pages}{1}
+    \endentry
+    \entry{borradaile2015min}{article}{}
+      \name{author}{3}{}{%
+        {{hash=8fd8149b6f96e049303120d781645b11}{%
+           family={Borradaile},
+           family_i={B\bibinitperiod},
+           given={Glencora},
+           given_i={G\bibinitperiod}}}%
+        {{hash=38c3a08af5803e22fe401a59f4616c18}{%
+           family={Sankowski},
+           family_i={S\bibinitperiod},
+           given={Piotr},
+           given_i={P\bibinitperiod}}}%
+        {{hash=4bea5bd689efa798d5fa108eb2319a96}{%
+           family={Wulff-Nilsen},
+           family_i={W\bibinithyphendelim N\bibinitperiod},
+           given={Christian},
+           given_i={C\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{9a9b3d5363b9e2a819d3c756e514293e}
+      \strng{fullhash}{9a9b3d5363b9e2a819d3c756e514293e}
+      \field{sortinit}{B}
+      \field{sortinithash}{4ecbea03efd0532989d3836d1a048c32}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{ACM Transactions on Algorithms (TALG)}
+      \field{number}{3}
+      \field{title}{Min st-cut oracle for planar graphs with near-linear preprocessing time}
+      \field{volume}{11}
+      \field{year}{2015}
+      \field{pages}{16}
+      \range{pages}{1}
+    \endentry
+    \entry{borradaile2011multiple}{article}{}
+      \name{author}{5}{}{%
+        {{hash=8fd8149b6f96e049303120d781645b11}{%
+           family={Borradaile},
+           family_i={B\bibinitperiod},
+           given={Glencora},
+           given_i={G\bibinitperiod}}}%
+        {{hash=4e8a9641e4ab9907df736e970f9839c9}{%
+           family={Klein},
+           family_i={K\bibinitperiod},
+           given={Philip\bibnamedelima N},
+           given_i={P\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+        {{hash=6637309afdb9eda9c58def12c9e6af38}{%
+           family={Mozes},
+           family_i={M\bibinitperiod},
+           given={Shay},
+           given_i={S\bibinitperiod}}}%
+        {{hash=089c412d9e61df92f36cba801a254a87}{%
+           family={Nussbaum},
+           family_i={N\bibinitperiod},
+           given={Yahav},
+           given_i={Y\bibinitperiod}}}%
+        {{hash=4bea5bd689efa798d5fa108eb2319a96}{%
+           family={Wulff-Nilsen},
+           family_i={W\bibinithyphendelim N\bibinitperiod},
+           given={Christian},
+           given_i={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{12d6a7afbcb44203c76d0d24c9a8d2d0}
+      \strng{fullhash}{ced0620050a4c227c4db8ef0ca9e4f00}
+      \field{sortinit}{B}
+      \field{sortinithash}{4ecbea03efd0532989d3836d1a048c32}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:1105.2228}
+      \field{title}{Multiple-source multiple-sink maximum flow in directed planar graphs in near-linear time}
+      \field{year}{2011}
+    \endentry
+    \entry{cabello2007multiple}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=396ad148a3423d444d4566ce0e31410c}{%
+           family={Cabello},
+           family_i={C\bibinitperiod},
+           given={Sergio},
+           given_i={S\bibinitperiod}}}%
+        {{hash=789f4ea08c274655c2466ba35d37c08e}{%
+           family={Chambers},
+           family_i={C\bibinitperiod},
+           given={Erin\bibnamedelima W},
+           given_i={E\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \list{organization}{2}{%
+        {Society for Industrial}%
+        {Applied Mathematics}%
+      }
+      \strng{namehash}{37a03f24f9c1ad037154fbb0e8919d81}
+      \strng{fullhash}{37a03f24f9c1ad037154fbb0e8919d81}
+      \field{sortinit}{C}
+      \field{sortinithash}{59f25d509f3381b07695554a9f35ecb2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the eighteenth annual ACM-SIAM symposium on Discrete algorithms}
+      \field{title}{Multiple source shortest paths in a genus g graph}
+      \field{year}{2007}
+      \field{pages}{89\bibrangedash 97}
+      \range{pages}{9}
+    \endentry
     \entry{cabello2013multiple}{article}{}
       \name{author}{3}{}{%
         {{hash=396ad148a3423d444d4566ce0e31410c}{%
@@ -54,6 +186,109 @@
       \field{pages}{1542\bibrangedash 1571}
       \range{pages}{30}
     \endentry
+    \entry{chambers2012homology}{article}{}
+      \name{author}{3}{}{%
+        {{hash=789f4ea08c274655c2466ba35d37c08e}{%
+           family={Chambers},
+           family_i={C\bibinitperiod},
+           given={Erin\bibnamedelima W},
+           given_i={E\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+        {{hash=5bc705fbb2f250ed1b9e6e0878e5c89f}{%
+           family={Erickson},
+           family_i={E\bibinitperiod},
+           given={Jeff},
+           given_i={J\bibinitperiod}}}%
+        {{hash=e55b9a62701fd08b429690e65f836c19}{%
+           family={Nayyeri},
+           family_i={N\bibinitperiod},
+           given={Amir},
+           given_i={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {SIAM}%
+      }
+      \strng{namehash}{13e7d475b144dc03b9f748c5109c625a}
+      \strng{fullhash}{13e7d475b144dc03b9f748c5109c625a}
+      \field{sortinit}{C}
+      \field{sortinithash}{59f25d509f3381b07695554a9f35ecb2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{SIAM Journal on Computing}
+      \field{number}{6}
+      \field{title}{Homology flows, cohomology cuts}
+      \field{volume}{41}
+      \field{year}{2012}
+      \field{pages}{1605\bibrangedash 1634}
+      \range{pages}{30}
+    \endentry
+    \entry{chambers2006splitting}{inproceedings}{}
+      \name{author}{5}{}{%
+        {{hash=789f4ea08c274655c2466ba35d37c08e}{%
+           family={Chambers},
+           family_i={C\bibinitperiod},
+           given={Erin\bibnamedelima W},
+           given_i={E\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+        {{hash=d92bb9483f58b4fbcded1fead27f6716}{%
+           family={De\bibnamedelima Verdiere},
+           family_i={D\bibinitperiod\bibinitdelim V\bibinitperiod},
+           given={Eric\bibnamedelima Colin},
+           given_i={E\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=5bc705fbb2f250ed1b9e6e0878e5c89f}{%
+           family={Erickson},
+           family_i={E\bibinitperiod},
+           given={Jeff},
+           given_i={J\bibinitperiod}}}%
+        {{hash=299c58e03b96edeacfb43ea35f1f6432}{%
+           family={Lazarus},
+           family_i={L\bibinitperiod},
+           given={Francis},
+           given_i={F\bibinitperiod}}}%
+        {{hash=a1ed3f1dd48674df275649e3ddd9ce16}{%
+           family={Whittlesey},
+           family_i={W\bibinitperiod},
+           given={Kim},
+           given_i={K\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{d8f358c9c48cd32e1c57aee6fe312997}
+      \strng{fullhash}{3b3f8df4bb848dd6e45fb386749caf0e}
+      \field{sortinit}{C}
+      \field{sortinithash}{59f25d509f3381b07695554a9f35ecb2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the twenty-second annual symposium on Computational geometry}
+      \field{title}{Splitting (complicated) surfaces is hard}
+      \field{year}{2006}
+      \field{pages}{421\bibrangedash 429}
+      \range{pages}{9}
+    \endentry
+    \entry{cunningham1976network}{article}{}
+      \name{author}{1}{}{%
+        {{hash=9d03a92f14758da6d994fa1b66c7c6d2}{%
+           family={Cunningham},
+           family_i={C\bibinitperiod},
+           given={William\bibnamedelima H},
+           given_i={W\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{9d03a92f14758da6d994fa1b66c7c6d2}
+      \strng{fullhash}{9d03a92f14758da6d994fa1b66c7c6d2}
+      \field{sortinit}{C}
+      \field{sortinithash}{59f25d509f3381b07695554a9f35ecb2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Mathematical Programming}
+      \field{number}{1}
+      \field{title}{A network simplex method}
+      \field{volume}{11}
+      \field{year}{1976}
+      \field{pages}{105\bibrangedash 116}
+      \range{pages}{12}
+    \endentry
     \entry{eisenstat2013linear}{inproceedings}{}
       \name{author}{2}{}{%
         {{hash=a4a11cb65b5043874a2572dbf1f28ca9}{%
@@ -82,6 +317,150 @@
       \field{pages}{735\bibrangedash 744}
       \range{pages}{10}
     \endentry
+    \entry{erickson2010maximum}{inproceedings}{}
+      \name{author}{1}{}{%
+        {{hash=5bc705fbb2f250ed1b9e6e0878e5c89f}{%
+           family={Erickson},
+           family_i={E\bibinitperiod},
+           given={Jeff},
+           given_i={J\bibinitperiod}}}%
+      }
+      \list{organization}{2}{%
+        {Society for Industrial}%
+        {Applied Mathematics}%
+      }
+      \strng{namehash}{5bc705fbb2f250ed1b9e6e0878e5c89f}
+      \strng{fullhash}{5bc705fbb2f250ed1b9e6e0878e5c89f}
+      \field{sortinit}{E}
+      \field{sortinithash}{fefc5210ef4721525b2a478df41efcd4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the twenty-first annual ACM-SIAM symposium on Discrete Algorithms}
+      \field{title}{Maximum flows and parametric shortest paths in planar graphs}
+      \field{year}{2010}
+      \field{pages}{794\bibrangedash 804}
+      \range{pages}{11}
+    \endentry
+    \entry{erickson2012combinatorial}{inproceedings}{}
+      \name{author}{1}{}{%
+        {{hash=5bc705fbb2f250ed1b9e6e0878e5c89f}{%
+           family={Erickson},
+           family_i={E\bibinitperiod},
+           given={Jeff},
+           given_i={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{5bc705fbb2f250ed1b9e6e0878e5c89f}
+      \strng{fullhash}{5bc705fbb2f250ed1b9e6e0878e5c89f}
+      \field{sortinit}{E}
+      \field{sortinithash}{fefc5210ef4721525b2a478df41efcd4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. Sympos. Appl. Math}
+      \field{title}{Combinatorial optimization of cycles and bases}
+      \field{volume}{70}
+      \field{year}{2012}
+      \field{pages}{195\bibrangedash 228}
+      \range{pages}{34}
+    \endentry
+    \entry{erickson2004optimally}{article}{}
+      \name{author}{2}{}{%
+        {{hash=5bc705fbb2f250ed1b9e6e0878e5c89f}{%
+           family={Erickson},
+           family_i={E\bibinitperiod},
+           given={Jeff},
+           given_i={J\bibinitperiod}}}%
+        {{hash=c9609db02e16e7ff812eddca25a683d6}{%
+           family={Har-Peled},
+           family_i={H\bibinithyphendelim P\bibinitperiod},
+           given={Sariel},
+           given_i={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{f5559d85599463d917425ec4e9ff872e}
+      \strng{fullhash}{f5559d85599463d917425ec4e9ff872e}
+      \field{sortinit}{E}
+      \field{sortinithash}{fefc5210ef4721525b2a478df41efcd4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Discrete \& Computational Geometry}
+      \field{number}{1}
+      \field{title}{Optimally cutting a surface into a disk}
+      \field{volume}{31}
+      \field{year}{2004}
+      \field{pages}{37\bibrangedash 59}
+      \range{pages}{23}
+    \endentry
+    \entry{erickson2005greedy}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=5bc705fbb2f250ed1b9e6e0878e5c89f}{%
+           family={Erickson},
+           family_i={E\bibinitperiod},
+           given={Jeff},
+           given_i={J\bibinitperiod}}}%
+        {{hash=a1ed3f1dd48674df275649e3ddd9ce16}{%
+           family={Whittlesey},
+           family_i={W\bibinitperiod},
+           given={Kim},
+           given_i={K\bibinitperiod}}}%
+      }
+      \list{organization}{2}{%
+        {Society for Industrial}%
+        {Applied Mathematics}%
+      }
+      \strng{namehash}{4a2c57a2c07d8387b8c56b7c69d5fe56}
+      \strng{fullhash}{4a2c57a2c07d8387b8c56b7c69d5fe56}
+      \field{sortinit}{E}
+      \field{sortinithash}{fefc5210ef4721525b2a478df41efcd4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the sixteenth annual ACM-SIAM symposium on Discrete algorithms}
+      \field{title}{Greedy optimal homotopy and homology generators}
+      \field{year}{2005}
+      \field{pages}{1038\bibrangedash 1046}
+      \range{pages}{9}
+    \endentry
+    \entry{henzinger1997faster}{article}{}
+      \name{author}{4}{}{%
+        {{hash=d7fc69d33b02ea12c5de8131f153cb5e}{%
+           family={Henzinger},
+           family_i={H\bibinitperiod},
+           given={Monika\bibnamedelima R},
+           given_i={M\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=8fcf65d13cbda16dd45370a516cc1180}{%
+           family={Klein},
+           family_i={K\bibinitperiod},
+           given={Philip},
+           given_i={P\bibinitperiod}}}%
+        {{hash=d135881549e27a35c7f1f9399c78f12e}{%
+           family={Rao},
+           family_i={R\bibinitperiod},
+           given={Satish},
+           given_i={S\bibinitperiod}}}%
+        {{hash=2083c2e2eda69e0829113adc495820c1}{%
+           family={Subramanian},
+           family_i={S\bibinitperiod},
+           given={Sairam},
+           given_i={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{ff69cfac2153f2cbddbf5e48e0fe74a1}
+      \strng{fullhash}{bd6bcead4abdc5dde090746b1b875956}
+      \field{sortinit}{H}
+      \field{sortinithash}{82012198d5dfa657b8c4a168793268a6}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{journal of computer and system sciences}
+      \field{number}{1}
+      \field{title}{Faster shortest-path algorithms for planar graphs}
+      \field{volume}{55}
+      \field{year}{1997}
+      \field{pages}{3\bibrangedash 23}
+      \range{pages}{21}
+    \endentry
     \entry{klein2005multiple}{inproceedings}{}
       \name{author}{1}{}{%
         {{hash=4e8a9641e4ab9907df736e970f9839c9}{%
@@ -102,6 +481,243 @@
       \field{year}{2005}
       \field{pages}{146\bibrangedash 155}
       \range{pages}{10}
+    \endentry
+    \entry{klein2010shortest}{article}{}
+      \name{author}{3}{}{%
+        {{hash=4e8a9641e4ab9907df736e970f9839c9}{%
+           family={Klein},
+           family_i={K\bibinitperiod},
+           given={Philip\bibnamedelima N},
+           given_i={P\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+        {{hash=6637309afdb9eda9c58def12c9e6af38}{%
+           family={Mozes},
+           family_i={M\bibinitperiod},
+           given={Shay},
+           given_i={S\bibinitperiod}}}%
+        {{hash=395042150e57f8317b77fdb036ef2b16}{%
+           family={Weimann},
+           family_i={W\bibinitperiod},
+           given={Oren},
+           given_i={O\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{de0a22f424a6d0adefaa7f8527cb56d2}
+      \strng{fullhash}{de0a22f424a6d0adefaa7f8527cb56d2}
+      \field{sortinit}{K}
+      \field{sortinithash}{a7d5b3aec5a0890aae7baf85a209abfc}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{ACM Transactions on Algorithms (TALG)}
+      \field{number}{2}
+      \field{title}{Shortest paths in directed planar graphs with negative lengths: A linear-space O (n log 2 n)-time algorithm}
+      \field{volume}{6}
+      \field{year}{2010}
+      \field{pages}{30}
+      \range{pages}{1}
+    \endentry
+    \entry{lipton1979separator}{article}{}
+      \name{author}{2}{}{%
+        {{hash=aa0de6995ed7d61a6900bc2418239012}{%
+           family={Lipton},
+           family_i={L\bibinitperiod},
+           given={Richard\bibnamedelima J},
+           given_i={R\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=a482470d86672bc70875624a04734732}{%
+           family={Tarjan},
+           family_i={T\bibinitperiod},
+           given={Robert\bibnamedelima Endre},
+           given_i={R\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {SIAM}%
+      }
+      \strng{namehash}{fa0955aceae62eede51bdd8f5418c9e4}
+      \strng{fullhash}{fa0955aceae62eede51bdd8f5418c9e4}
+      \field{sortinit}{L}
+      \field{sortinithash}{872351f18d0f736066eda0bf18bfa4f7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{SIAM Journal on Applied Mathematics}
+      \field{number}{2}
+      \field{title}{A separator theorem for planar graphs}
+      \field{volume}{36}
+      \field{year}{1979}
+      \field{pages}{177\bibrangedash 189}
+      \range{pages}{13}
+    \endentry
+    \entry{mozes2010shortest}{incollection}{}
+      \name{author}{2}{}{%
+        {{hash=6637309afdb9eda9c58def12c9e6af38}{%
+           family={Mozes},
+           family_i={M\bibinitperiod},
+           given={Shay},
+           given_i={S\bibinitperiod}}}%
+        {{hash=4bea5bd689efa798d5fa108eb2319a96}{%
+           family={Wulff-Nilsen},
+           family_i={W\bibinithyphendelim N\bibinitperiod},
+           given={Christian},
+           given_i={C\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{9311c6d14906cc0b6eae0588d1a80cc5}
+      \strng{fullhash}{9311c6d14906cc0b6eae0588d1a80cc5}
+      \field{sortinit}{M}
+      \field{sortinithash}{2684bec41e9697b92699b46491061da2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Algorithms--ESA 2010}
+      \field{title}{Shortest Paths in Planar Graphs with Real Lengths in O (nlog2 n/loglogn) Time}
+      \field{year}{2010}
+      \field{pages}{206\bibrangedash 217}
+      \range{pages}{12}
+    \endentry
+    \entry{sleator1983data}{article}{}
+      \name{author}{2}{}{%
+        {{hash=de638fbf7ad883d8fa08ce8b35ba774e}{%
+           family={Sleator},
+           family_i={S\bibinitperiod},
+           given={Daniel\bibnamedelima D},
+           given_i={D\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=a482470d86672bc70875624a04734732}{%
+           family={Tarjan},
+           family_i={T\bibinitperiod},
+           given={Robert\bibnamedelima Endre},
+           given_i={R\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{8cd1bfb241146caa462b3acb60ec411a}
+      \strng{fullhash}{8cd1bfb241146caa462b3acb60ec411a}
+      \field{sortinit}{S}
+      \field{sortinithash}{fd1e7c5ab79596b13dbbb67f8d70fb5a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of computer and system sciences}
+      \field{number}{3}
+      \field{title}{A data structure for dynamic trees}
+      \field{volume}{26}
+      \field{year}{1983}
+      \field{pages}{362\bibrangedash 391}
+      \range{pages}{30}
+    \endentry
+    \entry{tarjan1991efficiency}{article}{}
+      \name{author}{1}{}{%
+        {{hash=cd6ce927aab733111173929bea21de77}{%
+           family={Tarjan},
+           family_i={T\bibinitperiod},
+           given={Robert\bibnamedelima E},
+           given_i={R\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {INFORMS}%
+      }
+      \strng{namehash}{cd6ce927aab733111173929bea21de77}
+      \strng{fullhash}{cd6ce927aab733111173929bea21de77}
+      \field{sortinit}{T}
+      \field{sortinithash}{423d138a005a533b47e6475e39378bf2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Mathematics of Operations Research}
+      \field{number}{2}
+      \field{title}{Efficiency of the primal network simplex algorithm for the minimum-cost circulation problem}
+      \field{volume}{16}
+      \field{year}{1991}
+      \field{pages}{272\bibrangedash 291}
+      \range{pages}{20}
+    \endentry
+    \entry{tarjan1997dynamic}{article}{}
+      \name{author}{1}{}{%
+        {{hash=cd6ce927aab733111173929bea21de77}{%
+           family={Tarjan},
+           family_i={T\bibinitperiod},
+           given={Robert\bibnamedelima E},
+           given_i={R\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{cd6ce927aab733111173929bea21de77}
+      \strng{fullhash}{cd6ce927aab733111173929bea21de77}
+      \field{sortinit}{T}
+      \field{sortinithash}{423d138a005a533b47e6475e39378bf2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Mathematical Programming}
+      \field{number}{2}
+      \field{title}{Dynamic trees as search trees via euler tours, applied to the network simplex algorithm}
+      \field{volume}{78}
+      \field{year}{1997}
+      \field{pages}{169\bibrangedash 177}
+      \range{pages}{9}
+    \endentry
+    \entry{tarjan2005self}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=cd6ce927aab733111173929bea21de77}{%
+           family={Tarjan},
+           family_i={T\bibinitperiod},
+           given={Robert\bibnamedelima E},
+           given_i={R\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=91a0016120ec270453d14a1ad01fb41b}{%
+           family={Werneck},
+           family_i={W\bibinitperiod},
+           given={Renato\bibnamedelima F},
+           given_i={R\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+      }
+      \list{organization}{2}{%
+        {Society for Industrial}%
+        {Applied Mathematics}%
+      }
+      \strng{namehash}{12105b3fb2291a7c6f90635734c234ad}
+      \strng{fullhash}{12105b3fb2291a7c6f90635734c234ad}
+      \field{sortinit}{T}
+      \field{sortinithash}{423d138a005a533b47e6475e39378bf2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the sixteenth annual ACM-SIAM symposium on Discrete algorithms}
+      \field{title}{Self-adjusting top trees}
+      \field{year}{2005}
+      \field{pages}{813\bibrangedash 822}
+      \range{pages}{10}
+    \endentry
+    \entry{young1991faster}{article}{}
+      \name{author}{3}{}{%
+        {{hash=13dbe835ba3b67668b92a4f04199ed70}{%
+           family={Young},
+           family_i={Y\bibinitperiod},
+           given={Neal\bibnamedelima E},
+           given_i={N\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=45a91cbe23eea0d25d7aa1206416c86b}{%
+           family={Tarjant},
+           family_i={T\bibinitperiod},
+           given={Robert\bibnamedelima E},
+           given_i={R\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=f6d39c907acedf7eccdff3d2f471ea83}{%
+           family={Orlin},
+           family_i={O\bibinitperiod},
+           given={James\bibnamedelima B},
+           given_i={J\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley Online Library}%
+      }
+      \strng{namehash}{0d782cf2924132b7b3bc2d12a08a6067}
+      \strng{fullhash}{0d782cf2924132b7b3bc2d12a08a6067}
+      \field{sortinit}{Y}
+      \field{sortinithash}{3cbc1e3d286284cedb5e5218a3248f94}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Networks}
+      \field{number}{2}
+      \field{title}{Faster parametric shortest path and minimum-balance algorithms}
+      \field{volume}{21}
+      \field{year}{1991}
+      \field{pages}{205\bibrangedash 221}
+      \range{pages}{17}
     \endentry
   \endsortlist
 \endrefsection
