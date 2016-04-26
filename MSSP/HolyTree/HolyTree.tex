@@ -1,7 +1,15 @@
 \documentclass{article}
 
-\usepackage{../packages/jeffe,../packages/enumitem,amsmath,listings, graphicx, 
-caption, subcaption}
+\usepackage{jeffe, enumitem}
+\usepackage{amsmath,listings, graphicx, caption, subcaption}
+
+\usepackage[
+backend=biber,
+style=numeric,
+sorting=nty
+]{biblatex}
+\addbibresource{citation.bib}
+
 \oddsidemargin 0in
 \evensidemargin 0in
 \textwidth 6.5in
@@ -28,21 +36,21 @@ with unit weight edges.
 
 \section{Introduction}
 
-Recently, Eisanstat and Klein $[?]$ introduced a new algorithm for computing
+Recently, Eisenstat and Klein \cite{eisenstat2013linear} introduced a new algorithm for computing
 multiple source shortest path problem for a planar graphs in linear time. Our 
 paper attempts to generalize this idea to embedded graphs. In their paper,
 they maintain so-called leafmost shortest tree to get around an issue of 
 ambiguous shortest paths between a pair of vertices. There is no direct way 
-to generalize leafmost tree computing process to an embedded graphs, largely
-because there is no way to define leafmost tree of a data structure in an
-embedded graphs. In the following section we introduce terms that alleviate
+to generalize a leafmost tree computing process to an embedded graphs, since 
+leafmost tree is not well defined data structure in an embedded graphs. 
+In the following section we introduce terms that alleviate
 the process of ambiguous pivoting.\\
-
-We can formally define multiple-source shortest paths problem as follows: \\
 
 \begin{center}
 {\color{red}Introduce notations, homology, and dual graphs.}
 \end{center}
+
+We can formally define multiple-source shortest paths problem as follows: \\
 
 \begin{oneshot}{Given}
 Let $G$ be a directed graph $(V, \vec{E})$, embedded on a surface with genus $g$.
@@ -57,8 +65,8 @@ $\forall u \in V$.
 
 \section{Holy Tree}
 Let $T$ be a breadth first search(BFS) tree of $G$, and $C^{*}$ be a BFS 
-co-tree in $G$. Then there is exactly $2g$ leftover edges 
-$L = \{e_1, e_2, \ldots, e_{2g}\}$. \\
+co-tree in $(G/T)^*$. Then there is exactly $2g$ leftover edges 
+$L = \{e_1, e_2, \ldots, e_{2g}\}$, according to the Euler's formula. \\
 
 There exists a unique cycle $\lambda_i$ in $C^{*} \cup {e_i}$, and $(\lambda_1, 
 \lambda_2, \ldots, \lambda_{2g}) = \Lambda$ defining homology basis. \\
@@ -76,14 +84,12 @@ Furthermore, we define leafmost term $\alpha$ recursively as follows: \\
 We can extend above definition with $\alpha(e) = \alpha(e^*)$ and 
   $\alpha(e)^* = - \alpha(\text{rev}(e^*))$. \\
 
+This leafmost term definition has been first introduced by Cunningham in 
+{\color{red}???}.
+
 Let $\tilde w(e) = ( 1, \vec{[e]}, \alpha(e) )$ be new
 weight vector for each edge in $G$. We refer to each component this weight vector
-as length, homology, and leafmost terms respectively.
-
-\begin{center}
-\includegraphics[scale = 0.5]{figures/g1.jpg}
-\end{center}
-\vspace{-4.0cm} % Remove the space after the picture.
+as length, homology, and leafmost terms respectively. \\
 
 \begin{oneshot}{Definition}
 An edge $e_1$ is holier than $e_2$, 
@@ -92,28 +98,44 @@ Therefore, we can define holiness of any $S \subset G $ as follows:
 \[\text{H}(S) = \sum \limits_{e \in S} \tilde w(e)\]
 \end{oneshot}
 
+Note here that computing holy tree rooted at $s$ immediately gives us singe
+source shortest path tree rooted at $s$ in our case. \\
+
+We show an example figure for holy tree computation for a grid graph 
+embedded in genus 1 surface. Notice that boundary edges are replicated for nice 
+visual. Bold thick arrows represent homology cycles, grey arrows correspond to 
+leafmost terms. Holy tree is rooted at $(1, 1)$. 
+
+\begin{figure}
+\centering
+\includegraphics[scale = 0.5]{figures/g1.jpg}
+\vspace{-3.5cm} % Remove the space after the picture.
+\caption{An example of holy tree in graph with genus 1.}
+\end{figure}
+
 \section{Need of holiness}
 We provide a simple explanation on why it is necessary to introduce holiness
 to cope with ambiguity. \\
 
 \begin{center}
 {\color{red}
-1. Describe why homology and leafmost term resolves the issue in higher
-genus graphs.}
+1. Leafmost term definition is not enough. This is because leftover $2g$ edges
+could still cause ambiguity when computing shortest paths. \\
+2. By introducing homology terms, we avoid this ambiguity.}
 \end{center}
 
 \section{Leftmost tree vs Holy tree}
 \begin{center}
 {\color{red}
-1. Explain our initial attempts on leafmost tree maintaining to show it is 
-sufficient for dealing with non-unique shortest paths.\\
-2. Show counterexample.}
+1. Explain our initial attempts on leafmost tree maintaining to show it is NOT
+sufficient for dealing with non-unique shortest paths.}
 \end{center}
 
-\textbf{Difference of holiest Tree and leftmost tree:} \\
-Our initial hope was that by computing only leftmost tree, we might be able to 
-compute holy tree. However, on genus $g = 4$ surface, we show that no
-configuration of homology and leafmost terms can result in equal holy and
+Klein \cite{klein2005multiple} uses a notion of leftmost tree to resolve ambiguity when 
+computing MSSP.
+Our initial hope was that even in higher genus surfaces leftmost tree and holy
+tree would be equal. However, on genus $g = 4$ surface, we show that no
+choice of homology and leafmost terms can result in equal holy and
 leftmost trees. Consider below picture, \\
 \begin{itemize}
 \item Leftmost tree is rooted at $A$ and noted by solid black darts.
@@ -126,7 +148,6 @@ regardless of the homology and leafmost choice configurations.
 \begin{center}
 \includegraphics[angle = -90, scale = 0.7]{figures/Genus4_InitialHolyTree.jpg}
 \end{center}
-
 
 \section{Initial holy tree}
 Holiest tree is a spanning tree with minimal holiness. We build holiest tree 
@@ -215,7 +236,8 @@ Let $T_u$ be a current holiest tree, $u \rightarrow v$ be an edge that we are
 trying to move along. So at the end of the process we would like to obtain
 $T_v$, the holiest tree rooted at v. \\
 
-We follow Caballo, Chambers, and Erickson's $[?]$ method to move across the edge,
+We follow Cabello, Chambers, and Erickson's \cite{cabello2013multiple}
+method to move across the edge,
 by bisecting the given edge and inserting new source s which is connected to
 both $u$ and $v$. At the start of the process, $s == u$ and continuously move to
 v, and when $s == v$, we would have our $T_s = T_v$. \\
@@ -377,9 +399,7 @@ with green color.
 \begin{center}
 {\color{red}
 1. Describe how Eisenstat Klein clock lemma works and why it is not easily
-generalizable in higher genus graphs. 
-\\
-2. Describe $P_i^{v}, P_j^{v}$ non-crossing.}
+generalizable in higher genus graphs.}
 \end{center}
 
 We introce a clocking lemma to prove that each edge is involved in pivoting 
@@ -392,8 +412,15 @@ $v_i$ to $y$ as $P_i^{y}$. Then $P_i^{y}$ and $P_j^{y}$ are non-crossing for
 all $i, j$.
 \end{oneshot}
 \begin{proof}
-This is immediate from our definition of holiest path, as no two paths can have
-same value. {\color{red} [???]}
+Consider the following picture:
+\begin{center}
+\includegraphics[angle = 90, scale = 0.3]{figures/alphaNec.jpg}
+\end{center}
+By the definition of $alpha$:
+\[\alpha(p_1) - \alpha(p_2) = \sum_f \alpha(\partial f) > 0\]
+This will ensure that any two paths $p_1, p_2$, whose $w(p_1) = w(p_2)$ and 
+$[p_1]_{\Lambda} = [p_2]_{\Lambda}$, has $\alpha(p_1) \neq \alpha(p_2)$
+
 \end{proof}
 
 \begin{oneshot}{Lemma 4.2}
@@ -434,33 +461,6 @@ problem as follows:
 \item Number of times each edge is pivoted
 \item Overall running time
 \end{itemize}
-
-Couple questions regarding the slack and flow:
-\begin{itemize}
-\item If the fixed tree T is arbitrary tree (not necessarily the holiest Tree, 
-then the flow in the answer does not have to be optimal) but solution to the 
-linear program $min <f, \text{slack}_T>$ is equal to the answer from fixed tree T, 
-not necessarily the optimal solution. That is because for each vertex, the 
-demand satisfies the constraint and if we consider the tree T, then the value of 
-$min <f, \text{slack}_T>$ would be 0, implying it is the optimal solution. 
-(Sum cannot be negative since otherwise there is no optimal solution)
-\item The reason we picked the slack as the way we defined is due to the fact 
-that slack is not negative, ensuring that the nothing bad happens.
-\item What makes the non-planar case special with 2g extra constraints?
-\item How does the slack in dual representation help us to find the pivots quickly?
-\end{itemize}
-
-\section{Additional}
-\textbf{NOTE: } Necessity of the $\alpha$ definition on the edges for holiness.  
-\\
-Consider the following picture:
-\begin{center}
-\includegraphics[angle = 90, scale = 0.3]{figures/alphaNec.jpg}
-\end{center}
-By the definition of $alpha$:
-\[\alpha(p_1) - \alpha(p_2) = \sum_f \alpha(\partial f) > 0\]
-This will ensure that any two paths $p_1, p_2$, whose $w(p_1) = w(p_2)$ and 
-  $[p_1]_{\Lambda} = [p_2]_{\Lambda}$, has $\alpha(p_1) \neq \alpha(p_2)$
 
 \newpage
 \section{Working on examples:}
@@ -503,19 +503,6 @@ On genus $g = 5$ surface with initial pivot:
 \includegraphics[angle = -90, scale = 0.7]{figures/genus4_after5Pivots.jpg}
 \end{center}
 
+\printbibliography
 
-
-
-\newpage
-\section{References:}
-\begin{itemize}
-\item Cabello, Sergio, Erin W. Chambers, and Jeff Erickson. "Multiple-source 
-  shortest paths in embedded graphs." SIAM Journal on Computing 42.4 (2013): 1542-1571.
-\item Eisenstat, David, and Philip N. Klein. "Linear-time algorithms for max 
-  flow and multiple-source shortest paths in unit-weight planar graphs." 
-  Proceedings of the forty-fifth annual ACM symposium on Theory of computing. ACM, 2013.
-\item Erickson, Jeff. Maximum flows and parametric shortest paths in planar graphs.
-  Proceedings of the twenty-first annual ACM-SIAM symposium on Discrete Algorithms. 
-  Society for Industrial and Applied Mathematics, 2010.
-\end{itemize}
 \end{document}

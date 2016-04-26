@@ -1,0 +1,15 @@
+[0] Config.pm:340> INFO - This is Biber 2.4
+[0] Config.pm:343> INFO - Logfile is 'HolyTree.blg'
+[48] biber-darwin:287> INFO - === Mon Apr 25, 2016, 23:26:13
+[62] Biber.pm:347> INFO - Reading 'HolyTree.bcf'
+[162] Biber.pm:741> INFO - Found 3 citekeys in bib section 0
+[171] Biber.pm:3150> INFO - Processing section 0
+[212] Biber.pm:3307> INFO - Looking for bibtex format file 'citation.bib' for section 0
+[214] bibtex.pm:1124> INFO - Decoding LaTeX character macros into UTF-8
+[214] bibtex.pm:985> INFO - Found BibTeX data source 'citation.bib'
+[276] UCollate.pm:65> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[277] UCollate.pm:65> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[277] Biber.pm:3027> INFO - Sorting list 'nty/global' of type 'entry' with scheme 'nty' and locale 'en-US'
+[277] Biber.pm:3031> INFO - No sort tailoring available for locale 'en-US'
+[281] bbl.pm:519> INFO - Writing 'HolyTree.bbl' with encoding 'ascii'
+[282] bbl.pm:615> INFO - Output to HolyTree.bbl

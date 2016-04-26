@@ -1,0 +1,109 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.6 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \sortlist[entry]{nty/global}
+    \entry{cabello2013multiple}{article}{}
+      \name{author}{3}{}{%
+        {{hash=396ad148a3423d444d4566ce0e31410c}{%
+           family={Cabello},
+           family_i={C\bibinitperiod},
+           given={Sergio},
+           given_i={S\bibinitperiod}}}%
+        {{hash=789f4ea08c274655c2466ba35d37c08e}{%
+           family={Chambers},
+           family_i={C\bibinitperiod},
+           given={Erin\bibnamedelima W},
+           given_i={E\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+        {{hash=5bc705fbb2f250ed1b9e6e0878e5c89f}{%
+           family={Erickson},
+           family_i={E\bibinitperiod},
+           given={Jeff},
+           given_i={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {SIAM}%
+      }
+      \strng{namehash}{d09408f176b389d1ce36cc525d032067}
+      \strng{fullhash}{d09408f176b389d1ce36cc525d032067}
+      \field{sortinit}{C}
+      \field{sortinithash}{59f25d509f3381b07695554a9f35ecb2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{SIAM Journal on Computing}
+      \field{number}{4}
+      \field{title}{Multiple-source shortest paths in embedded graphs}
+      \field{volume}{42}
+      \field{year}{2013}
+      \field{pages}{1542\bibrangedash 1571}
+      \range{pages}{30}
+    \endentry
+    \entry{eisenstat2013linear}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=a4a11cb65b5043874a2572dbf1f28ca9}{%
+           family={Eisenstat},
+           family_i={E\bibinitperiod},
+           given={David},
+           given_i={D\bibinitperiod}}}%
+        {{hash=4e8a9641e4ab9907df736e970f9839c9}{%
+           family={Klein},
+           family_i={K\bibinitperiod},
+           given={Philip\bibnamedelima N},
+           given_i={P\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{5c0a911160d8f6009eee588a88d16742}
+      \strng{fullhash}{5c0a911160d8f6009eee588a88d16742}
+      \field{sortinit}{E}
+      \field{sortinithash}{fefc5210ef4721525b2a478df41efcd4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the forty-fifth annual ACM symposium on Theory of computing}
+      \field{title}{Linear-time algorithms for max flow and multiple-source shortest paths in unit-weight planar graphs}
+      \field{year}{2013}
+      \field{pages}{735\bibrangedash 744}
+      \range{pages}{10}
+    \endentry
+    \entry{klein2005multiple}{inproceedings}{}
+      \name{author}{1}{}{%
+        {{hash=4e8a9641e4ab9907df736e970f9839c9}{%
+           family={Klein},
+           family_i={K\bibinitperiod},
+           given={Philip\bibnamedelima N},
+           given_i={P\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+      }
+      \strng{namehash}{4e8a9641e4ab9907df736e970f9839c9}
+      \strng{fullhash}{4e8a9641e4ab9907df736e970f9839c9}
+      \field{sortinit}{K}
+      \field{sortinithash}{a7d5b3aec5a0890aae7baf85a209abfc}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{SODA}
+      \field{title}{Multiple-source shortest paths in planar graphs}
+      \field{volume}{5}
+      \field{year}{2005}
+      \field{pages}{146\bibrangedash 155}
+      \range{pages}{10}
+    \endentry
+  \endsortlist
+\endrefsection
+\endinput
+
