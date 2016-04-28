@@ -1,7 +1,7 @@
 \documentclass{article}
 
 \usepackage{jeffe, enumitem}
-\usepackage{amsmath,listings, graphicx, caption, subcaption}
+\usepackage{amsmath,listings, graphicx, caption, subcaption, float}
 
 \usepackage[
 backend=biber,
@@ -39,9 +39,7 @@ with unit weight edges.
 We can formally define multiple-source shortest paths problem as follows: 
 
 \begin{oneshot}{Given}
-Let $G$ be a directed graph $(V, \vec{E})$, embedded on a surface with genus $g$.
-All edge weights are unit and $|V| = n$. Using Euler's theorem, we can derive 
-$|E| = n + 2g - 1$.
+Let $G$ be a directed graph $(V, \vec{E})$ with unit edge weights, embedded on a surface with genus $g$.
 \end{oneshot}
 
 \begin{oneshot}{Find}
@@ -79,8 +77,7 @@ Furthermore, we define leafmost term $\alpha$ recursively as follows: \\
 We can extend above definition with $\alpha(e) = \alpha(e^*)$ and 
   $\alpha(e)^* = - \alpha(\text{rev}(e^*))$. \\
 
-This leafmost term definition has been first introduced by Cunningham in 
-{\color{red}???}.
+This leafmost term definition was first introduced by Cunningham \cite{cunningham1976network}.
 
 Let $\tilde w(e) = ( 1, \vec{[e]}, \alpha(e) )$ be new
 weight vector for each edge in $G$. We refer to each component this weight vector
@@ -102,31 +99,49 @@ visual. Bold thick arrows represent homology cycles, grey arrows correspond to
 leafmost terms. Holy tree is rooted at $(1, 1)$. 
 
 \begin{figure}
-\centering
-\includegraphics[scale = 0.5]{figures/g1.jpg}
-\vspace{-3.5cm} % Remove the space after the picture.
-\caption{An example of holy tree in graph with genus 1.}
+  \label{fig: g1}
+  \centering
+  \includegraphics[scale = 0.5]{figures/g1.jpg}
+  \vspace{-3.5cm} % Remove the space after the picture.
+  \caption{An example of holy tree in graph with genus 1.}
 \end{figure}
 
 \subsection{Need of holiness}
-We provide a simple explanation on why it is necessary to introduce holiness
-to cope with ambiguity. \\
 
-\begin{center}
-{\color{red}
-1. Leafmost term definition is not enough. This is because leftover $2g$ edges
-could still cause ambiguity when computing shortest paths. \\
-2. By introducing homology terms, we avoid this ambiguity.}
-\end{center}
+\begin{oneshot}{Lemma 2.1}
+Let $p_1$ and $p_2$ be any two distinct paths between vertices $x$ and $y$ in an embedded graph G. Then $H(p_1) \neq H(p_2)$ holds. 
+\end{oneshot}
+\begin{proof}
+Suppose $H(p_1) = H(p_2)$ holds. Let $\gamma$ be a cycle formed by concatanating $p_1$ and $rev(p_2)$.
+\begin{align}
+& H(p_1) = H(p_2) \Rightarrow H(p_1 + rev(p_1)) = 0 \Rightarrow  H(\gamma) = 0 \Rightarrow \\
+&  \Rightarrow [\gamma] = 0 \text{ and } \alpha(\gamma) = 0.
+\end{align}
 
-\subsection{Leftmost tree vs Holy tree}
+$[\gamma] = 0$ implies that $\gamma$ is null-homologous, therefore a separating cycle in $\Sigma$. Suppose we get two separate connected components $\Sigma_1$ and $\Sigma_2$, which includes face $f$, if we split $\Sigma$ with $\gamma$. \\
+
+\begin{figure}[H]
+  \label{fig: g2_separating_cycle}
+  \centering
+  \includegraphics[scale = 0.5]{figures/g2_separating_cycle.png}
+  \caption{Separating cycle $\gamma$.}
+\end{figure}
+
+According to the definition of leafmost term, $\abs{\alpha(\gamma)}$ is exactly equal to number of faces in $\Sigma_1$. However, there is at least one face in $\Sigma_1$, so $\abs{\alpha(\gamma)} > 0$, which contradicts to $\abs{\alpha(\gamma)} = 0$ in $(2)$.
+\end{proof}
+
+\begin{oneshot}{Corollary 2.1}
+$\forall v \in f$, there is a unique holiest path from $v$ to $\forall u \in V$.
+\end{oneshot}
+
+\subsubsection{Leftmost tree vs Holy tree}
 \begin{center}
 {\color{red}
 1. Explain our initial attempts on leafmost tree maintaining to show it is NOT
 sufficient for dealing with non-unique shortest paths.}
 \end{center}
 
-Klein \cite{klein2005multiple} uses a notion of leftmost tree to resolve ambiguity when 
+Klein \cite{klein2005multiple} used a notion of leftmost tree to resolve ambiguity when 
 computing MSSP.
 Our initial hope was that even in higher genus surfaces leftmost tree and holy
 tree would be equal. However, on genus $g = 4$ surface, we show that no
@@ -144,7 +159,7 @@ regardless of the homology and leafmost choice configurations.
 \includegraphics[angle = -90, scale = 0.7]{figures/Genus4_InitialHolyTree.jpg}
 \end{center}
 
-\section{Initial holy tree}
+\subsection{Initial holy tree}
 Holiest tree is a spanning tree with minimal holiness. We build holiest tree 
 rooted at $r$, using slight tweak in the Bellman-Ford algorithm for finding 
 shortest path tree rooted at r. \\
@@ -225,16 +240,13 @@ holds.
 The algorithm will produce holiest tree rooted at r in $O(n + g)$ time.
 \end{oneshot}
 
-\section{Moving Along an Edge}
+\subsection{Moving Along an Edge}
 
-Let $T_u$ be a current holiest tree, $u \rightarrow v$ be an edge that we are
-trying to move along. So at the end of the process we would like to obtain
-$T_v$, the holiest tree rooted at v. \\
+We follow Cabello et al's \cite{cabello2013multiple}
+method to obtain shortest tree $T_v$ from $T_u$. In our case, we are given holiest tree $T_u$ and would like to obtain $T_v$, holiest tree rooted at $v$, by performing series of pivots.\\
 
-We follow Cabello, Chambers, and Erickson's \cite{cabello2013multiple}
-method to move across the edge,
-by bisecting the given edge and inserting new source s which is connected to
-both $u$ and $v$. At the start of the process, $s == u$ and continuously move to
+We bisect the given edge $uv$ and insert new source s, which is connected to
+both $u$ and $v$. At the start of the process, $s == u$, and s move continuously from $u$ to
 v, and when $s == v$, we would have our $T_s = T_v$. \\
 
 \textbf{Initial attempt:}
@@ -277,9 +289,6 @@ then:
 (0,\vec{[h]},\alpha)
 \end{align*}
 
-Therefore, this could be potentially problamatic. Furthermore, \textbf{What if 
-$u \rightarrow v$ has non-trivial homology or leafmost term?}
-
 \begin{center}
 {\color{red}
 1. First attempt of not maintain holy tree at all times.
@@ -291,8 +300,7 @@ leafmost terms, also reducing destination distance initially.
 that source is moving.}
 \end{center}
 
-We need to take into account that $u \rightarrow v$ has non-trivial homology and
-leafmost terms $\vec{[h]}, \alpha$. To deal with the problem of potential non-trivial homology edge splitting process,  we reduce distances to u and v as follows:
+Furthermore, we need to take into account that $u \rightarrow v$ could potentially have non-trivial homology $\vec{[h]}$ and leafmost term $\alpha$, in which case we need to define what it means to split $uv$ to two separate edges $us$ and $sv$, and how to resolve $\vec{[h]}$ and $\alpha$ terms. To deal with the issue, we reduce distances to u and v as follows:
 
 \begin{align}
 & w_{\epsilon}(s \rightarrow u) = ( 0, -\vec{[h]}, -\alpha ) \\ 
@@ -397,7 +405,7 @@ with green color.
 generalizable in higher genus graphs.}
 \end{center}
 
-We introce a clocking lemma to prove that each edge is involved in pivoting 
+We introduce a clocking lemma to prove that each edge is involved in pivoting 
 process at most $O(g)$ times.
 
 \begin{oneshot}{Lemma 4.1}
@@ -407,15 +415,7 @@ $v_i$ to $y$ as $P_i^{y}$. Then $P_i^{y}$ and $P_j^{y}$ are non-crossing for
 all $i, j$.
 \end{oneshot}
 \begin{proof}
-Consider the following picture:
-\begin{center}
-\includegraphics[angle = 90, scale = 0.3]{figures/alphaNec.jpg}
-\end{center}
-By the definition of $alpha$:
-\[\alpha(p_1) - \alpha(p_2) = \sum_f \alpha(\partial f) > 0\]
-This will ensure that any two paths $p_1, p_2$, whose $w(p_1) = w(p_2)$ and 
-$[p_1]_{\Lambda} = [p_2]_{\Lambda}$, has $\alpha(p_1) \neq \alpha(p_2)$
-
+Suppose there is a crossing and let $z$ be the last crossing point of $P_i^{y}$, $P_j^{y}$. $P_i^{z \rightarrow y}$, $P_j^{z \rightarrow y}$ be respective paths from $z$ to $y$. According to the \textbf{Lemma 2.1}, there must be exactly one holiest path from $z$ to $y$, which contradicts with definition of $P_i^{z \rightarrow y}$, $P_j^{z \rightarrow y}$ being distinct holiest paths from $z$ to $y$.
 \end{proof}
 
 \begin{oneshot}{Lemma 4.2}

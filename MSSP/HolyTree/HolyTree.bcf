@@ -2053,8 +2053,9 @@
     <bcf:citekey order="2">cabello2013multiple</bcf:citekey>
     <bcf:citekey order="3">eisenstat2013linear</bcf:citekey>
     <bcf:citekey order="4">cabello2013multiple</bcf:citekey>
-    <bcf:citekey order="5">klein2005multiple</bcf:citekey>
-    <bcf:citekey order="6">cabello2013multiple</bcf:citekey>
+    <bcf:citekey order="5">cunningham1976network</bcf:citekey>
+    <bcf:citekey order="6">klein2005multiple</bcf:citekey>
+    <bcf:citekey order="7">cabello2013multiple</bcf:citekey>
     <bcf:citekey order="0">*</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="nyt/global" type="entry" sortscheme="nyt" sortnamekeyscheme="global">

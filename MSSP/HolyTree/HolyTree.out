@@ -2,9 +2,9 @@
 \BOOKMARK [2][-]{subsection.1.1}{Definition and Notation}{section.1}% 2
 \BOOKMARK [1][-]{section.2}{Holy Tree}{}% 3
 \BOOKMARK [2][-]{subsection.2.1}{Need of holiness}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.2}{Leftmost tree vs Holy tree}{section.2}% 5
-\BOOKMARK [1][-]{section.3}{Initial holy tree}{}% 6
-\BOOKMARK [1][-]{section.4}{Moving Along an Edge}{}% 7
-\BOOKMARK [1][-]{section.5}{Bounding number of pivots}{}% 8
-\BOOKMARK [1][-]{section.6}{Finding pivot quickly}{}% 9
-\BOOKMARK [1][-]{section.7}{Analysis}{}% 10
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Leftmost tree vs Holy tree}{subsection.2.1}% 5
+\BOOKMARK [2][-]{subsection.2.2}{Initial holy tree}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.3}{Moving Along an Edge}{section.2}% 7
+\BOOKMARK [1][-]{section.3}{Bounding number of pivots}{}% 8
+\BOOKMARK [1][-]{section.4}{Finding pivot quickly}{}% 9
+\BOOKMARK [1][-]{section.5}{Analysis}{}% 10
