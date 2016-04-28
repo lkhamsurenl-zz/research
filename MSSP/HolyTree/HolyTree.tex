@@ -68,7 +68,7 @@ We define homological signature of an edge as follows:
                           -1 & ,\mbox{if } rev(e) \in \lambda_i \\
                            0 & ,\mbox{o/w} \end{cases}\]
 
-Furthermore, we define leafmost term $\alpha$ recursively as follows: \\
+Furthermore, we define $\alpha$  term recursively as follows: \\
 \[ \alpha(e^*) = 
   \begin{cases} 1 & ,\mbox{if } rev(e^*) \mbox{ is a leaf dart in } C^{*} \\
                            \sum \limits_{ \text{tail}(e^{'*})
@@ -77,11 +77,11 @@ Furthermore, we define leafmost term $\alpha$ recursively as follows: \\
 We can extend above definition with $\alpha(e) = \alpha(e^*)$ and 
   $\alpha(e)^* = - \alpha(\text{rev}(e^*))$. \\
 
-This leafmost term definition was first introduced by Cunningham \cite{cunningham1976network}.
+This $\alpha$ term definition was first introduced by Cunningham \cite{cunningham1976network}.
 
 Let $\tilde w(e) = ( 1, \vec{[e]}, \alpha(e) )$ be new
 weight vector for each edge in $G$. We refer to each component this weight vector
-as length, homology, and leafmost terms respectively. \\
+as length, homology, and $\alpha$ terms respectively. \\
 
 \begin{oneshot}{Definition}
 An edge $e_1$ is holier than $e_2$, 
@@ -96,7 +96,7 @@ source shortest path tree rooted at $s$ in our case. \\
 We show an example figure for holy tree computation for a grid graph 
 embedded in genus 1 surface. Notice that boundary edges are replicated for nice 
 visual. Bold thick arrows represent homology cycles, grey arrows correspond to 
-leafmost terms. Holy tree is rooted at $(1, 1)$. 
+$\alpha$ terms. Holy tree is rooted at $(1, 1)$. 
 
 \begin{figure}
   \label{fig: g1}
@@ -127,7 +127,7 @@ $[\gamma] = 0$ implies that $\gamma$ is null-homologous, therefore a separating 
   \caption{Separating cycle $\gamma$.}
 \end{figure}
 
-According to the definition of leafmost term, $\abs{\alpha(\gamma)}$ is exactly equal to number of faces in $\Sigma_1$. However, there is at least one face in $\Sigma_1$, so $\abs{\alpha(\gamma)} > 0$, which contradicts to $\abs{\alpha(\gamma)} = 0$ in $(2)$.
+According to the definition of $\alpha$ term, $\abs{\alpha(\gamma)}$ is exactly equal to number of faces in $\Sigma_1$. However, there is at least one face in $\Sigma_1$, so $\abs{\alpha(\gamma)} > 0$, which contradicts to $\abs{\alpha(\gamma)} = 0$ in $(2)$.
 \end{proof}
 
 \begin{oneshot}{Corollary 2.1}
@@ -135,26 +135,21 @@ $\forall v \in f$, there is a unique holiest path from $v$ to $\forall u \in V$.
 \end{oneshot}
 
 \subsubsection{Leftmost tree vs Holy tree}
-\begin{center}
-{\color{red}
-1. Explain our initial attempts on leafmost tree maintaining to show it is NOT
-sufficient for dealing with non-unique shortest paths.}
-\end{center}
 
 Klein \cite{klein2005multiple} used a notion of leftmost tree to resolve ambiguity when 
-computing MSSP.
+computing MSSP in their paper.
 Our initial hope was that even in higher genus surfaces leftmost tree and holy
 tree would be equal. However, on genus $g = 4$ surface, we show that no
-choice of homology and leafmost terms can result in equal holy and
+choice of ordering and directions of homology and $\alpha$ terms can result in equal holy and
 leftmost trees. Consider below picture, \\
 \begin{itemize}
 \item Leftmost tree is rooted at $A$ and denoted by solid black darts.
 \item There are exactly 8 homology cycles, each specifically denoted with
 special darts crossing the boundaries.
-\item Leafmost term building tree is denoted with red darts.
+\item $\alpha$ term building tree is denoted with red darts.
 \end{itemize}
 The observation on the figure is 2 darts highlighted in blue will be tense, 
-regardless of the homology and leafmost choice configurations.
+regardless of the homology and $\alpha$ choice configurations.
 \begin{center}
 \includegraphics[angle = -90, scale = 0.7]{figures/Genus4_InitialHolyTree.jpg}
 \end{center}
@@ -289,18 +284,22 @@ then:
 (0,\vec{[h]},\alpha)
 \end{align*}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\iffalse
 \begin{center}
 {\color{red}
 1. First attempt of not maintain holy tree at all times.
 \\
 2. Second attempt of continuously moving by changing homology and 
-leafmost terms, also reducing destination distance initially.
+$\alpha$ terms, also reducing destination distance initially.
 \\ 
-3. Necessity of resolving homology and leafmost values for an edge 
+3. Necessity of resolving homology and $\alpha$ values for an edge 
 that source is moving.}
 \end{center}
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Furthermore, we need to take into account that $u \rightarrow v$ could potentially have non-trivial homology $\vec{[h]}$ and leafmost term $\alpha$, in which case we need to define what it means to split $uv$ to two separate edges $us$ and $sv$, and how to resolve $\vec{[h]}$ and $\alpha$ terms. To deal with the issue, we reduce distances to u and v as follows:
+Furthermore, we need to take into account that $u \rightarrow v$ could potentially have non-trivial homology $\vec{[h]}$ and $\alpha$ term, in which case we need to define what it means to split $uv$ to two separate edges $us$ and $sv$, and how to resolve $\vec{[h]}$ and $\alpha$ terms. To deal with the issue, we reduce distances to u and v as follows:
 
 \begin{align}
 & w_{\epsilon}(s \rightarrow u) = ( 0, -\vec{[h]}, -\alpha ) \\ 
@@ -310,7 +309,7 @@ Furthermore, we need to take into account that $u \rightarrow v$ could potential
 This process can explained in following way: 
 \begin{enumerate}
 \item When we split $uv$ to 2 edges $(us, sv)$, we assume $\vec{[h]}, \alpha$ terms reside in $sv$ side of $uv$ at the start.
-\item By reducing weight of $w(s \rightarrow v) $ by $( 0, -\vec{[h]}, -\alpha )$, we are removing homology and leafmost terms from $sv$ edge.
+\item By reducing weight of $w(s \rightarrow v) $ by $( 0, -\vec{[h]}, -\alpha )$, we are removing homology and $\alpha$ terms from $sv$ edge.
 \item Then we add those values to $su$, which is equivalent to adding  $( 0, -\vec{[h]}, -\alpha )$ to dart $w(s \rightarrow u) $.
 \end{enumerate}
 
@@ -399,15 +398,6 @@ with green color.
 \newpage
 \section{Bounding number of pivots}
 
-\begin{center}
-{\color{red}
-1. Describe how Eisenstat Klein clock lemma works and why it is not easily
-generalizable in higher genus graphs.}
-\end{center}
-
-We introduce a clocking lemma to prove that each edge is involved in pivoting 
-process at most $O(g)$ times.
-
 \begin{oneshot}{Lemma 4.1}
 Let $v_0$ be a first vertex in our given face $f$, and $v_i$ be the source right
 after $i^{th}$ pivot. Consider a vertex $y$. We denote holiest path from 
@@ -417,6 +407,9 @@ all $i, j$.
 \begin{proof}
 Suppose there is a crossing and let $z$ be the last crossing point of $P_i^{y}$, $P_j^{y}$. $P_i^{z \rightarrow y}$, $P_j^{z \rightarrow y}$ be respective paths from $z$ to $y$. According to the \textbf{Lemma 2.1}, there must be exactly one holiest path from $z$ to $y$, which contradicts with definition of $P_i^{z \rightarrow y}$, $P_j^{z \rightarrow y}$ being distinct holiest paths from $z$ to $y$.
 \end{proof}
+
+We introduce a clocking lemma to prove that each edge is involved in pivoting 
+process at most $O(g)$ times.
 
 \begin{oneshot}{Lemma 4.2}
 As source vertex $s$ moves around the given face f, any dart $d$ has exactly
