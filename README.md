@@ -1,3 +1,1 @@
 # research
-
-Open research.
