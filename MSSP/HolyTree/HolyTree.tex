@@ -422,7 +422,7 @@ $2g$ continuous clock state:
 \end{align*}
 \end{oneshot}
 \begin{proof}
-Here is the proof.
+{\color{red}???}
 \end{proof}
 
 
@@ -430,11 +430,12 @@ Here is the proof.
 Total running time of MSSP is $O(gn)$.
 \end{oneshot}
 \begin{proof}
-Building initial holy tree takes $O(n + g)$ time. The process of moving arond the
-face and pivoting takes $O(gn)$ as each dart enters and replaces $O(g)$ times.
+Building initial holy tree takes $O(n + g)$ time. The process of moving around the
+face and pivoting takes $O(gn)$ as each dart enters the holy tree and get replaced by a some edge in holy tree $O(g)$ times.
 \end{proof}
 
 \section{Finding pivot quickly}
+Cabello et al.\cite{cabello2013multiple} use a grove data structure, a collection of separate trees with some vertices in original graph are replicated, to quickly find the next pivot. They maintain each tree in a dynamic tree and show that the total complexity of finding the next pivot is $O(g\log{n})$. 
 \begin{itemize}
 \item What data structure do we maintain in the G*?
 Finding shortest path in network can also be understood as a Linear Programming 
