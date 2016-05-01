@@ -1,6 +1,4 @@
 import copy
-import datetime
-import sys
 from sets import Set
 
 from matplotlib.backends.backend_pdf import PdfPages
@@ -11,8 +9,6 @@ from src.model.dart import Dart
 from src.model.grid import Grid
 from src.model.weight import Weight
 from src.view.draw_grid import draw_dual, draw_primal
-from src.view.genus_boundary import get_vertex_mapping, get_face_mapping
-
 
 def move_across_dart(grid, s1, s2, holy_tree, visual_params):
     """
@@ -74,7 +70,7 @@ def move_across_dart(grid, s1, s2, holy_tree, visual_params):
                                            [float(i) / 2 for i in minimum_slack.homology],
                                            float(minimum_slack.leafmost) / 2) + lambda_weight <= \
                 Weight(1, [0 for _ in range(2 * grid.genus)], 0):
-            #draw_primal(grid, (s1.name,s2.name), blue, red, holy_tree.pred, visual_params[0], min_dart, visual_params[2])
+            draw_primal(grid, (s1.name,s2.name), blue, red, holy_tree.pred, visual_params[0], min_dart, visual_params[2])
             draw_dual(grid, blue, red, holy_tree.pred, visual_params[1], min_dart, visual_params[3])
 
             # w represents the value to move s from s1 to s2.
@@ -97,7 +93,7 @@ def move_across_dart(grid, s1, s2, holy_tree, visual_params):
             print(holy_tree.is_holy_tree(grid, "Pivot: {}, slack: {}".format(min_dart, minimum_slack)))
 
         else: # no more pivot, move the values dart.weight - lambda_weight, then make the s2 new pivot
-            #draw_primal(grid, (s1.name,s2.name), blue, red, holy_tree.pred, visual_params[0], None, visual_params[2])
+            draw_primal(grid, (s1.name,s2.name), blue, red, holy_tree.pred, visual_params[0], None, visual_params[2])
             draw_dual(grid, blue, red, holy_tree.pred, visual_params[1], None, visual_params[3])
 
             delta = Weight(1, [0 for _ in range(2 * grid.genus)], 0) - lambda_weight
@@ -197,40 +193,3 @@ def __remove_edge__(u, v):
     v.remove_dart(u)
     # du.remove_dart(dv)
     # dv.remove_dart(du)
-
-#####################                             DEBUG                                    #############################
-
-def main():
-    m, n = 6, 6
-    # Set deeper recursion level to avoid max recursion depth exceeded.
-    if m > 5 or n > 5:
-        sys.setrecursionlimit(10000)
-
-    grid = Grid(2, m, n)
-
-    # Get vertices in the boundary face.
-    vertices = grid.get_vertices([(1, 1), (0, 1), (0, 0), (1, 0)])
-
-    # Create a new pdf file with current timestamp.
-    now = datetime.datetime.now()
-    # primal_pdf = PdfPages('../../resources/{}-primal.pdf'.format(now.strftime("%m-%d-%H:%M")))
-    # dual_pdf = PdfPages('../../resources/{}-dual.pdf'.format(now.strftime("%m-%d-%H:%M")))
-    primal_pdf = None
-    dual_pdf = None
-
-    vertex_mapping = get_vertex_mapping(grid.genus, grid.width, grid.height)
-    face_mapping = get_face_mapping(grid.genus, grid.width, grid.height)
-
-    # Wrap all visualization related parameters in tuple.
-    visual_params = (vertex_mapping, face_mapping, primal_pdf, dual_pdf)
-
-    move_around_face(grid, vertices, visual_params)
-
-    # Close the pdf files, if created.
-    if primal_pdf is not None:
-        primal_pdf.close()
-    if dual_pdf is not None:
-        dual_pdf.close()
-
-if __name__ == '__main__':
-    main()
