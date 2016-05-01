@@ -47,11 +47,11 @@ Consider an arbitrary face $f$ of $G$. $\forall v \in f$, find a shortest path t
 $\forall u \in V$.
 \end{oneshot}
 
-Klein \cite{klein2005multiple} described first algorithm to solve MSSP problem in planar graphs in $O(n logn)$-time. Later, Cabello, Chamber, and Erickson \cite{cabello2013multiple} described an alternate method and generalized it to graphs embedded in higher genus surfaces. 
+Klein \cite{klein2005multiple} described first algorithm to solve MSSP problem in planar graphs in $O(n \log{n})$-time. Later, Cabello, Chamber, and Erickson \cite{cabello2013multiple} described an alternate method and generalized it to graphs embedded in higher genus surfaces. 
 Recently, Eisenstat and Klein \cite{eisenstat2013linear} introduced a new algorithm to compute MSSP in planar graphs in linear time when edge weights are unit. Our 
 paper attempts to generalize this idea to graphs embedded in higher genus surfaces. In their paper, Eisenstat and Klein use so-called leafmost pivoting rule to deal with possibility more than one pivots at the given time. However, there is no direct way 
 to generalize a leafmost pivoting rule in graphs embedded in higher genus surfaces 
-In this paper, we describe ways to alleviate this difficulties and how to compute MSSP. 
+In this paper, we describe how to alleviate this difficulties and how to compute MSSP. 
 
 \subsection{Definition and Notation}
 We adapt definitions and notations of surfaces, embedding, and duality from Cabello et al.'s paper \cite{cabello2013multiple}. Furthermore, we refer to graphs embedded on higher genus surfaces as ``embedded graphs''.
@@ -299,7 +299,10 @@ that source is moving.}
 \fi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Furthermore, we need to take into account that $u \rightarrow v$ could potentially have non-trivial homology $\vec{[h]}$ and $\alpha$ term, in which case we need to define what it means to split $uv$ to two separate edges $us$ and $sv$, and how to resolve $\vec{[h]}$ and $\alpha$ terms. To deal with the issue, we reduce distances to u and v as follows:
+Furthermore, we need to take into account that $u \rightarrow v$ could potentially have non-trivial homology $\vec{[h]}$ and $\alpha$ term, in which case we need to define what it means to split $uv$ to two separate edges $us$ and $sv$, and how to resolve $\vec{[h]}$ and $\alpha$ terms. \\
+
+\textbf{Refined attempt:} \\
+To deal with the issue, we reduce distances to u and v as follows:
 
 \begin{align}
 & w_{\epsilon}(s \rightarrow u) = ( 0, -\vec{[h]}, -\alpha ) \\ 
@@ -325,8 +328,7 @@ Every other dart $x \rightarrow y$ has constant parametric weight
 $w_{\lambda}(x \rightarrow y) = w(x \rightarrow y)$.
 We then maintain the holy tree $T_{\lambda}$ rooted at s, with respect
 to the weight function $w_{\lambda}$, as $\lambda$ increases continuously from
-0 to $( 1, \vec{[0]}, 0 )$. When $\lambda = w(u \rightarrow v)$, 
-$T_{\lambda} = T_v$.
+0 to $( 1, \vec{[0]}, 0 )$. Observe that $T_{\lambda} = T_v$, when $\lambda = w(u \rightarrow v)$. \\
 
 In the following algorithm, \textbf{pred} defines holy tree rooted at $u$, and 
 \textbf{dist} is corresponding distance to each vertex in the graph. \\
