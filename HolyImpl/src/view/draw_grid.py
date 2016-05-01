@@ -4,7 +4,7 @@ from sets import Set
 from genus_boundary import resolve_boundary_darts, expand_vertices_list
 
 
-def draw_primal(grid, sliding_dart, blue, red, pred, vertex_mapping, pivot_dart=None, file=None):
+def draw_primal(grid, sliding_dart, blue, red, pred, vertex_mapping, pivot_in=None, pivot_out=None, file=None):
     """
     Draw primal grid. Note that we replicate boundary vertices on visualization.
     :param grid: Grid graph to draw.
@@ -13,7 +13,8 @@ def draw_primal(grid, sliding_dart, blue, red, pred, vertex_mapping, pivot_dart=
     :param red: Vertices increasing in distance.
     :param pred: Predecessor pointer dictionary for current holy tree.
     :param vertex_mapping: Mapping of vertex to its boundary duplicates. {(i ,j) -> [(i, j), (a, b)], etc}
-    :param pivot_dart: Current pivot dart.
+    :param pivot_in: Pivoting in dart.
+    :param pivot_out: Pivoting out dart.
     :param file: File to save the drawing.
     :return: Nothing
     """
@@ -62,12 +63,8 @@ def draw_primal(grid, sliding_dart, blue, red, pred, vertex_mapping, pivot_dart=
                      edgelist=resolve_boundary_darts(vertex_mapping[sliding_dart[0]], vertex_mapping[sliding_dart[1]]),
                      width=3,edge_color='black',style='dashed',arrows=False)
 
-    # Use different color for pivot dart (Handle boundary duplication if necessary).
-    pivot_dups = resolve_boundary_darts(vertex_mapping[pivot_dart.tail.name], vertex_mapping[pivot_dart.head.name]) if \
-        pivot_dart is not None else []
-    nx.draw_spectral(G,node_size=node_size,edgelist=pivot_dups,width=3,edge_color='black',arrows=True)
-    # Annotate pivot dart label with "P".
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=__pivot_labels__(pivot_dups, "P"), label_pos=0.5,arrows=True)
+    __draw_primal_pivot__(G, pos, pivot_in, vertex_mapping, node_size, "black", "i")
+    __draw_primal_pivot__(G, pos, pivot_out, vertex_mapping, node_size, "purple", "o")
 
     # Color vertices with labels.
     nx.draw_spectral(G,node_size=node_size,nodelist=blue_vertices,node_color='blue',arrows=False)
@@ -75,7 +72,7 @@ def draw_primal(grid, sliding_dart, blue, red, pred, vertex_mapping, pivot_dart=
 
     __draw_plot__(file)
 
-def draw_dual(grid, blue, red, pred, face_mapping, pivot_dart=None, file=None):
+def draw_dual(grid, blue, red, pred, face_mapping, pivot_in=None, pivot_out=None, file=None):
     """
     Draw dual grid. Note that we replicate boundary faces on visualization.
     :param grid: Grid graph to draw.
@@ -83,7 +80,8 @@ def draw_dual(grid, blue, red, pred, face_mapping, pivot_dart=None, file=None):
     :param red: Vertices increasing in distance.
     :param pred: Predecessor pointer dictionary for current holy tree.
     :param face_mapping: Mapping of faces to their boundary duplicates. {(i ,j) -> [(i, j), (a, b)], etc}
-    :param pivot_dart: Current pivot dart.
+    :param pivot_in: Pivoting in dart.
+    :param pivot_out: Pivoting out dart.
     :param file: File to save the drawing.
     :return: Nothing
     """
@@ -177,14 +175,8 @@ def draw_dual(grid, blue, red, pred, face_mapping, pivot_dart=None, file=None):
     labels = __boundary_labels__(grid, face_mapping)
     nx.draw_networkx_labels(G, pos, labels=labels, font_size=8)
 
-    # Use different color for pivot dart (Handle boundary duplication if necessary).
-    pivot_dups = resolve_boundary_darts(
-        face_mapping[pivot_dart.dual.tail.name], face_mapping[pivot_dart.dual.head.name]) if \
-        pivot_dart != None else []
-    pivot_dups = __remove_boundary_to_boundary_darts(pivot_dups, grid.width, grid.height)
-    nx.draw_spectral(G,node_size=node_size,edgelist=pivot_dups,width=3,edge_color='black',node_color='white')
-    # Label pivot dart with "P".
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=__pivot_labels__(pivot_dups, "P"), label_pos=0.5)
+    __draw_dual_pivot__(G, pos, grid.width, grid.height, pivot_in, face_mapping, node_size, "purple", "i")
+    __draw_dual_pivot__(G, pos, grid.width, grid.height, pivot_out, face_mapping, node_size, "black", "o")
 
     __draw_plot__(file)
 
@@ -252,6 +244,46 @@ def __pivot_labels__(pivot_dups, label):
         pivot_labels[pivot] = label
 
     return pivot_labels
+
+def __draw_primal_pivot__(G, pos, pivot, mapping, node_size, pivot_color, pivot_label):
+    """
+    Given a pivot, annotate it with color and label (handling duplicate if necessary).
+    :param G: Graph.
+    :param pos: position in canvas.
+    :param pivot: pivot dart.
+    :param mapping:
+    :param node_size: size of nodes in drawing.
+    :param pivot_color: pivot dart color.
+    :param pivot_label:
+    :return: Nothing.
+    """
+    # Use different color for pivot dart (Handle boundary duplication if necessary).
+    pivot_in_dups = resolve_boundary_darts(mapping[pivot.tail.name], mapping[pivot.head.name]) if \
+        pivot is not None else []
+    nx.draw_spectral(G,node_size=node_size,edgelist=pivot_in_dups,width=3,edge_color=pivot_color,arrows=True)
+    # Annotate pivot dart label with "in".
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=__pivot_labels__(pivot_in_dups, pivot_label),
+                                 label_pos=0.5,arrows=True)
+
+def __draw_dual_pivot__(G, pos, width, height, pivot, mapping, node_size, pivot_color, pivot_label):
+    """
+    Given a pivot, annotate it with color and label (handling duplicate if necessary) in dual.
+    :param G: Graph.
+    :param pos: position in canvas.
+    :param pivot: pivot dart.
+    :param mapping:
+    :param node_size: size of nodes in drawing.
+    :param pivot_color: pivot dart color.
+    :param pivot_label:
+    :return: Nothing.
+    """
+    # Use different color for pivot dart (Handle boundary duplication if necessary).
+    pivot_dups = resolve_boundary_darts(
+        mapping[pivot.dual.tail.name], mapping[pivot.dual.head.name]) if pivot != None else []
+    pivot_dups = __remove_boundary_to_boundary_darts(pivot_dups, width, height)
+    nx.draw_spectral(G,node_size=node_size,edgelist=pivot_dups,width=3,edge_color=pivot_color,node_color='white')
+    # Label pivot dart with pivot_label.
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=__pivot_labels__(pivot_dups, pivot_label), label_pos=0.5)
 
 def __draw_plot__(file):
     """

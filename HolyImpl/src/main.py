@@ -20,10 +20,10 @@ def main():
 
     # Create a new pdf file with current timestamp.
     now = datetime.datetime.now()
-    # primal_pdf = PdfPages('../../resources/{}-primal.pdf'.format(now.strftime("%m-%d-%H:%M")))
-    # dual_pdf = PdfPages('../../resources/{}-dual.pdf'.format(now.strftime("%m-%d-%H:%M")))
-    primal_pdf = None
-    dual_pdf = None
+    primal_pdf = PdfPages('../resources/{}-primal.pdf'.format(now.strftime("%m-%d-%H:%M")))
+    dual_pdf = PdfPages('../resources/{}-dual.pdf'.format(now.strftime("%m-%d-%H:%M")))
+    # primal_pdf = None
+    # dual_pdf = None
 
     vertex_mapping = get_vertex_mapping(grid.genus, grid.width, grid.height)
     face_mapping = get_face_mapping(grid.genus, grid.width, grid.height)

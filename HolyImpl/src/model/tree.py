@@ -24,6 +24,20 @@ class Tree:
 
         return report
 
+    def pivot_out(self, pivot_in):
+        """
+        Find a dart that is pivoting out from the holy tree.
+        :param pivot_in: Dart pivotting in.
+        :return: pivoting out dart.
+        """
+        for v in self.pred:
+            if self.pred[v] == None:
+                continue
+            dart = self.pred[v].neighbors[v]
+            if pivot_in.head == dart.head:
+                return dart
+        return None
+
     def add_subtree(self, source, delta):
         """
         Given a source and distance to add, propagate the distance through the graph.
