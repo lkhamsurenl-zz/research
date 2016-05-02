@@ -125,6 +125,7 @@ def draw_dual(grid, blue, red, pred, face_mapping, pivot_in=None, pivot_out=None
             elif u.name in blue_vertices and v.name in red_vertices:
                 green_darts += resolve_boundary_darts(face_mapping[dd.tail.name], face_mapping[dd.head.name])
 
+    ##############################                  Anchor                                  ###########################
     # Remove all hairs.
     done = False
     while not done:
@@ -157,22 +158,25 @@ def draw_dual(grid, blue, red, pred, face_mapping, pivot_in=None, pivot_out=None
     for v in count_vertex:
         if count_vertex[v] > 2:
             anchor_vertices.append(v)
-    print(anchor_vertices)
+    anchors_points = []
+    for v in anchor_vertices:
+        anchors_points += face_mapping[v]
+    ##############################                  Anchor                                  ###########################
 
     # Draw darts with colored labels. Note that boundary to boundary darts are removed to avoid duplicate boundary
     # darts confusion.
+    nx.draw_spectral(G, node_size=node_size,
+                     edgelist=__remove_boundary_to_boundary_darts__(red_darts, grid.width, grid.height),
+                     width=2, edge_color='red', arrows=False)
     nx.draw_spectral(G,node_size=node_size,
-                     edgelist=__remove_boundary_to_boundary_darts(red_darts, grid.width, grid.height),
-                     width=2,edge_color='red',arrows=False)
-    nx.draw_spectral(G,node_size=node_size,
-                     edgelist=__remove_boundary_to_boundary_darts(blue_darts, grid.width, grid.height)
+                     edgelist=__remove_boundary_to_boundary_darts__(blue_darts, grid.width, grid.height)
                      ,width=2,edge_color='blue',arrows=False)
     nx.draw_spectral(G,node_size=node_size,
-                     edgelist=__remove_boundary_to_boundary_darts(green_darts, grid.width, grid.height)
+                     edgelist=__remove_boundary_to_boundary_darts__(green_darts, grid.width, grid.height)
                      ,width=2,edge_color='green',arrows=True)
 
     # Override label vertices with boundary.
-    labels = __boundary_labels__(grid, face_mapping)
+    labels = __boundary_labels__(grid, face_mapping, anchors_points)
     nx.draw_networkx_labels(G, pos, labels=labels, font_size=8)
 
     __draw_dual_pivot__(G, pos, grid.width, grid.height, pivot_in, face_mapping, node_size, "purple", "i")
@@ -204,13 +208,13 @@ def __boundary_labels__(grid, mapping, anchor_vertices={}):
         for j in range(grid.height + 2):
             for v in mapping:
                 if (i, j) in mapping[v] and (i, j) in anchor_vertices:
-                    labels[(i, j)] = u"\u2022{},{}\u2022".format(v[0], v[1])
+                    labels[(i, j)] = "---{},{}---".format(v[0], v[1])
                 elif (i, j) in mapping[v]:
                     labels[(i, j)] = "{},{}".format(v[0], v[1])
 
     return labels
 
-def __remove_boundary_to_boundary_darts(dart_names, m, n):
+def __remove_boundary_to_boundary_darts__(dart_names, m, n):
     """
     In dual visualization drawing, boundary-to-boundary darts should be removed to avoid duplicate edges on boundaries.
     :param dart_names: Darts collection to remove boundary-to-boundary edges.
@@ -280,7 +284,7 @@ def __draw_dual_pivot__(G, pos, width, height, pivot, mapping, node_size, pivot_
     # Use different color for pivot dart (Handle boundary duplication if necessary).
     pivot_dups = resolve_boundary_darts(
         mapping[pivot.dual.tail.name], mapping[pivot.dual.head.name]) if pivot != None else []
-    pivot_dups = __remove_boundary_to_boundary_darts(pivot_dups, width, height)
+    pivot_dups = __remove_boundary_to_boundary_darts__(pivot_dups, width, height)
     nx.draw_spectral(G,node_size=node_size,edgelist=pivot_dups,width=3,edge_color=pivot_color,node_color='white')
     # Label pivot dart with pivot_label.
     nx.draw_networkx_edge_labels(G, pos, edge_labels=__pivot_labels__(pivot_dups, pivot_label), label_pos=0.5)
