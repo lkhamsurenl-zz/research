@@ -16,6 +16,7 @@ sorting=nyt
 \topmargin -0.5in
 \textheight 9.0in
 
+\definecolor{electricpurple}{rgb}{0.75, 0.0, 1.0}
 \begin{document}
 
 \title{Multiple Source Shortest Path with unit weights}
@@ -159,7 +160,7 @@ Holiest tree is a spanning tree with minimal holiness. We build holiest tree
 rooted at $r$, using slight tweak in the Bellman-Ford algorithm for finding 
 shortest path tree rooted at r. \\
 
-\begin{minipage}[t]{0.48\linewidth}
+\begin{minipage}[t]{0.58\linewidth}
 \begin{algorithm}
 \textbf{\underline{BuildHoliestTree}}($G, \tilde w , r$): \\ \quad
 Set $dist[r] \leftarrow ( 0, \vec{[0]}, 0 )$ \\ \quad \quad
@@ -179,7 +180,7 @@ while queue is not empty: \\ \quad \quad
 \end{minipage}
 \hfill%
 \hspace{-4cm}
-\begin{minipage}[t]{0.48\linewidth}
+\begin{minipage}[t]{0.38\linewidth}
 \begin{algorithm}
 \textbf{\underline{isTense}}($u \rightarrow v$): \\ \quad
 return $dist[u] + \tilde w(u \rightarrow v) < dist[v]$ \\
@@ -374,12 +375,29 @@ while $\lambda < ( 1, \vec{[0]}, 0 )$: \\ \quad \quad
         $\lambda \leftarrow \lambda + \delta$ \\
 \end{algorithm}
 \end{center}
-
-Below, we show an example of moving along an edge process on genus $g=2$ grid.\\
-On a left side, we see primal holy tree H with nodes increasing in distance are 
-red, decreasing are blue, and next pivot is denoted as P.\\
-On right side, we see the dual graph $(G/T)^*$ and active darts are noted 
-with green color.
+\vspace{1cm}
+Below, we show an example of moving along an edge process on a genus $g=2$ grid graph. \\
+\begin{minipage}[t]{0.48\linewidth}
+\begin{align*}
+& \qquad \qquad \qquad \textbf{Primal $T$} \\
+& \text{{\color{red} Red} darts are increasing in distance.} \\
+& \text{{\color{blue} Blue} vertices are decreasing in distance.} \\
+& \text{Pivoting \textbf{IN} dart is denoted with \textbf{i}.} \\
+& \text{Pivoting \textbf{OUT} dart is denoted with {\color{electricpurple} o}.} \\
+\end{align*}
+\end{minipage}
+\hfill%
+\hspace{-4cm}
+\begin{minipage}[t]{0.48\linewidth}
+\begin{align*}
+& \qquad \qquad \quad \textbf{Dual $(G/T)^*$} \\
+& \text{{\color{red} Red} darts connect red vertices in $T$.} \\
+& \text{{\color{blue} Blue} darts connect blue vertices in $T$.} \\
+& \text{Active darts are denoted with {\color{green} green}} \\
+& \text{Pivoting \textbf{IN} dart is denoted with {\color{electricpurple} i}.} \\
+& \text{Pivoting \textbf{OUT} dart is denoted with \textbf{o}.}
+\end{align*}
+\end{minipage}
 
 \begin{figure}
 \centering
