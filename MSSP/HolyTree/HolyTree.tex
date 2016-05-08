@@ -1,7 +1,11 @@
 \documentclass{article}
 
 \usepackage{jeffe, enumitem}
-\usepackage{amsmath,listings, graphicx, caption, subcaption, float}
+\usepackage{amsmath,listings, graphicx, caption, subcaption, float, amssymb}
+
+\usepackage[T2A,T1]{fontenc}
+\DeclareSymbolFont{cyrillic}{T2A}{cmr}{m}{n}
+\DeclareMathSymbol{\Sha}{\mathalpha}{cyrillic}{216}
 
 \usepackage[
 backend=biber,
@@ -55,9 +59,9 @@ to generalize a leafmost pivoting rule in graphs embedded in higher genus surfac
 In this paper, we describe how to alleviate this difficulties and how to compute MSSP. 
 
 \subsection{Definition and Notation}
-We adapt definitions and notations of surfaces, embedding, and duality from Cabello et al.'s paper \cite{cabello2013multiple}. Furthermore, we refer to graphs embedded on higher genus surfaces as ``embedded graphs''.
+We adapt definitions and notations for surfaces, embedding, and duality from Cabello et al.'s paper \cite{cabello2013multiple}. Furthermore, we refer to graphs embedded on higher genus surfaces as ``embedded graphs''.
 
-\section{Holy Tree}
+\section{Holiest Tree}
 Let $T$ be a breadth first search(BFS) tree of $G$, and $C^{*}$ be a BFS 
 co-tree in $(G/T)^*$. Then there is exactly $2g$ leftover edges 
 $L = \{e_1, e_2, \ldots, e_{2g}\}$, according to the Euler's formula. \\
@@ -69,7 +73,7 @@ We define homological signature of an edge as follows:
                           -1 & ,\mbox{if } rev(e) \in \lambda_i \\
                            0 & ,\mbox{o/w} \end{cases}\]
 
-Furthermore, we define $\alpha$  term recursively as follows: \\
+Furthermore, we define $\alpha$  term recursively for $C^*$ as follows: \\
 \[ \alpha(e^*) = 
   \begin{cases} 1 & ,\mbox{if } rev(e^*) \mbox{ is a leaf dart in } C^{*} \\
                            \sum \limits_{ \text{tail}(e^{'*})
@@ -80,31 +84,34 @@ We can extend above definition with $\alpha(e) = \alpha(e^*)$ and
 
 This $\alpha$ term definition was first introduced by Cunningham \cite{cunningham1976network}.
 
+\begin{oneshot}{Observation}
+For any cycle C in G, $\abs{\alpha(C)} = \text{number of faces in C}$.
+\end{oneshot}
+
 Let $\tilde w(e) = ( 1, \vec{[e]}, \alpha(e) )$ be new
 weight vector for each edge in $G$. We refer to each component this weight vector
 as length, homology, and $\alpha$ terms respectively. \\
 
-\begin{oneshot}{Definition}
+We extend above definition of holiness to set of edges $S$ as follows:
+\[\text{H}(S) = \sum \limits_{e \in S} \tilde w(e)\]
 An edge $e_1$ is holier than $e_2$, 
 if $\tilde w(e_1) < \tilde w(e_2)$ in lexicographic comparison. 
-Therefore, we can define holiness of any $S \subset G $ as follows:
-\[\text{H}(S) = \sum \limits_{e \in S} \tilde w(e)\]
-\end{oneshot}
+Similarly, we say $S_1$ is holier than $S_2$, if $H(S_1) < H(S_2)$. \\
 
-Note here that computing holy tree rooted at $s$ immediately gives us singe
+Holiest tree of G is a spanning tree with minimal holiness. Note here that computing holiest tree rooted at $s$ immediately gives us singe
 source shortest path tree rooted at $s$ in our case. \\
 
-We show an example figure for holy tree computation for a grid graph 
+We show an example figure for holiest tree computation for a grid graph 
 embedded in genus 1 surface. Notice that boundary edges are replicated for nice 
 visual. Bold thick arrows represent homology cycles, grey arrows correspond to 
-$\alpha$ terms. Holy tree is rooted at $(1, 1)$. 
+$\alpha$ terms. Holiest tree is rooted at $(1, 1)$. 
 
-\begin{figure}
+\begin{figure}[H]
   \label{fig: g1}
   \centering
-  \includegraphics[scale = 0.5]{figures/g1.jpg}
+  \includegraphics[scale = 0.55]{figures/g1.jpg}
   \vspace{-3.5cm} % Remove the space after the picture.
-  \caption{An example of holy tree in graph with genus 1.}
+  \caption{An example of holiest tree in graph with genus 1.}
 \end{figure}
 
 \subsection{Need of holiness}
@@ -124,7 +131,7 @@ $[\gamma] = 0$ implies that $\gamma$ is null-homologous, therefore a separating 
 \begin{figure}[H]
   \label{fig: g2_separating_cycle}
   \centering
-  \includegraphics[scale = 0.5]{figures/g2_separating_cycle.png}
+  \includegraphics[scale = 0.55]{figures/g2_separating_cycle.png}
   \caption{Separating cycle $\gamma$.}
 \end{figure}
 
@@ -135,27 +142,33 @@ According to the definition of $\alpha$ term, $\abs{\alpha(\gamma)}$ is exactly 
 $\forall v \in f$, there is a unique holiest path from $v$ to $\forall u \in V$.
 \end{oneshot}
 
-\subsubsection{Leftmost tree vs Holy tree}
+\subsubsection{Leftmost tree vs Holiest tree}
 
 Klein \cite{klein2005multiple} used a notion of leftmost tree to resolve ambiguity when 
 computing MSSP in their paper.
-Our initial hope was that even in higher genus surfaces leftmost tree and holy
+Our initial hope was that even in higher genus surfaces leftmost tree and holiest
 tree would be equal. However, on genus $g = 4$ surface, we show that no
-choice of ordering and directions of homology and $\alpha$ terms can result in equal holy and
+choice of ordering and directions of homology and $\alpha$ terms can result in equal holiest and
 leftmost trees. Consider below picture, \\
 \begin{itemize}
-\item Leftmost tree is rooted at $A$ and denoted by solid black darts.
+\item Vertices and edges in boundaries are replicated twice, except vertex $J$, which occurs 16 times in total.
+\item Leftmost tree is rooted at $A$ and denoted by solid \textbf{black} darts.
+\item {\color{red} Co-tree} is rooted at face enclosed by vertices $A, B, F, E$. Darts of the tree are denoted in red.
 \item There are exactly 8 homology cycles, each specifically denoted with
-special darts crossing the boundaries.
-\item $\alpha$ term building tree is denoted with red darts.
+special darts crossing the boundaries. Those edges make up $L = \{e_1, e_2, \ldots, e_{2g}\}$, leftover edges.
 \end{itemize}
-The observation on the figure is 2 darts highlighted in blue will be tense, 
+We observe that 2 darts highlighted in blue will be tense, 
 regardless of the homology and $\alpha$ choice configurations.
+\begin{oneshot}{Observation}
+Regardless of the choice of directions for all homology cycles, $g \rightarrow \ltimes$ or 
+$\Sha \rightarrow \square$ will be tense (highlighted in {\color{blue} blue} in the picture). 
+\end{oneshot}
+
 \begin{center}
 \includegraphics[angle = -90, scale = 0.7]{figures/Genus4_InitialHolyTree.jpg}
 \end{center}
 
-\subsection{Initial holy tree}
+\subsection{Initial holiest tree}
 Holiest tree is a spanning tree with minimal holiness. We build holiest tree 
 rooted at $r$, using slight tweak in the Bellman-Ford algorithm for finding 
 shortest path tree rooted at r. \\
@@ -289,7 +302,7 @@ then:
 \iffalse
 \begin{center}
 {\color{red}
-1. First attempt of not maintain holy tree at all times.
+1. First attempt of not maintain holiest tree at all times.
 \\
 2. Second attempt of continuously moving by changing homology and 
 $\alpha$ terms, also reducing destination distance initially.
@@ -327,11 +340,11 @@ not introduce any pivots. We define a parametric weights as follows:
 
 Every other dart $x \rightarrow y$ has constant parametric weight 
 $w_{\lambda}(x \rightarrow y) = w(x \rightarrow y)$.
-We then maintain the holy tree $T_{\lambda}$ rooted at s, with respect
+We then maintain the holiest tree $T_{\lambda}$ rooted at s, with respect
 to the weight function $w_{\lambda}$, as $\lambda$ increases continuously from
 0 to $( 1, \vec{[0]}, 0 )$. Observe that $T_{\lambda} = T_v$, when $\lambda = w(u \rightarrow v)$. \\
 
-In the following algorithm, \textbf{pred} defines holy tree rooted at $u$, and 
+In the following algorithm, \textbf{pred} defines holiest tree rooted at $u$, and 
 \textbf{dist} is corresponding distance to each vertex in the graph. \\
 
 % To ensure that introducing $dist_0[s \rightarrow u] = ( 0, -2 * [
@@ -450,8 +463,8 @@ $2g$ continuous clock state:
 Total running time of MSSP is $O(gn)$.
 \end{oneshot}
 \begin{proof}
-Building initial holy tree takes $O(n + g)$ time. The process of moving around the
-face and pivoting takes $O(gn)$ as each dart enters the holy tree and get replaced by a some edge in holy tree $O(g)$ times.
+Building initial holiest tree takes $O(n + g)$ time. The process of moving around the
+face and pivoting takes $O(gn)$ as each dart enters the holiest tree and get replaced by a some edge in holiest tree $O(g)$ times.
 \end{proof}
 
 \section{Finding pivot quickly}
