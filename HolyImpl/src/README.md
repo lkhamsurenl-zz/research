@@ -17,6 +17,8 @@ respectively.
 
 ## Example
 
-![g2_primal_1](../../MSSP/HolyTree/figures/g2_primal_1.png) ![g2_dual_1](../../MSSP/HolyTree/figures/g2_dual_1.png)
-![g2_primal_2](../../MSSP/HolyTree/figures/g2_primal_2.png) ![g2_dual_2](../../MSSP/HolyTree/figures/g2_dual_2.png)
-![g2_primal_3](../../MSSP/HolyTree/figures/g2_primal_3.png) ![g2_dual_3](../../MSSP/HolyTree/figures/g2_dual_3.png)
+<center>Primal</center>
+![g2_primal_1](../../MSSP/HolyTree/figures/g2_primal_1.png) 
+
+<center>Dual</center>
+![g2_dual_1](../../MSSP/HolyTree/figures/g2_dual_1.png)
