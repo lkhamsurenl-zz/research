@@ -12,5 +12,11 @@ python src/main.py
 ```
 
 This will generate pdf files for primal and dual graphs as 
-"resources/<today-date>-primal.pdf" and "resources/<today-date>-dual.pdf"
+"resources/DATE-primal.pdf" and "resources/DATE-dual.pdf"
 respectively.
+
+## Example
+
+![g2_primal_1](../../MSSP/HolyTree/figures/g2_primal_1.png) ![g2_dual_1](../../MSSP/HolyTree/figures/g2_dual_1.png)
+![g2_primal_2](../../MSSP/HolyTree/figures/g2_primal_2.png) ![g2_dual_2](../../MSSP/HolyTree/figures/g2_dual_2.png)
+![g2_primal_3](../../MSSP/HolyTree/figures/g2_primal_3.png) ![g2_dual_3](../../MSSP/HolyTree/figures/g2_dual_3.png)
