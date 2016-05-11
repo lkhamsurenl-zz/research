@@ -17,8 +17,8 @@ respectively.
 
 ## Example
 
-<center>Primal</center>
+### Primal:
 ![g2_primal_1](../../MSSP/HolyTree/figures/g2_primal_1.png) 
 
-<center>Dual</center>
+### Dual:
 ![g2_dual_1](../../MSSP/HolyTree/figures/g2_dual_1.png)
