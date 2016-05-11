@@ -7,9 +7,10 @@ source shortest path for graphs embedded in higher genus surfaces.
 
 ```bash
 git clone https://github.com/lkhamsurenl/research.git
-cd research/HolyImpl/src/
-python main.py
+cd research/HolyImpl/
+python src/main.py
 ```
 
-This will generate pdf files for primal and dual graphs, with each pivot in 
-separate page.
+This will generate pdf files for primal and dual graphs as 
+"resources/<today-date>-primal.pdf" and "resources/<today-date>-dual.pdf"
+respectively.
