@@ -3,13 +3,12 @@ from collections import deque
 from sets import Set
 from src.model.tree import Tree
 
-def fast_initial_tree(graph, genus, source):
+def fast_initial_tree(graph, source):
     """
-    :param genus:
     :return: Predecessor pointer for initial holy tree.
     """
     pred = {source: None}
-    dist = {source: Weight(homology=[0 for _ in range(2 * genus)])}  # distance for each vertex
+    dist = {source: Weight(homology=[0 for _ in range(2 * graph.genus)])}  # distance for each vertex
     visited = Set([source])  # keep track of which vertices we visited.
 
     for v in graph.vertices:
@@ -32,13 +31,13 @@ def fast_initial_tree(graph, genus, source):
                 pred[v] = u
     return Tree(pred, dist)
 
-def bellman_ford_initial_tree(graph, genus, source):
+def bellman_ford_initial_tree(graph, source):
     """
     :return: Predecessor pointer for initial holy tree.
     """
     # Keep track of the predecessor pointers for the SSSP rooted at the source. pred[source] = None.
     pred = {source: None}
-    dist = {source: Weight(homology=[0 for _ in range(2 * genus)])}  # distance for each Vertex
+    dist = {source: Weight(homology=[0 for _ in range(2 * graph.genus)])}  # distance for each Vertex
 
     for v in graph.vertices:
         if v != source:

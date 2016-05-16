@@ -4,9 +4,14 @@ __author__ = 'Luvsandondov Lkhamsuren'
 
 class Graph:
 
-    def __init__(self, vertices=[], faces=[]):
+    def __init__(self, vertices=[], faces=[], genus=0):
+        # vertices of the graph.
         self.vertices = vertices
+        # faces of the graph (corresponding to the vertices in the dual graph).
         self.faces = faces
+        # Graph's genus. For planar embedded graphs, g = 0.
+        assert genus < 3, "We only support g < 3 options for now."
+        self.genus = genus
 
     # TODO(lkhamsurenl): Remove vertex should get rid of all the edges too.
     def remove_vertex(self, vertex_name):
@@ -45,6 +50,10 @@ class Graph:
             if f.name == face_name:
                 return f
         return None
+
+
+    def get_genus(self):
+        return self.genus
 
     def pretty_print(self):
         print("--- Vertices ---")

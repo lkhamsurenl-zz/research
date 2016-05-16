@@ -10,11 +10,10 @@ from src.model.grid import Grid
 class TestInitialTree(TestCase):
     def test_holy_tree(self):
         g1 = grid.g1()
-        g = 1
         # Source vertex.
         vertex = g1.get_vertex((1, 1))
-        fast_holy_tree = initial_holy_tree.fast_initial_tree(g1, g, vertex)
-        slow_holy_tree = initial_holy_tree.bellman_ford_initial_tree(g1, g, vertex)
+        fast_holy_tree = initial_holy_tree.fast_initial_tree(g1, vertex)
+        slow_holy_tree = initial_holy_tree.bellman_ford_initial_tree(g1, vertex)
 
         self.assertEqual(fast_holy_tree, slow_holy_tree)
 
@@ -26,9 +25,9 @@ class TestInitialTree(TestCase):
         # Source vertex.
         vertex = grid1.get_vertex((1, 1))
         fast_start = time.time()
-        fast_holy_tree = initial_holy_tree.fast_initial_tree(grid1, grid1.genus, vertex)
+        fast_holy_tree = initial_holy_tree.fast_initial_tree(grid1, vertex)
         fast_end = time.time()
-        slow_holy_tree = initial_holy_tree.bellman_ford_initial_tree(grid1, grid1.genus, vertex)
+        slow_holy_tree = initial_holy_tree.bellman_ford_initial_tree(grid1, vertex)
         slow_end = time.time()
         print("g = 1 \n fast: {}, slow: {}".format(fast_end - fast_start, slow_end - fast_end))
 
@@ -42,9 +41,9 @@ class TestInitialTree(TestCase):
         # Source vertex.
         vertex = grid2.get_vertex((1, 1))
         fast_start = time.time()
-        fast_holy_tree = initial_holy_tree.fast_initial_tree(grid2, grid2.genus,  vertex)
+        fast_holy_tree = initial_holy_tree.fast_initial_tree(grid2, vertex)
         fast_end = time.time()
-        slow_holy_tree = initial_holy_tree.bellman_ford_initial_tree(grid2, grid2.genus, vertex)
+        slow_holy_tree = initial_holy_tree.bellman_ford_initial_tree(grid2, vertex)
         slow_end = time.time()
         print("g = 2 \n fast: {}, slow: {}".format(fast_end - fast_start, slow_end - fast_end))
 

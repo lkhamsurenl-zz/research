@@ -17,14 +17,13 @@ class Grid(Graph):
         Create m x n grid graph with genus g.
         :return: Nothing.
         """
-        assert g < 3, "We only support g < 3 options for now."
-        self.genus = g
         self.width = m
         self.height = n
 
         graph = __g1_grid_graph__(m, n) if g == 1 else __g2_grid_graph__(m, n)
         self.vertices = graph.vertices
         self.faces = graph.faces
+        self.genus = graph.genus
 
 #####################                        Specific grid graphs                          #############################
 
@@ -65,7 +64,7 @@ def __g1_grid_graph__(m, n):
             else:
                 Edge(v, neighbor, Weight(1, [0, 0], 0), left, right)
 
-    graph = Graph(vertices=sum(vs, []), faces=sum(fs, []))
+    graph = Graph(vertices=sum(vs, []), faces=sum(fs, []), genus=1)
 
     # Num Edge(spanning tree) + Num edges(dual spanning tree) + 2 * g
     # Spanning tree in original graph. Note that we first remove non-trivial homology edges from graph prior to
@@ -203,7 +202,7 @@ def __g2_grid_graph__(m, n):
     Edge(vertices[5][5], vertices[2][0], Weight(1, [1, 0, -1, 1], 0), faces[4][5], faces[5][5])
     Edge(vertices[5][5], vertices[0][2], Weight(1, [0, -1, -1, 1], 0), faces[5][5], faces[5][4])
 
-    graph = Graph(vertices=sum(vertices, []), faces=sum(faces, []))
+    graph = Graph(vertices=sum(vertices, []), faces=sum(faces, []), genus=2)
 
     # Num Edge(spanning tree) + Num edges(dual spanning tree) + 2 * g
     # Spanning tree in original graph.
@@ -272,7 +271,7 @@ def g1():
     Edge(vertices[1][1], vertices[1][0], Weight(1, [0, 0], 0), faces[1][0], faces[0][0])
     Edge(vertices[2][1], vertices[2][0], Weight(1, [0, 0], 0), faces[2][0], faces[1][0])
 
-    return Graph(vertices=sum(vertices, []), faces=sum(faces, []))
+    return Graph(vertices=sum(vertices, []), faces=sum(faces, []), genus=1)
 
 #####################                           HELPER METHODS                            #############################
 def __remove_edge__(u, v):
